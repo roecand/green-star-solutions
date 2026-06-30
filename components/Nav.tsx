@@ -4,10 +4,10 @@ import { useEffect, useState } from "react";
 import StarMark from "./StarMark";
 
 const links = [
-  { href: "#work", label: "Work" },
   { href: "#services", label: "Services" },
-  { href: "#process", label: "Process" },
-  { href: "#about", label: "About" },
+  { href: "#how", label: "How it works" },
+  { href: "#industries", label: "Industries" },
+  { href: "#work", label: "Work" },
 ];
 
 export default function Nav() {
@@ -48,7 +48,7 @@ export default function Nav() {
 
         <div className="nav__right">
           <a href="#start" className="btn nav__cta">
-            Book a consult
+            Book a call
           </a>
           <button
             className="nav__toggle"
@@ -76,7 +76,7 @@ export default function Nav() {
               onClick={() => setOpen(false)}
               style={{ marginTop: "0.5rem" }}
             >
-              Book a consult
+              Book a call
             </a>
           </div>
         </div>

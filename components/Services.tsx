@@ -1,30 +1,38 @@
 import StarMark from "./StarMark";
 import Reveal from "./Reveal";
 
-const rungs = [
+const services = [
   {
-    no: "01",
-    kicker: "The on-ramp",
-    title: "Fix what's costing you customers",
-    body: "A site that converts, missed-call text-back, and ad spend that pays for itself. We start here because it's visible, it earns trust fast, and it funds the deeper work that follows.",
-    tags: ["Website", "Missed-call capture", "Paid media", "Tracking"],
-    primary: false,
+    name: "Website Design",
+    body: "A fast, mobile-first site engineered to turn visitors into booked jobs — not just look good.",
   },
   {
-    no: "02",
-    kicker: "The systems",
-    title: "Rebuild how the work flows",
-    body: "Scheduling, intake, follow-up, the handoffs between your front desk and your calendar. We map how the business actually runs, then re-engineer the parts that leak time, money, and patients.",
-    tags: ["Workflow mapping", "Automation", "AI assist", "Follow-up"],
-    primary: false,
+    name: "Google Ads",
+    body: "Show up first when someone searches “AC repair near me,” and only pay for real, local leads.",
   },
   {
-    no: "03",
-    kicker: "The seat — where most of our work lives",
-    title: "Operations consulting",
-    body: "Once the systems hold, we stay on as the operator in your corner: what to charge, who to hire next, where capacity breaks, where the next dollar should go. This is the work. The rest earns the right to do it.",
-    tags: ["Pricing", "Hiring & capacity", "Unit economics", "Growth strategy"],
-    primary: true,
+    name: "Meta Ads",
+    body: "Targeted Facebook & Instagram campaigns that keep your pipeline full through the slow season.",
+  },
+  {
+    name: "CRM Setup",
+    body: "Every lead, call, and job in one place, so nothing slips through the cracks.",
+  },
+  {
+    name: "AI Follow-up",
+    body: "Instant, human-sounding replies that chase every lead until they book.",
+  },
+  {
+    name: "Missed Call Text Back",
+    body: "Miss a call? They get a text in seconds — before they call your competitor.",
+  },
+  {
+    name: "Appointment Automation",
+    body: "Online booking and reminders that cut no-shows and keep your calendar full.",
+  },
+  {
+    name: "Reputation Management",
+    body: "Automatically request reviews and turn happy customers into 5-star proof.",
   },
 ];
 
@@ -34,43 +42,30 @@ export default function Services() {
       <div className="container">
         <Reveal className="services__head">
           <p className="eyebrow eyebrow--ink">
-            <StarMark size={14} /> How we engage
+            <StarMark size={14} /> What we do
           </p>
           <h2 className="display h-lg services__title">
-            Most firms stop at the website.
+            Everything it takes to get the
             <br />
-            That&rsquo;s where we <span className="serif accent">start</span>.
+            phone <span className="serif accent">ringing</span> — handled.
           </h2>
           <p className="lead measure-wide services__intro">
-            We&rsquo;re not a web shop with a consulting upsell. We&rsquo;re a
-            consultancy that opens with the digital foundation because it&rsquo;s
-            the fastest way to prove we can move a number — then we go to work on
-            the business itself.
+            One team for your website, your ads, and the automation behind them.
+            No juggling five vendors who don&rsquo;t talk to each other.
           </p>
         </Reveal>
 
-        <ol className="ladder">
-          {rungs.map((r, i) => (
-            <Reveal
-              as="li"
-              key={r.no}
-              className={`rung ${r.primary ? "rung--primary" : ""}`}
-              delay={i * 90}
-            >
-              <div className="rung__no">{r.no}</div>
-              <div className="rung__main">
-                <p className="rung__kicker">{r.kicker}</p>
-                <h3 className="display rung__title">{r.title}</h3>
-                <p className="rung__body measure-wide">{r.body}</p>
-                <ul className="rung__tags">
-                  {r.tags.map((t) => (
-                    <li key={t}>{t}</li>
-                  ))}
-                </ul>
-              </div>
+        <div className="svc-grid">
+          {services.map((s, i) => (
+            <Reveal key={s.name} className="svc" delay={(i % 4) * 60}>
+              <span className="svc__no mono">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <h3 className="svc__name">{s.name}</h3>
+              <p className="svc__body">{s.body}</p>
             </Reveal>
           ))}
-        </ol>
+        </div>
       </div>
     </section>
   );

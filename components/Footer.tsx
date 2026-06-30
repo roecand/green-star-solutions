@@ -12,18 +12,19 @@ export default function Footer() {
             <span>Green Star Solutions</span>
           </a>
           <p className="footer__line measure">
-            An operations &amp; AI consultancy for Las Vegas service businesses.
-            We start with the digital and stay for the operation.
+            A growth agency for local service businesses. We build the website,
+            run the ads, and automate the follow-up — so you get more calls,
+            more booked jobs, and less busy work.
           </p>
         </div>
 
         <nav className="footer__nav" aria-label="Footer">
           <span className="footer__col-label">Site</span>
-          <a href="#work">Work</a>
           <a href="#services">Services</a>
-          <a href="#process">Process</a>
-          <a href="#about">About</a>
-          <a href="#start">Book a consult</a>
+          <a href="#how">How it works</a>
+          <a href="#industries">Industries</a>
+          <a href="#work">Work</a>
+          <a href="#start">Book a call</a>
         </nav>
 
         <div className="footer__contact">

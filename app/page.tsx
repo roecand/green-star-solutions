@@ -1,10 +1,9 @@
 import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
-import CaseStudy from "@/components/CaseStudy";
 import Services from "@/components/Services";
 import Process from "@/components/Process";
-import Audience from "@/components/Audience";
-import About from "@/components/About";
+import Industries from "@/components/Industries";
+import Portfolio from "@/components/Portfolio";
 import ClosingCTA from "@/components/ClosingCTA";
 import ProjectForm from "@/components/ProjectForm";
 import NetlifyFormDetect from "@/components/NetlifyFormDetect";
@@ -17,11 +16,10 @@ export default function Home() {
       <main>
         <Hero />
         <hr className="container rule" />
-        <CaseStudy />
         <Services />
         <Process />
-        <Audience />
-        <About />
+        <Industries />
+        <Portfolio />
         <ClosingCTA />
         <ProjectForm />
       </main>

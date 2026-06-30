@@ -1,10 +1,5 @@
 import type { Metadata } from "next";
-import {
-  Zilla_Slab,
-  Work_Sans,
-  JetBrains_Mono,
-  Plus_Jakarta_Sans,
-} from "next/font/google";
+import { Zilla_Slab, Work_Sans, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
 // Slab-serif headlines — sturdy, confident, editorial. The opposite of a
@@ -34,24 +29,15 @@ const mono = JetBrains_Mono({
   display: "swap",
 });
 
-// The Dr. Kwak-Tran practice's real typeface — used only inside the case-study
-// recreation so it's faithful to her brand and a clear foil to Green Star's.
-const clinical = Plus_Jakarta_Sans({
-  subsets: ["latin"],
-  variable: "--font-clinical",
-  weight: ["500", "600", "700"],
-  display: "swap",
-});
-
 export const metadata: Metadata = {
   metadataBase: new URL("https://green-starsolutions.com"),
-  title: "Green Star Solutions — Digital & AI Studio in Las Vegas",
+  title: "Green Star Solutions — Growth Agency for Local Service Businesses",
   description:
-    "We make local businesses win with AI and digital — sites that convert, AI that answers the calls you miss, ads that compound. A Las Vegas studio for practices, firms, and trades.",
+    "More calls, more jobs, less busy work. We build high-converting websites, run Google & Meta ads, and automate follow-up for HVAC, plumbing, electrical, roofing, and landscaping businesses.",
   openGraph: {
-    title: "Green Star Solutions — Digital & AI Studio in Las Vegas",
+    title: "Green Star Solutions — Growth Agency for the Trades",
     description:
-      "Sites that convert, AI that answers, ads that compound. Built for established local businesses in Las Vegas.",
+      "High-converting websites, Google & Meta ads, and automated follow-up so local service businesses grow faster.",
     type: "website",
   },
 };
@@ -64,7 +50,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${display.variable} ${body.variable} ${mono.variable} ${clinical.variable}`}
+        className={`${display.variable} ${body.variable} ${mono.variable}`}
       >
         {children}
       </body>

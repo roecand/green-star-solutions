@@ -8,15 +8,15 @@ export default function ClosingCTA() {
         <Reveal className="closing__inner">
           <StarMark size={40} className="closing__star star--spin" />
           <h2 className="display closing__head">
-            Your next stage of growth is an operations problem,
-            <span className="serif accent"> not a marketing one</span>.
+            Let&rsquo;s get your phone
+            <span className="serif accent"> ringing</span>.
           </h2>
           <p className="lead closing__sub measure-wide">
-            Tell us about the business. We’ll give you a straight read on what’s
-            capping growth — and what it would take to fix it. No pitch theater.
+            Book a free strategy call. We&rsquo;ll map out exactly how to get you
+            more calls and booked jobs — no obligation, no jargon, no pressure.
           </p>
           <a href="#start" className="btn btn--light closing__btn">
-            Book a working session <span className="arrow">↗</span>
+            Book a Free Strategy Call <span className="arrow">↗</span>
           </a>
         </Reveal>
       </div>
