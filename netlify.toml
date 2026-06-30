@@ -1,0 +1,5 @@
+# Green Star Solutions — static Next.js export
+# Netlify builds from source and serves the ./out folder.
+[build]
+  command = "npm run build"
+  publish = "out"
