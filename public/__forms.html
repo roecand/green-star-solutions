@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Netlify form detection</title>
+  </head>
+  <body>
+    <!--
+      Netlify's build bot scans static HTML files for forms to provision.
+      Framework-rendered forms (Next.js export) are not reliably detected, so
+      this plain file is the source of truth. Field names must match the
+      FormData keys in components/ProjectForm.tsx.
+    -->
+    <form
+      name="project-inquiry"
+      data-netlify="true"
+      netlify-honeypot="bot-field"
+      enctype="multipart/form-data"
+      hidden
+    >
+      <input type="hidden" name="form-name" value="project-inquiry" />
+      <input name="bot-field" />
+      <input name="business" />
+      <input name="industry" />
+      <input name="location" />
+      <input name="current_site" />
+      <input name="goals" />
+      <textarea name="goal_notes"></textarea>
+      <input name="style" />
+      <input name="name" />
+      <input type="email" name="email" />
+      <input name="phone" />
+      <input name="budget" />
+      <input name="timeline" />
+      <input type="file" name="uploads" multiple />
+    </form>
+  </body>
+</html>
