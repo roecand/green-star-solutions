@@ -7,7 +7,7 @@ export default function Footer() {
     <footer className="footer">
       <div className="container footer__inner">
         <div className="footer__brand">
-          <a href="#top" className="footer__logo">
+          <a href="/" className="footer__logo">
             <StarMark size={26} />
             <span>Green Star Solutions</span>
           </a>
@@ -20,11 +20,11 @@ export default function Footer() {
 
         <nav className="footer__nav" aria-label="Footer">
           <span className="footer__col-label">Site</span>
-          <a href="#services">Services</a>
-          <a href="#how">How it works</a>
-          <a href="#industries">Industries</a>
-          <a href="#work">Work</a>
-          <a href="#start">Book a call</a>
+          <a href="/#services">Services</a>
+          <a href="/#how">How it works</a>
+          <a href="/#industries">Industries</a>
+          <a href="/portfolio/">Portfolio</a>
+          <a href="/#start">Book a call</a>
         </nav>
 
         <div className="footer__contact">

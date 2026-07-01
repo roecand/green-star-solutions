@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex" />
+<title>Rio Verde Plumbing Co. — 24/7 Plumbing, Las Vegas [Concept]</title>
+<meta name="description" content="Concept website by Green Star Solutions. Rio Verde Plumbing Co. is a fictional business." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --coal: #101214;
+    --coal-2: #16191d;
+    --coal-3: #1d2126;
+    --smoke: #aab4bd;
+    --smoke-dim: #6b7680;
+    --bone: #f2efe9;
+    --org: #ff5c1a;
+    --org-hot: #ff7a42;
+    --line: rgba(242, 239, 233, 0.12);
+    --line-hot: rgba(255, 92, 26, 0.5);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--coal);
+    color: var(--bone);
+    font-family: "Barlow", system-ui, sans-serif;
+    font-size: 17px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  ::selection { background: var(--org); color: var(--coal); }
+  a { color: inherit; text-decoration: none; }
+  img { max-width: 100%; display: block; }
+
+  .wrap { max-width: 1240px; margin-inline: auto; padding-inline: clamp(20px, 4vw, 48px); }
+  .display {
+    font-family: "Anton", Impact, sans-serif;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    line-height: 0.95;
+  }
+  .cond {
+    font-family: "Barlow Condensed", sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-weight: 600;
+  }
+  .tag {
+    font-family: "Barlow Condensed", sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--org);
+  }
+
+  /* hazard stripe divider */
+  .hazard {
+    height: 14px;
+    background: repeating-linear-gradient(
+      -45deg,
+      var(--org) 0 18px,
+      var(--coal) 18px 36px
+    );
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--org);
+    color: var(--coal);
+    font-family: "Barlow Condensed", sans-serif;
+    font-size: 19px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 16px 30px;
+    border: 2px solid var(--org);
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, transform 0.2s;
+  }
+  .btn:hover { background: var(--org-hot); border-color: var(--org-hot); transform: translateY(-2px); }
+  .btn--ghost { background: transparent; color: var(--bone); border-color: rgba(242,239,233,0.35); }
+  .btn--ghost:hover { background: var(--bone); color: var(--coal); border-color: var(--bone); }
+
+  /* ---------- top bar ---------- */
+  .topbar {
+    background: var(--org);
+    color: var(--coal);
+    font-family: "Barlow Condensed", sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 8px 16px;
+  }
+  header.nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(16, 18, 20, 0.92);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 78px;
+    gap: 24px;
+  }
+  .logo { display: flex; align-items: center; gap: 12px; }
+  .logo__mark {
+    width: 40px; height: 40px;
+    background: var(--org);
+    display: grid; place-items: center;
+    font-family: "Anton", sans-serif;
+    color: var(--coal);
+    font-size: 20px;
+    clip-path: polygon(0 0, 100% 0, 100% 72%, 72% 100%, 0 100%);
+  }
+  .logo__name { font-family: "Anton", sans-serif; font-size: 19px; text-transform: uppercase; letter-spacing: 0.04em; line-height: 1; }
+  .logo__name small { display: block; font-family: "Barlow Condensed", sans-serif; font-size: 11px; letter-spacing: 0.3em; color: var(--smoke-dim); margin-top: 3px; }
+  .nav__links { display: flex; gap: 34px; }
+  .nav__links a {
+    font-family: "Barlow Condensed", sans-serif;
+    font-size: 15px; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--smoke);
+    transition: color 0.2s;
+  }
+  .nav__links a:hover { color: var(--org); }
+  .nav__phone { display: flex; align-items: center; gap: 14px; }
+  .nav__phone-label { text-align: right; font-family: "Barlow Condensed", sans-serif; font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--smoke-dim); line-height: 1.3; }
+  .nav__phone-num { font-family: "Anton", sans-serif; font-size: 21px; color: var(--org); letter-spacing: 0.03em; }
+  @media (max-width: 900px) { .nav__links { display: none; } }
+
+  /* ---------- hero ---------- */
+  .hero {
+    position: relative;
+    padding: clamp(64px, 9vw, 120px) 0 clamp(56px, 7vw, 96px);
+    border-bottom: 1px solid var(--line);
+    background:
+      radial-gradient(900px 420px at 85% -10%, rgba(255, 92, 26, 0.14), transparent 65%),
+      var(--coal);
+  }
+  .hero__kicker { display: flex; align-items: center; gap: 14px; margin-bottom: 28px; }
+  .hero__kicker .pulse {
+    width: 9px; height: 9px; border-radius: 50%;
+    background: var(--org);
+    box-shadow: 0 0 0 0 rgba(255, 92, 26, 0.6);
+    animation: pulse 1.8s infinite;
+  }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(255, 92, 26, 0.55); }
+    70% { box-shadow: 0 0 0 12px rgba(255, 92, 26, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 92, 26, 0); }
+  }
+  .hero h1 {
+    font-size: clamp(56px, 10.5vw, 148px);
+    max-width: 12ch;
+  }
+  .hero h1 .accent { color: var(--org); }
+  .hero__sub {
+    margin-top: 30px;
+    font-size: clamp(17px, 1.6vw, 20px);
+    color: var(--smoke);
+    max-width: 52ch;
+  }
+  .hero__sub strong { color: var(--bone); }
+  .hero__cta { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 38px; }
+  .hero__proof {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    margin-top: clamp(48px, 6vw, 76px);
+  }
+  .proof {
+    background: var(--coal-2);
+    padding: 22px 24px;
+  }
+  .proof b {
+    display: block;
+    font-family: "Anton", sans-serif;
+    font-size: clamp(24px, 3vw, 34px);
+    color: var(--bone);
+    letter-spacing: 0.02em;
+  }
+  .proof span { font-family: "Barlow Condensed", sans-serif; font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--smoke-dim); }
+  .proof b .accent { color: var(--org); }
+  @media (max-width: 760px) { .hero__proof { grid-template-columns: 1fr 1fr; } }
+
+  /* ---------- services ---------- */
+  section { padding: clamp(64px, 9vw, 110px) 0; }
+  .sec-head { margin-bottom: clamp(36px, 5vw, 56px); }
+  .sec-head h2 { font-size: clamp(38px, 6vw, 72px); margin-top: 14px; }
+  .sec-head p.intro { color: var(--smoke); max-width: 56ch; margin-top: 18px; font-size: 18px; }
+
+  .svc-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+  .svc {
+    background: var(--coal-2);
+    padding: clamp(26px, 3vw, 38px);
+    position: relative;
+    transition: background 0.25s;
+    overflow: hidden;
+  }
+  .svc:hover { background: var(--coal-3); }
+  .svc::after {
+    content: "";
+    position: absolute;
+    left: 0; bottom: 0;
+    width: 100%; height: 3px;
+    background: var(--org);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s;
+  }
+  .svc:hover::after { transform: scaleX(1); }
+  .svc__no { font-family: "Barlow Condensed", sans-serif; font-size: 13px; letter-spacing: 0.2em; color: var(--org); }
+  .svc h3 { font-family: "Anton", sans-serif; font-weight: 400; text-transform: uppercase; font-size: clamp(21px, 2.2vw, 26px); letter-spacing: 0.02em; margin: 16px 0 10px; }
+  .svc p { color: var(--smoke); font-size: 15.5px; }
+  .svc__badge {
+    position: absolute; top: 22px; right: 22px;
+    font-family: "Barlow Condensed", sans-serif;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--coal); background: var(--org);
+    padding: 4px 10px;
+  }
+  @media (max-width: 900px) { .svc-grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 560px) { .svc-grid { grid-template-columns: 1fr; } }
+
+  /* ---------- promise band ---------- */
+  .band {
+    background: var(--org);
+    color: var(--coal);
+    padding: clamp(56px, 8vw, 96px) 0;
+  }
+  .band h2 { font-size: clamp(34px, 5.6vw, 64px); max-width: 22ch; }
+  .band__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(24px, 4vw, 56px);
+    margin-top: clamp(36px, 5vw, 56px);
+  }
+  .band__item { border-top: 3px solid var(--coal); padding-top: 18px; }
+  .band__item b { display: block; font-family: "Anton", sans-serif; font-size: 21px; text-transform: uppercase; letter-spacing: 0.02em; margin-bottom: 8px; }
+  .band__item p { font-size: 15.5px; font-weight: 500; line-height: 1.55; }
+  @media (max-width: 760px) { .band__grid { grid-template-columns: 1fr; } }
+
+  /* ---------- reviews ---------- */
+  .rev-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .rev {
+    background: var(--coal-2);
+    border: 1px solid var(--line);
+    padding: 30px 28px;
+    display: flex; flex-direction: column; gap: 16px;
+  }
+  .rev__stars { color: var(--org); letter-spacing: 3px; font-size: 15px; }
+  .rev p { color: var(--smoke); font-size: 15.5px; flex: 1; }
+  .rev footer { font-family: "Barlow Condensed", sans-serif; letter-spacing: 0.12em; text-transform: uppercase; font-size: 13px; color: var(--smoke-dim); }
+  .rev footer b { color: var(--bone); display: block; font-size: 15px; letter-spacing: 0.1em; }
+  @media (max-width: 860px) { .rev-grid { grid-template-columns: 1fr; } }
+
+  /* ---------- area / hours ---------- */
+  .area { border-top: 1px solid var(--line); }
+  .area__grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: clamp(36px, 6vw, 80px); align-items: start; }
+  .area h2 { font-size: clamp(34px, 5vw, 58px); margin-top: 14px; }
+  .area__cities { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 28px; margin-top: 28px; list-style: none; }
+  .area__cities li {
+    font-family: "Barlow Condensed", sans-serif;
+    font-size: 17px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--smoke);
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 10px;
+    display: flex; justify-content: space-between;
+  }
+  .area__cities li::after { content: "→"; color: var(--org); }
+  .hours {
+    background: var(--coal-2);
+    border: 1px solid var(--line);
+    padding: clamp(28px, 3vw, 40px);
+  }
+  .hours h3 { font-family: "Anton", sans-serif; font-weight: 400; text-transform: uppercase; font-size: 24px; margin-bottom: 20px; }
+  .hours dl { display: grid; grid-template-columns: auto 1fr; gap: 12px 24px; font-size: 15.5px; }
+  .hours dt { color: var(--smoke-dim); font-family: "Barlow Condensed", sans-serif; letter-spacing: 0.12em; text-transform: uppercase; font-size: 14px; }
+  .hours dd { text-align: right; font-weight: 600; }
+  .hours .always { color: var(--org); }
+  .hours .btn { width: 100%; justify-content: center; margin-top: 26px; }
+  @media (max-width: 860px) { .area__grid { grid-template-columns: 1fr; } }
+
+  /* ---------- final CTA ---------- */
+  .final {
+    text-align: center;
+    border-top: 1px solid var(--line);
+    background:
+      radial-gradient(700px 300px at 50% 120%, rgba(255, 92, 26, 0.18), transparent 70%),
+      var(--coal);
+  }
+  .final h2 { font-size: clamp(44px, 8vw, 104px); }
+  .final h2 .accent { color: var(--org); }
+  .final p { color: var(--smoke); margin: 22px auto 0; max-width: 46ch; }
+  .final .hero__cta { justify-content: center; }
+
+  /* ---------- footer ---------- */
+  .foot {
+    border-top: 1px solid var(--line);
+    padding: 40px 0;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+    font-family: "Barlow Condensed", sans-serif;
+    font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--smoke-dim);
+  }
+
+  /* ---------- concept ribbon ---------- */
+  .concept-ribbon {
+    position: fixed;
+    left: 16px; bottom: 16px;
+    z-index: 100;
+    background: var(--bone);
+    color: var(--coal);
+    font-family: "Barlow", sans-serif;
+    font-size: 12.5px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    padding: 9px 15px;
+    border-radius: 999px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.45);
+    display: flex; align-items: center; gap: 8px;
+    text-transform: none;
+  }
+  .concept-ribbon .star { color: #0e4a33; }
+  .concept-ribbon:hover { background: #fff; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { animation: none !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">Burst pipe? Flooded floor? We answer 24/7 — (702) 555-0148</div>
+
+<header class="nav">
+  <div class="wrap nav__inner">
+    <a href="#top" class="logo" aria-label="Rio Verde Plumbing Co.">
+      <span class="logo__mark">RV</span>
+      <span class="logo__name">Rio Verde<small>Plumbing Co.</small></span>
+    </a>
+    <nav class="nav__links" aria-label="Primary">
+      <a href="#services">Services</a>
+      <a href="#promise">Our Promise</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#area">Service Area</a>
+    </nav>
+    <div class="nav__phone">
+      <span class="nav__phone-label">24/7 Emergency<br />Line</span>
+      <a class="nav__phone-num" href="tel:7025550148">(702) 555-0148</a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap">
+      <p class="hero__kicker tag"><span class="pulse"></span> Live dispatch — a plumber is on call right now</p>
+      <h1 class="display">Pipes burst.<br /><span class="accent">We answer.</span></h1>
+      <p class="hero__sub">
+        Rio Verde is the plumbing crew Las Vegas calls when it can't wait until Monday.
+        <strong>Upfront flat-rate pricing, 2-hour arrival windows, and a real human on the phone</strong> —
+        day, night, weekends, holidays.
+      </p>
+      <div class="hero__cta">
+        <a class="btn" href="tel:7025550148">▸ Call (702) 555-0148</a>
+        <a class="btn btn--ghost" href="#services">See services</a>
+      </div>
+      <div class="hero__proof">
+        <div class="proof"><b>24<span class="accent">/</span>7</b><span>Emergency response</span></div>
+        <div class="proof"><b>4.9<span class="accent">★</span></b><span>1,200+ reviews</span></div>
+        <div class="proof"><b>2<span class="accent">-</span>HR</b><span>Arrival windows</span></div>
+        <div class="proof"><b>EST<span class="accent">.</span>98</b><span>Licensed · Bonded · Insured</span></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="hazard" role="presentation"></div>
+
+  <!-- SERVICES -->
+  <section id="services">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="tag">// What we fix</p>
+        <h2 class="display">Every pipe. Every problem.</h2>
+        <p class="intro">Flat-rate quotes before we touch a wrench. If the price changes, that's on us — not you.</p>
+      </div>
+      <div class="svc-grid">
+        <div class="svc">
+          <span class="svc__badge">Most called</span>
+          <span class="svc__no">01</span>
+          <h3>Emergency Repair</h3>
+          <p>Burst pipes, slab leaks, sewage backups. We stop the damage first, then fix it right.</p>
+        </div>
+        <div class="svc">
+          <span class="svc__no">02</span>
+          <h3>Water Heaters</h3>
+          <p>Same-day replacement of tank and tankless units — installed to code, hauled away free.</p>
+        </div>
+        <div class="svc">
+          <span class="svc__no">03</span>
+          <h3>Drain Cleaning</h3>
+          <p>Hydro-jetting and camera inspection. We show you the clog on video before and after.</p>
+        </div>
+        <div class="svc">
+          <span class="svc__no">04</span>
+          <h3>Leak Detection</h3>
+          <p>Acoustic and thermal detection finds hidden leaks without tearing your walls open.</p>
+        </div>
+        <div class="svc">
+          <span class="svc__no">05</span>
+          <h3>Repipes</h3>
+          <p>Whole-home copper and PEX repipes for aging Vegas housing stock — done in days, not weeks.</p>
+        </div>
+        <div class="svc">
+          <span class="svc__no">06</span>
+          <h3>Gas Lines</h3>
+          <p>Licensed gas fitting for ranges, dryers, fire pits, and pool heaters. Pressure-tested, always.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROMISE BAND -->
+  <section class="band" id="promise">
+    <div class="wrap">
+      <p class="cond" style="font-size:14px; letter-spacing:0.22em;">// The Rio Verde Promise</p>
+      <h2 class="display">If we're late, the service call is free.</h2>
+      <div class="band__grid">
+        <div class="band__item">
+          <b>Upfront pricing</b>
+          <p>You approve the flat-rate quote before work starts. No hourly meter, no surprise line items.</p>
+        </div>
+        <div class="band__item">
+          <b>Clean-boot guarantee</b>
+          <p>Shoe covers, floor mats, and a job site left cleaner than we found it. Every time.</p>
+        </div>
+        <div class="band__item">
+          <b>Lifetime workmanship</b>
+          <p>If our fitting ever fails, we come back and make it right at no charge. In writing.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REVIEWS -->
+  <section id="reviews">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="tag">// Word on the street</p>
+        <h2 class="display">4.9 stars. 1,200+ jobs reviewed.</h2>
+      </div>
+      <div class="rev-grid">
+        <article class="rev">
+          <span class="rev__stars">★★★★★</span>
+          <p>"Water heater died at 9pm on a Sunday. Truck in my driveway by 10:40, hot water by 1am. Quoted me on the phone and the number never changed."</p>
+          <footer><b>Marcus T.</b>Summerlin</footer>
+        </article>
+        <article class="rev">
+          <span class="rev__stars">★★★★★</span>
+          <p>"Third plumber I called was the first one to actually answer the phone. They showed me the drain camera footage so I could see exactly what I was paying for."</p>
+          <footer><b>Dana R.</b>Henderson</footer>
+        </article>
+        <article class="rev">
+          <span class="rev__stars">★★★★★</span>
+          <p>"Full repipe of a 1978 house in three days. Walls patched, floors spotless, price matched the quote to the dollar. These guys run a tight crew."</p>
+          <footer><b>Luis &amp; Carmen O.</b>Green Valley</footer>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <div class="hazard" role="presentation"></div>
+
+  <!-- AREA + HOURS -->
+  <section class="area" id="area">
+    <div class="wrap area__grid">
+      <div>
+        <p class="tag">// Where we roll</p>
+        <h2 class="display">All of the valley. Around the clock.</h2>
+        <ul class="area__cities">
+          <li>Las Vegas</li>
+          <li>Henderson</li>
+          <li>Summerlin</li>
+          <li>North Las Vegas</li>
+          <li>Green Valley</li>
+          <li>Boulder City</li>
+          <li>Spring Valley</li>
+          <li>Enterprise</li>
+        </ul>
+      </div>
+      <aside class="hours">
+        <h3>Dispatch hours</h3>
+        <dl>
+          <dt>Emergency line</dt><dd class="always">24 / 7 / 365</dd>
+          <dt>Scheduled jobs</dt><dd>Mon–Sat · 7am–6pm</dd>
+          <dt>Office</dt><dd>Mon–Fri · 8am–5pm</dd>
+        </dl>
+        <a class="btn" href="tel:7025550148">▸ Dispatch a plumber</a>
+      </aside>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="final">
+    <div class="wrap">
+      <h2 class="display">Stop the leak.<br /><span class="accent">Start the fix.</span></h2>
+      <p>One call. A real person answers. A licensed plumber is rolling within the hour.</p>
+      <div class="hero__cta">
+        <a class="btn" href="tel:7025550148">▸ Call (702) 555-0148</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot wrap">
+  <span>© 2026 Rio Verde Plumbing Co. — NV Lic. #0074521 (fictional)</span>
+  <span>Licensed · Bonded · Insured</span>
+</footer>
+
+<a class="concept-ribbon" href="/" title="This is a fictional concept website designed by Green Star Solutions">
+  <span class="star">✦</span> Concept Website — designed by Green Star Solutions
+</a>
+
+</body>
+</html>
