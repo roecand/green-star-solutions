@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Zilla_Slab, Work_Sans, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+
+// Google Analytics 4 — property "Green Star", stream 15185244702.
+const GA_ID = "G-FJJNMXN1TJ";
 
 // Slab-serif headlines — sturdy, confident, editorial. The opposite of a
 // friendly geometric sans, and unmistakably its own identity.
@@ -96,6 +100,16 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
+          strategy="afterInteractive"
+        />
+        <Script id="ga4" strategy="afterInteractive">
+          {`window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${GA_ID}');`}
+        </Script>
         {children}
       </body>
     </html>
