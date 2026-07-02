@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+# Concept sites are fictional demo businesses — keep them out of search
+# results (their pages also carry meta noindex).
+Disallow: /concepts/
+
+Sitemap: https://green-starsolutions.com/sitemap.xml

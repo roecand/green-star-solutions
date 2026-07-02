@@ -1480,6 +1480,27 @@ a {
 }
 
 /* ============================================================
+   404
+   ============================================================ */
+.nf {
+  min-height: 55vh;
+  display: flex;
+  align-items: center;
+}
+.nf__title {
+  margin: 1rem 0 0;
+}
+.nf__lead {
+  margin-top: 1.3rem;
+}
+.nf__actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+}
+
+/* ============================================================
    PORTFOLIO PAGE (/portfolio)
    ============================================================ */
 .pfhero {
@@ -1518,13 +1539,9 @@ a {
   font-size: 0.92rem;
   color: var(--ink-soft);
 }
+/* two-up on the dedicated page — bigger cards, and 4 projects sit evenly */
 .work-grid--page {
-  grid-template-columns: repeat(3, 1fr);
-}
-@media (max-width: 980px) {
-  .work-grid--page {
-    grid-template-columns: 1fr 1fr;
-  }
+  grid-template-columns: 1fr 1fr;
 }
 @media (max-width: 620px) {
   .work-grid--page {

@@ -261,6 +261,82 @@ export const projects: Project[] = [
       "Voice-driven copy makes regulars feel at home",
     ],
   },
+  {
+    slug: "caprock-roofing",
+    name: "Caprock Roofing Co.",
+    industry: "Roofing",
+    sector: "Trades",
+    styleLabel: "Precision · Technical · Engineering-grade",
+    tagline:
+      "A roofing company positioned as engineers, not door-knockers — spec sheets, layer diagrams, and blueprint-grid precision that disarm a low-trust industry.",
+    url: "/concepts/caprock-roofing/index.html",
+    accent: "#1450e0",
+    overview: [
+      "Caprock is a concept for a residential and commercial roofing company in Las Vegas. Roofing is one of the lowest-trust purchases a homeowner ever makes — storm-chasers, vague bids, and disappearing warranties have trained people to expect the worst. So this design's entire job is to look like the opposite of that.",
+      "The visual language is borrowed from engineering documents: a blueprint grid, cobalt-on-white precision, monospaced spec labels, and an interactive seven-layer roof diagram. A sample spec report sits right in the hero — because the company that shows its paperwork first wins the trust war before price is even discussed.",
+    ],
+    designGoals: [
+      {
+        title: "Look like engineers, not salesmen",
+        body: "Space Grotesk headlines, IBM Plex Mono labels, a drafting-grid hero background, and numbered sections (S.01, L.07) frame roofing as a technical discipline — the visual opposite of the door-knocker aesthetic.",
+      },
+      {
+        title: "Lead with documentation",
+        body: "A sample spec report is the hero image. Drone inspections, photo records, and written fixed-price specs are the differentiators, so they're the first thing a visitor sees — not a stock photo of shingles.",
+      },
+      {
+        title: "Neutralize the storm-chaser stigma",
+        body: "The copy addresses the elephant directly: 'honestly, not opportunistically', a review about telling a customer half the damage didn't need fixing. Naming the industry's bad behavior is the fastest way to signal you're not it.",
+      },
+      {
+        title: "Make the free inspection irresistible",
+        body: "The inspection offer is $0, obligation-free, and yields a deliverable (drone photo report) the homeowner keeps either way. The form asks one qualifying question and promises a callback within the hour.",
+      },
+    ],
+    features: [
+      "Blueprint-grid hero with sample spec report card",
+      "Credential strip (Master Elite, license, roof count, drone inspections)",
+      "Six-service grid with technical numbering and written-spec promise",
+      "Interactive seven-layer roof system diagram with hover states",
+      "Dark 'system' section explaining desert-heat engineering",
+      "Warranty stat band (25-year, 2–3 day builds, $0 inspections)",
+      "Four-step timeline process with milestone markers",
+      "Post-monsoon review cards addressing storm-chaser distrust",
+      "Free-inspection form with qualifying dropdown",
+    ],
+    problem: {
+      lead: "Roofing is a five-figure purchase in an industry famous for door-knockers — trust, not price, decides who gets the job.",
+      body: [
+        "After every monsoon, Las Vegas homeowners are flooded with knocks, flyers, and wildly divergent bids with no explanation. Most roofing websites make it worse: no prices, no process, no proof — just a phone number and stock photos. The homeowner can't tell the 30-year company from the guy who arrived after the storm.",
+        "This design sells verifiability. Spec documents, layer diagrams, photo documentation, and a warranty a manufacturer backs all say the same thing: everything we do is written down and checkable. For a low-trust industry, a site that looks like an engineering firm is a competitive weapon — it converts the skeptical majority the door-knockers scared off.",
+      ],
+    },
+    palette: [
+      { name: "Paper White", hex: "#fafbfc" },
+      { name: "Cobalt", hex: "#1450e0", onDark: true },
+      { name: "Slate", hex: "#16222e", onDark: true },
+      { name: "Panel Grey", hex: "#f1f3f6" },
+    ],
+    fonts: [
+      { role: "Display", name: "Space Grotesk", sample: "Your roof, engineered — not just installed." },
+      { role: "Labels", name: "IBM Plex Mono", sample: "L.04 — HIGH-TEMP UNDERLAYMENT" },
+      { role: "Body", name: "Inter", sample: "A written specification: materials, methods, timeline, fixed price." },
+    ],
+    before: [
+      "Indistinguishable from storm-chaser flyers",
+      "Bids with no scope, no spec, no proof",
+      "Stock shingle photos, zero documentation",
+      "Warranty claims nobody can verify",
+      "Homeowner decides on price alone",
+    ],
+    after: [
+      "Engineering aesthetic signals verifiability",
+      "Sample spec report shown before contact",
+      "Seven-layer system makes expertise visible",
+      "Manufacturer-backed warranty front and center",
+      "Free drone report reframes the sales call",
+    ],
+  },
 ];
 
 export function getProject(slug: string): Project | undefined {

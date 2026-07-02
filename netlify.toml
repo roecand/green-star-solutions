@@ -3,3 +3,10 @@
 [build]
   command = "npm run build"
   publish = "out"
+
+# The build-time OG image is emitted without a file extension; make sure
+# social scrapers get the right Content-Type.
+[[headers]]
+  for = "/opengraph-image"
+  [headers.values]
+    Content-Type = "image/png"

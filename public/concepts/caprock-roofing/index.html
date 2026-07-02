@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex" />
+<title>Caprock Roofing Co. — Engineering-Grade Roofing, Las Vegas [Concept]</title>
+<meta name="description" content="Concept website by Green Star Solutions. Caprock Roofing Co. is a fictional business." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --white: #fafbfc;
+    --panel: #f1f3f6;
+    --slate: #16222e;
+    --slate-soft: #4c5a68;
+    --cobalt: #1450e0;
+    --cobalt-deep: #0e3aa6;
+    --line: rgba(22, 34, 46, 0.14);
+    --line-strong: rgba(22, 34, 46, 0.3);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--white);
+    color: var(--slate);
+    font-family: "Inter", system-ui, sans-serif;
+    font-size: 16.5px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  ::selection { background: var(--cobalt); color: #fff; }
+  a { color: inherit; text-decoration: none; }
+
+  .wrap { max-width: 1220px; margin-inline: auto; padding-inline: clamp(20px, 4vw, 48px); }
+  .grot { font-family: "Space Grotesk", sans-serif; letter-spacing: -0.02em; }
+  .mono {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--cobalt);
+  }
+  .rule { height: 1px; background: var(--line); border: 0; }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--cobalt);
+    color: #fff;
+    font-family: "Space Grotesk", sans-serif;
+    font-weight: 600;
+    font-size: 15.5px;
+    letter-spacing: 0;
+    padding: 15px 28px;
+    border: 1px solid var(--cobalt);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+  }
+  .btn:hover { background: var(--cobalt-deep); transform: translateY(-2px); box-shadow: 0 12px 24px -14px rgba(20, 80, 224, 0.6); }
+  .btn--ghost { background: transparent; color: var(--slate); border-color: var(--line-strong); }
+  .btn--ghost:hover { background: var(--slate); color: #fff; border-color: var(--slate); box-shadow: none; }
+
+  /* ---------- nav ---------- */
+  header.nav {
+    position: sticky; top: 0; z-index: 50;
+    background: color-mix(in srgb, var(--white) 90%, transparent);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav__inner { display: flex; align-items: center; justify-content: space-between; height: 76px; gap: 24px; }
+  .logo { display: flex; align-items: center; gap: 11px; }
+  .logo__mark {
+    width: 36px; height: 36px;
+    display: grid; place-items: center;
+  }
+  .logo__mark svg { width: 100%; height: auto; }
+  .logo__name { font-family: "Space Grotesk", sans-serif; font-weight: 700; font-size: 18px; letter-spacing: -0.02em; }
+  .logo__name small { display: block; font-family: "IBM Plex Mono", monospace; font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--slate-soft); font-weight: 400; }
+  .nav__links { display: flex; gap: 32px; }
+  .nav__links a { font-size: 14.5px; font-weight: 500; color: var(--slate-soft); transition: color 0.2s; }
+  .nav__links a:hover { color: var(--cobalt); }
+  .nav__right { display: flex; align-items: center; gap: 18px; }
+  .nav__phone { font-family: "Space Grotesk", sans-serif; font-weight: 600; font-size: 15px; }
+  @media (max-width: 960px) { .nav__links, .nav__phone { display: none; } }
+
+  /* ---------- hero ---------- */
+  .hero {
+    padding: clamp(60px, 8vw, 110px) 0 clamp(48px, 6vw, 80px);
+    border-bottom: 1px solid var(--line);
+    background:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 72px 72px;
+    background-position: center top;
+  }
+  .hero__grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(300px, 0.85fr); gap: clamp(32px, 6vw, 80px); align-items: center; }
+  .hero__eyebrow { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 24px; }
+  .hero__eyebrow::before { content: ""; width: 8px; height: 8px; background: var(--cobalt); }
+  .hero h1 {
+    font-family: "Space Grotesk", sans-serif;
+    font-weight: 700;
+    font-size: clamp(40px, 6.4vw, 76px);
+    line-height: 1.02;
+    letter-spacing: -0.035em;
+  }
+  .hero h1 .blue { color: var(--cobalt); }
+  .hero__sub { margin-top: 24px; font-size: clamp(16.5px, 1.5vw, 19px); color: var(--slate-soft); max-width: 50ch; }
+  .hero__cta { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 34px; }
+  .spec {
+    background: #fff;
+    border: 1px solid var(--line-strong);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 30px 60px -44px rgba(22, 34, 46, 0.5);
+  }
+  .spec__head {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 14px 20px;
+    background: var(--slate);
+    color: #fff;
+    font-family: "Space Grotesk", sans-serif;
+    font-weight: 600; font-size: 14px;
+  }
+  .spec__head .mono { color: #7ea0f2; }
+  .spec dl { display: grid; grid-template-columns: 1fr auto; }
+  .spec dt, .spec dd { padding: 13px 20px; border-top: 1px solid var(--line); font-size: 14px; }
+  .spec dt { color: var(--slate-soft); }
+  .spec dd { text-align: right; font-weight: 600; font-family: "Space Grotesk", sans-serif; }
+  .spec dd.hl { color: var(--cobalt); }
+  @media (max-width: 860px) { .hero__grid { grid-template-columns: 1fr; } }
+
+  /* ---------- cred strip ---------- */
+  .cred {
+    border-bottom: 1px solid var(--line);
+    background: var(--panel);
+  }
+  .cred .wrap {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 24px; flex-wrap: wrap;
+    padding-block: 18px;
+  }
+  .cred span { font-family: "IBM Plex Mono", monospace; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--slate-soft); display: inline-flex; align-items: center; gap: 8px; }
+  .cred b { color: var(--cobalt); font-weight: 500; }
+
+  /* ---------- sections ---------- */
+  section { padding: clamp(64px, 9vw, 110px) 0; }
+  .sec-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: clamp(36px, 5vw, 56px); }
+  .sec-head h2 { font-family: "Space Grotesk", sans-serif; font-weight: 700; font-size: clamp(30px, 4.6vw, 52px); letter-spacing: -0.03em; line-height: 1.05; max-width: 22ch; margin-top: 12px; }
+  .sec-head p.side { color: var(--slate-soft); font-size: 15.5px; max-width: 38ch; }
+
+  /* services table-grid */
+  .svc-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+  .svc {
+    background: #fff;
+    padding: clamp(24px, 3vw, 34px);
+    position: relative;
+    transition: background 0.2s;
+  }
+  .svc:hover { background: var(--panel); }
+  .svc .mono { display: block; margin-bottom: 18px; }
+  .svc h3 { font-family: "Space Grotesk", sans-serif; font-weight: 600; font-size: 20px; letter-spacing: -0.02em; margin-bottom: 8px; }
+  .svc p { font-size: 14.5px; color: var(--slate-soft); }
+  .svc__arrow { position: absolute; top: 24px; right: 24px; color: var(--line-strong); font-size: 18px; transition: color 0.2s, transform 0.2s; }
+  .svc:hover .svc__arrow { color: var(--cobalt); transform: translate(2px, -2px); }
+  @media (max-width: 880px) { .svc-grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 560px) { .svc-grid { grid-template-columns: 1fr; } }
+
+  /* ---------- system (layer diagram) ---------- */
+  .system { background: var(--slate); color: #fff; }
+  .system .mono { color: #7ea0f2; }
+  .system .sec-head h2 { color: #fff; }
+  .system .sec-head p.side { color: rgba(255,255,255,0.62); }
+  .sys-grid { display: grid; grid-template-columns: minmax(280px, 0.9fr) 1.1fr; gap: clamp(32px, 6vw, 80px); align-items: center; }
+  .layers { display: flex; flex-direction: column; gap: 10px; perspective: 700px; }
+  .layer {
+    border: 1px solid rgba(255,255,255,0.22);
+    border-radius: 8px;
+    padding: 14px 18px;
+    font-family: "Space Grotesk", sans-serif;
+    font-weight: 600;
+    font-size: 14.5px;
+    display: flex; justify-content: space-between; align-items: center;
+    background: rgba(255,255,255,0.05);
+    transform: rotateX(28deg);
+    transform-origin: center;
+    transition: transform 0.3s, background 0.3s, border-color 0.3s;
+  }
+  .layer:hover { transform: rotateX(0deg) scale(1.02); background: rgba(20, 80, 224, 0.25); border-color: #7ea0f2; }
+  .layer .mono { font-size: 10.5px; }
+  .sys-list { list-style: none; display: flex; flex-direction: column; }
+  .sys-item { display: grid; grid-template-columns: auto 1fr; gap: 18px; padding: 20px 0; border-top: 1px solid rgba(255,255,255,0.14); }
+  .sys-item:first-child { border-top: 0; padding-top: 0; }
+  .sys-item b { font-family: "Space Grotesk", sans-serif; font-size: 17px; display: block; margin-bottom: 4px; letter-spacing: -0.01em; }
+  .sys-item p { font-size: 14.5px; color: rgba(255,255,255,0.62); }
+  .sys-item .mono { padding-top: 4px; }
+  @media (max-width: 860px) { .sys-grid { grid-template-columns: 1fr; } }
+
+  /* ---------- warranty band ---------- */
+  .warranty { border-bottom: 1px solid var(--line); padding-block: 0; }
+  .warranty .wrap { display: grid; grid-template-columns: repeat(3, 1fr); }
+  .w-item { padding: clamp(32px, 4vw, 52px) clamp(20px, 3vw, 40px); border-left: 1px solid var(--line); }
+  .w-item:first-child { border-left: 0; padding-left: 0; }
+  .w-item b { display: block; font-family: "Space Grotesk", sans-serif; font-weight: 700; font-size: clamp(30px, 4vw, 46px); letter-spacing: -0.03em; color: var(--cobalt); line-height: 1; margin-bottom: 8px; }
+  .w-item span { font-size: 14.5px; color: var(--slate-soft); }
+  @media (max-width: 720px) { .warranty .wrap { grid-template-columns: 1fr; } .w-item { border-left: 0; border-top: 1px solid var(--line); padding-left: 0; } .w-item:first-child { border-top: 0; } }
+
+  /* ---------- process ---------- */
+  .timeline { list-style: none; display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(20px, 3vw, 36px); counter-reset: t; }
+  .t-step { counter-increment: t; position: relative; padding-top: 22px; }
+  .t-step::before {
+    content: "";
+    position: absolute; top: 0; left: 0; right: -36px;
+    height: 2px; background: var(--line);
+  }
+  .t-step:last-child::before { right: 0; }
+  .t-step::after {
+    content: "";
+    position: absolute; top: -4px; left: 0;
+    width: 10px; height: 10px; background: var(--cobalt);
+  }
+  .t-step .mono { display: block; margin-bottom: 10px; color: var(--slate-soft); }
+  .t-step h3 { font-family: "Space Grotesk", sans-serif; font-size: 18.5px; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 6px; }
+  .t-step p { font-size: 14.5px; color: var(--slate-soft); }
+  @media (max-width: 760px) { .timeline { grid-template-columns: 1fr 1fr; gap: 32px 24px; } .t-step::before { right: 0; } }
+
+  /* ---------- reviews ---------- */
+  .quotes { background: var(--panel); border-block: 1px solid var(--line); }
+  .quote-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(20px, 3vw, 32px); }
+  .quote { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: clamp(24px, 3vw, 36px); }
+  .quote p { font-family: "Space Grotesk", sans-serif; font-size: clamp(17px, 1.8vw, 21px); font-weight: 500; letter-spacing: -0.015em; line-height: 1.4; }
+  .quote footer { margin-top: 18px; display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+  .quote footer b { font-size: 14.5px; }
+  .quote footer .mono { color: var(--slate-soft); }
+  @media (max-width: 720px) { .quote-grid { grid-template-columns: 1fr; } }
+
+  /* ---------- inspection CTA ---------- */
+  .inspect .wrap { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: clamp(32px, 6vw, 80px); align-items: center; }
+  .inspect h2 { font-family: "Space Grotesk", sans-serif; font-weight: 700; font-size: clamp(32px, 5vw, 56px); letter-spacing: -0.03em; line-height: 1.04; margin-top: 12px; }
+  .inspect h2 .blue { color: var(--cobalt); }
+  .inspect > .wrap > div > p { margin-top: 18px; color: var(--slate-soft); max-width: 46ch; }
+  .icard {
+    background: #fff;
+    border: 1px solid var(--line-strong);
+    border-radius: 12px;
+    padding: clamp(26px, 3vw, 38px);
+    box-shadow: 0 30px 60px -44px rgba(22, 34, 46, 0.5);
+  }
+  .icard h3 { font-family: "Space Grotesk", sans-serif; font-weight: 600; font-size: 20px; margin-bottom: 4px; }
+  .icard > p { font-size: 14px; color: var(--slate-soft); margin-bottom: 18px; }
+  .icard label { display: block; font-family: "IBM Plex Mono", monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--slate-soft); margin: 14px 0 6px; }
+  .icard input, .icard select {
+    width: 100%; font: inherit; font-size: 15px;
+    padding: 12px 14px;
+    border: 1px solid var(--line-strong);
+    border-radius: 6px;
+    background: var(--white);
+  }
+  .icard input:focus, .icard select:focus { outline: 2px solid var(--cobalt); outline-offset: 1px; }
+  .icard .btn { width: 100%; justify-content: center; margin-top: 22px; }
+  @media (max-width: 860px) { .inspect .wrap { grid-template-columns: 1fr; } }
+
+  /* ---------- footer ---------- */
+  footer.foot { border-top: 1px solid var(--line); padding: 36px 0; }
+  .foot .wrap { display: flex; justify-content: space-between; align-items: center; gap: 14px; flex-wrap: wrap; font-family: "IBM Plex Mono", monospace; font-size: 11.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--slate-soft); }
+
+  /* ---------- concept ribbon ---------- */
+  .concept-ribbon {
+    position: fixed; left: 16px; bottom: 16px; z-index: 100;
+    background: var(--slate); color: #fff;
+    font-family: "Inter", sans-serif;
+    font-size: 12.5px; font-weight: 500; letter-spacing: 0.02em;
+    padding: 9px 15px; border-radius: 999px;
+    box-shadow: 0 10px 30px rgba(22, 34, 46, 0.4);
+    display: flex; align-items: center; gap: 8px;
+    text-transform: none;
+  }
+  .concept-ribbon .star { color: #8fd6b4; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { animation: none !important; transition: none !important; }
+    .layer { transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav__inner">
+    <a href="#top" class="logo" aria-label="Caprock Roofing Co.">
+      <span class="logo__mark" aria-hidden="true">
+        <svg viewBox="0 0 36 36" fill="none">
+          <path d="M2 22 L18 6 L34 22" stroke="#1450e0" stroke-width="3.4" stroke-linecap="square" />
+          <path d="M8 28 L18 18 L28 28" stroke="#16222e" stroke-width="3.4" stroke-linecap="square" />
+        </svg>
+      </span>
+      <span class="logo__name">Caprock<small>Roofing Co.</small></span>
+    </a>
+    <nav class="nav__links" aria-label="Primary">
+      <a href="#services">Services</a>
+      <a href="#system">The System</a>
+      <a href="#process">Process</a>
+      <a href="#reviews">Reviews</a>
+    </nav>
+    <div class="nav__right">
+      <a class="nav__phone grot" href="tel:7025550190">(702) 555-0190</a>
+      <a class="btn" href="#inspect" style="padding: 11px 20px; font-size: 14px;">Free inspection</a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap hero__grid">
+      <div>
+        <p class="hero__eyebrow mono">Residential &amp; commercial · Las Vegas Valley</p>
+        <h1 class="grot">Your roof, <span class="blue">engineered</span> — not just installed.</h1>
+        <p class="hero__sub">
+          Caprock treats every roof as a building system: inspected with drones, documented in a
+          written spec, installed to manufacturer engineering standards, and warrantied for 25 years.
+          No guesswork. No storm-chasers.
+        </p>
+        <div class="hero__cta">
+          <a class="btn" href="#inspect">Schedule a free inspection</a>
+          <a class="btn btn--ghost" href="#system">See the system →</a>
+        </div>
+      </div>
+      <aside class="spec" aria-label="Sample roof specification">
+        <div class="spec__head">
+          <span>Roof Spec — Sample Report</span>
+          <span class="mono">CR-2481</span>
+        </div>
+        <dl>
+          <dt>Structure</dt><dd>2,140 sq ft · 6:12 pitch</dd>
+          <dt>Assembly</dt><dd>Tile → underlayment → deck</dd>
+          <dt>Wind rating</dt><dd class="hl">130 mph</dd>
+          <dt>Inspection method</dt><dd>Drone + physical core</dd>
+          <dt>Workmanship warranty</dt><dd class="hl">25 years</dd>
+        </dl>
+      </aside>
+    </div>
+  </section>
+
+  <!-- CRED STRIP -->
+  <div class="cred">
+    <div class="wrap">
+      <span><b>▮</b> GAF Master Elite® (top 2%)</span>
+      <span><b>▮</b> NV Lic. C-15A (fictional)</span>
+      <span><b>▮</b> 2,300+ roofs completed</span>
+      <span><b>▮</b> Drone-documented inspections</span>
+    </div>
+  </div>
+
+  <!-- SERVICES -->
+  <section id="services">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <p class="mono">01 — Services</p>
+          <h2 class="grot">Every service, spec'd in writing before work begins.</h2>
+        </div>
+        <p class="side">Fixed-scope proposals with materials, methods, and timeline documented. You approve the spec — we build to it.</p>
+      </div>
+      <div class="svc-grid">
+        <div class="svc"><span class="svc__arrow">↗</span><span class="mono">S.01</span><h3 class="grot">Full Replacement</h3><p>Complete tear-off and re-roof in tile, shingle, or metal — most homes done in 2–3 days.</p></div>
+        <div class="svc"><span class="svc__arrow">↗</span><span class="mono">S.02</span><h3 class="grot">Roof Repair</h3><p>Leak tracing, tile resets, flashing and penetration repairs — with photo documentation.</p></div>
+        <div class="svc"><span class="svc__arrow">↗</span><span class="mono">S.03</span><h3 class="grot">Tile Underlayment</h3><p>The hidden layer that actually fails in Vegas heat. We replace it without replacing your tile.</p></div>
+        <div class="svc"><span class="svc__arrow">↗</span><span class="mono">S.04</span><h3 class="grot">Flat &amp; Foam Systems</h3><p>Single-ply and spray-foam systems for flat sections, patios, and commercial structures.</p></div>
+        <div class="svc"><span class="svc__arrow">↗</span><span class="mono">S.05</span><h3 class="grot">Storm Response</h3><p>Monsoon damage assessed and documented for your insurance claim — honestly, not opportunistically.</p></div>
+        <div class="svc"><span class="svc__arrow">↗</span><span class="mono">S.06</span><h3 class="grot">Inspections &amp; Certs</h3><p>Drone inspections and roof certifications for home sales, refis, and peace of mind.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SYSTEM -->
+  <section class="system" id="system">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <p class="mono">02 — The Caprock System</p>
+          <h2 class="grot">A roof is seven layers. We engineer all of them.</h2>
+        </div>
+        <p class="side">Most failures start in the layers you can't see. Hover the stack.</p>
+      </div>
+      <div class="sys-grid">
+        <div class="layers" aria-hidden="true">
+          <div class="layer">Ridge venting <span class="mono">L.07</span></div>
+          <div class="layer">Tile / shingle surface <span class="mono">L.06</span></div>
+          <div class="layer">Flashing &amp; penetrations <span class="mono">L.05</span></div>
+          <div class="layer">High-temp underlayment <span class="mono">L.04</span></div>
+          <div class="layer">Deck inspection &amp; repair <span class="mono">L.03</span></div>
+          <div class="layer">Attic ventilation path <span class="mono">L.02</span></div>
+          <div class="layer">Structural assessment <span class="mono">L.01</span></div>
+        </div>
+        <ul class="sys-list">
+          <li class="sys-item"><span class="mono">A</span><div><b class="grot">Built for 115° summers</b><p>High-temperature underlayment and ventilation engineering rated for desert heat cycles — the #1 cause of early roof death in the valley.</p></div></li>
+          <li class="sys-item"><span class="mono">B</span><div><b class="grot">Documented, layer by layer</b><p>Photo documentation at every stage. You see your deck before it's covered — and get the full record for resale.</p></div></li>
+          <li class="sys-item"><span class="mono">C</span><div><b class="grot">Manufacturer-certified installation</b><p>Master Elite installation means the manufacturer backs the warranty — not just us. Only the top 2% of contractors qualify.</p></div></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- WARRANTY -->
+  <div class="warranty">
+    <div class="wrap">
+      <div class="w-item"><b class="grot">25 yr</b><span>Workmanship warranty, transferable to the next owner</span></div>
+      <div class="w-item"><b class="grot">2–3 days</b><span>Typical full replacement, tear-off to final walkthrough</span></div>
+      <div class="w-item"><b class="grot">$0</b><span>Inspections, drone reports, and written specs — always free</span></div>
+    </div>
+  </div>
+
+  <!-- PROCESS -->
+  <section id="process">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <p class="mono">03 — Process</p>
+          <h2 class="grot">Four steps. Zero surprises.</h2>
+        </div>
+      </div>
+      <ol class="timeline">
+        <li class="t-step"><span class="mono">Step 01</span><h3 class="grot">Inspect</h3><p>Drone survey plus physical inspection. You get the full photo report whether you hire us or not.</p></li>
+        <li class="t-step"><span class="mono">Step 02</span><h3 class="grot">Spec</h3><p>A written specification: materials, methods, timeline, and a fixed price. No allowances, no "TBD".</p></li>
+        <li class="t-step"><span class="mono">Step 03</span><h3 class="grot">Build</h3><p>Our own W-2 crews — not day-labor subs — install to spec with daily photo updates.</p></li>
+        <li class="t-step"><span class="mono">Step 04</span><h3 class="grot">Certify</h3><p>Final walkthrough, magnetic nail sweep, registered warranty, and your complete roof file.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- REVIEWS -->
+  <section class="quotes" id="reviews">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <p class="mono">04 — Field reports</p>
+          <h2 class="grot">What owners say after the monsoon.</h2>
+        </div>
+      </div>
+      <div class="quote-grid">
+        <article class="quote">
+          <p>"Three roofers gave me three wildly different prices with no explanation. Caprock gave me a 14-page spec with drone photos of every problem. Easiest decision I've made as a homeowner."</p>
+          <footer><b>Sandra K. — Centennial Hills</b><span class="mono">Full replacement · 2025</span></footer>
+        </article>
+        <article class="quote">
+          <p>"After the July storm, every door-knocker in Vegas hit our street. Caprock was the only company that told us half the 'damage' didn't need fixing. They did the repair for a third of the other quotes."</p>
+          <footer><b>Devon M. — Aliante</b><span class="mono">Storm repair · 2025</span></footer>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- INSPECT CTA -->
+  <section class="inspect" id="inspect">
+    <div class="wrap">
+      <div>
+        <p class="mono">05 — Get started</p>
+        <h2 class="grot">Know what's over your head. <span class="blue">Free.</span></h2>
+        <p>
+          A drone inspection, a photo report, and a written spec — free, with zero obligation and
+          zero door-knocker pressure. If your roof is fine, we'll tell you it's fine.
+        </p>
+      </div>
+      <form class="icard" onsubmit="event.preventDefault(); this.innerHTML='<h3 class=grot>Inspection requested.</h3><p>We\'ll call you within one business hour. (This is a non-functional concept form.)</p>';">
+        <h3 class="grot">Schedule your free inspection</h3>
+        <p>Takes 30 seconds. We'll call to confirm a time.</p>
+        <label for="r-name">Name</label>
+        <input id="r-name" type="text" placeholder="Your name" required />
+        <label for="r-zip">ZIP code</label>
+        <input id="r-zip" type="text" inputmode="numeric" placeholder="89135" />
+        <label for="r-need">What's going on?</label>
+        <select id="r-need">
+          <option>Not sure — just want it checked</option>
+          <option>Active leak</option>
+          <option>Storm damage</option>
+          <option>Selling / refinancing</option>
+          <option>Roof is 15+ years old</option>
+        </select>
+        <button class="btn" type="submit">Request inspection</button>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <span>© 2026 Caprock Roofing Co. — NV Lic. C-15A #0088142 (fictional)</span>
+    <span>Licensed · Bonded · Insured · GAF Master Elite®</span>
+  </div>
+</footer>
+
+<a class="concept-ribbon" href="/" title="This is a fictional concept website designed by Green Star Solutions">
+  <span class="star">✦</span> Concept Website — designed by Green Star Solutions
+</a>
+
+</body>
+</html>

@@ -5,6 +5,8 @@ import ProjectCard from "./ProjectCard";
 import { projects } from "@/lib/projects";
 
 export default function Portfolio() {
+  // The homepage features three; the full set lives at /portfolio.
+  const featured = projects.slice(0, 3);
   return (
     <section id="work" className="work section">
       <div className="container">
@@ -13,12 +15,12 @@ export default function Portfolio() {
             <StarMark size={14} /> Concept work
           </p>
           <h2 className="display h-lg work__title">
-            Three businesses. <span className="serif accent">Three languages.</span>
+            Every business, <span className="serif accent">its own voice.</span>
           </h2>
           <p className="lead measure-wide work__intro">
-            Every trade deserves its own voice — so we designed three full concept
-            websites, each for a different kind of business, each in a completely
-            different style. All three are live. Click in and explore.
+            A template can&rsquo;t sell a trade. So we design each site in the
+            visual language of the business it belongs to — here are three of
+            our live concept builds. Click in and explore.
           </p>
           <p className="work__note mono">
             ✦ These are concept projects for fictional businesses — designed to
@@ -27,7 +29,7 @@ export default function Portfolio() {
         </Reveal>
 
         <div className="work-grid">
-          {projects.map((p, i) => (
+          {featured.map((p, i) => (
             <Reveal key={p.slug} delay={i * 90}>
               <ProjectCard project={p} />
             </Reveal>
