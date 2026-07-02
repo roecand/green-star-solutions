@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Desert Valley Roofing LLC — Draft Website Proposal by Green Star Solutions</title>
+<meta name="description" content="Draft website proposal prepared for Desert Valley Roofing LLC by Green Star Solutions. Not the company's live website." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --sand: #faf8f4;
+    --sand-2: #f2eee6;
+    --roast: #2b2118;
+    --roast-soft: #6b5d4f;
+    --rust: #c14e20;
+    --rust-deep: #9a3a13;
+    --gold: #d99a3d;
+    --line: rgba(43, 33, 24, 0.14);
+    --line-strong: rgba(43, 33, 24, 0.3);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--sand);
+    color: var(--roast);
+    font-family: "Inter", system-ui, sans-serif;
+    font-size: 16.5px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  ::selection { background: var(--rust); color: #fff; }
+  a { color: inherit; text-decoration: none; }
+  .wrap { max-width: 1200px; margin-inline: auto; padding-inline: clamp(20px, 4vw, 48px); }
+  .arch { font-family: "Archivo", sans-serif; letter-spacing: -0.02em; }
+  .label {
+    font-size: 12px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--rust);
+  }
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: var(--rust); color: #fff;
+    font-family: "Archivo", sans-serif; font-weight: 700; font-size: 15.5px;
+    padding: 15px 28px; border-radius: 8px; border: 2px solid var(--rust);
+    cursor: pointer; transition: background 0.2s, transform 0.2s;
+  }
+  .btn:hover { background: var(--rust-deep); border-color: var(--rust-deep); transform: translateY(-2px); }
+  .btn--ghost { background: transparent; color: var(--roast); border-color: var(--line-strong); }
+  .btn--ghost:hover { background: var(--roast); color: var(--sand); border-color: var(--roast); }
+
+  /* draft banner */
+  .draft {
+    background: #ffedd0;
+    border-bottom: 1px solid #e8c992;
+    color: #7a4d0d;
+    text-align: center;
+    font-size: 13px; font-weight: 600;
+    padding: 9px 16px;
+  }
+  .draft b { color: #5c3a08; }
+
+  /* nav */
+  header.nav {
+    position: sticky; top: 0; z-index: 50;
+    background: color-mix(in srgb, var(--sand) 92%, transparent);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav__inner { display: flex; align-items: center; justify-content: space-between; height: 78px; gap: 20px; }
+  .logo { display: flex; align-items: center; gap: 12px; }
+  .logo__tile {
+    width: 40px; height: 40px; border-radius: 8px 8px 2px 2px;
+    background:
+      radial-gradient(circle at 50% 120%, transparent 44%, var(--gold) 45% 58%, transparent 59%),
+      radial-gradient(circle at 0% 120%, transparent 44%, var(--gold) 45% 58%, transparent 59%),
+      radial-gradient(circle at 100% 120%, transparent 44%, var(--gold) 45% 58%, transparent 59%),
+      var(--rust);
+  }
+  .logo__name { font-family: "Archivo", sans-serif; font-weight: 800; font-size: 18px; line-height: 1.05; }
+  .logo__name small { display: block; font-size: 10.5px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: var(--roast-soft); }
+  .nav__links { display: flex; gap: 30px; }
+  .nav__links a { font-size: 14.5px; font-weight: 600; color: var(--roast-soft); }
+  .nav__links a:hover { color: var(--rust); }
+  .nav__phone { text-align: right; }
+  .nav__phone small { display: block; font-size: 10.5px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--roast-soft); }
+  .nav__phone a { font-family: "Archivo", sans-serif; font-weight: 800; font-size: 19px; color: var(--rust); }
+  @media (max-width: 940px) { .nav__links { display: none; } }
+
+  /* hero */
+  .hero {
+    position: relative;
+    padding: clamp(60px, 8vw, 108px) 0 clamp(48px, 6vw, 84px);
+    border-bottom: 1px solid var(--line);
+    overflow: hidden;
+  }
+  .hero::before {
+    /* overlapping roof-tile arcs */
+    content: "";
+    position: absolute; inset: auto -5% -46px -5%; height: 120px;
+    background:
+      radial-gradient(circle at 50% 100%, transparent 58%, rgba(193, 78, 32, 0.16) 59% 70%, transparent 71%);
+    background-size: 90px 120px;
+    background-repeat: repeat-x;
+    pointer-events: none;
+  }
+  .hero h1 {
+    font-family: "Archivo", sans-serif; font-weight: 900;
+    font-size: clamp(40px, 6.6vw, 80px);
+    line-height: 1.0; letter-spacing: -0.03em;
+    max-width: 17ch;
+  }
+  .hero h1 .rust { color: var(--rust); }
+  .hero__kicker { margin-bottom: 22px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero__kicker::before { content: ""; width: 26px; height: 3px; background: var(--rust); }
+  .hero__sub { margin-top: 24px; font-size: clamp(16.5px, 1.6vw, 19.5px); color: var(--roast-soft); max-width: 54ch; }
+  .hero__sub b { color: var(--roast); }
+  .hero__cta { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 34px; }
+  .hero__proof {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+    background: var(--line); border: 1px solid var(--line); border-radius: 12px; overflow: hidden;
+    margin-top: clamp(44px, 6vw, 70px);
+  }
+  .proof { background: #fff; padding: 20px 22px; }
+  .proof b { display: block; font-family: "Archivo", sans-serif; font-weight: 800; font-size: clamp(22px, 2.8vw, 30px); letter-spacing: -0.02em; }
+  .proof b span { color: var(--rust); }
+  .proof small { font-size: 12.5px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--roast-soft); }
+  @media (max-width: 760px) { .hero__proof { grid-template-columns: 1fr 1fr; } }
+
+  section { padding: clamp(60px, 8.5vw, 104px) 0; }
+  .sec-head { max-width: 720px; margin-bottom: clamp(32px, 5vw, 52px); }
+  .sec-head h2 { font-family: "Archivo", sans-serif; font-weight: 800; font-size: clamp(28px, 4.4vw, 48px); letter-spacing: -0.03em; line-height: 1.05; margin-top: 12px; }
+  .sec-head p { margin-top: 14px; color: var(--roast-soft); }
+
+  /* services */
+  .svc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  .svc {
+    background: #fff; border: 1px solid var(--line); border-radius: 12px;
+    padding: 24px 22px;
+    transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+  }
+  .svc:hover { transform: translateY(-4px); box-shadow: 0 18px 36px -26px rgba(43, 33, 24, 0.5); border-color: var(--rust); }
+  .svc__ico { font-size: 22px; margin-bottom: 12px; display: block; }
+  .svc h3 { font-family: "Archivo", sans-serif; font-weight: 700; font-size: 17px; letter-spacing: -0.01em; margin-bottom: 6px; }
+  .svc p { font-size: 13.5px; color: var(--roast-soft); }
+  @media (max-width: 940px) { .svc-grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 520px) { .svc-grid { grid-template-columns: 1fr; } }
+
+  /* tile band */
+  .tile-band { background: var(--roast); color: var(--sand); }
+  .tile-band .label { color: var(--gold); }
+  .tile-band .wrap { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: clamp(32px, 6vw, 76px); align-items: center; }
+  .tile-band h2 { font-family: "Archivo", sans-serif; font-weight: 800; font-size: clamp(28px, 4.2vw, 46px); letter-spacing: -0.03em; line-height: 1.06; margin-top: 12px; }
+  .tile-band p { margin-top: 16px; color: color-mix(in srgb, var(--sand) 72%, transparent); }
+  .tile-band ul { list-style: none; margin-top: 22px; display: flex; flex-direction: column; gap: 12px; }
+  .tile-band li { padding-left: 26px; position: relative; font-size: 15.5px; color: color-mix(in srgb, var(--sand) 88%, transparent); }
+  .tile-band li::before { content: "▲"; position: absolute; left: 0; color: var(--gold); font-size: 11px; top: 4px; }
+  .tile-art {
+    aspect-ratio: 1;
+    border-radius: 16px;
+    background:
+      radial-gradient(circle at 25% 110%, transparent 43%, rgba(217, 154, 61, 0.5) 44% 57%, transparent 58%),
+      radial-gradient(circle at 75% 110%, transparent 43%, rgba(217, 154, 61, 0.5) 44% 57%, transparent 58%),
+      radial-gradient(circle at 50% 135%, transparent 52%, rgba(193, 78, 32, 0.65) 53% 68%, transparent 69%),
+      radial-gradient(circle at 0% 135%, transparent 52%, rgba(193, 78, 32, 0.65) 53% 68%, transparent 69%),
+      radial-gradient(circle at 100% 135%, transparent 52%, rgba(193, 78, 32, 0.65) 53% 68%, transparent 69%),
+      linear-gradient(180deg, #3a2c1f, #241a10);
+    background-size: 100% 100%, 100% 100%, 60% 70%, 60% 70%, 60% 70%, 100% 100%;
+    border: 1px solid rgba(250, 248, 244, 0.14);
+  }
+  @media (max-width: 820px) { .tile-band .wrap { grid-template-columns: 1fr; } .tile-art { max-width: 380px; } }
+
+  /* motto */
+  .motto { text-align: center; border-bottom: 1px solid var(--line); }
+  .motto blockquote {
+    font-family: "Archivo", sans-serif; font-weight: 900;
+    font-size: clamp(30px, 5.4vw, 58px); letter-spacing: -0.03em; line-height: 1.05;
+    max-width: 20ch; margin: 18px auto 0;
+  }
+  .motto blockquote .rust { color: var(--rust); }
+  .motto p.story { max-width: 62ch; margin: 24px auto 0; color: var(--roast-soft); font-size: 16.5px; }
+  .motto p.story b { color: var(--roast); }
+
+  /* commercial strip */
+  .comm { background: var(--sand-2); border-bottom: 1px solid var(--line); }
+  .comm .wrap { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(20px, 3vw, 40px); }
+  .comm-card { border-top: 3px solid var(--rust); padding-top: 18px; }
+  .comm-card b { font-family: "Archivo", sans-serif; font-weight: 700; font-size: 18px; display: block; margin-bottom: 6px; }
+  .comm-card p { font-size: 14.5px; color: var(--roast-soft); }
+  @media (max-width: 760px) { .comm .wrap { grid-template-columns: 1fr; } }
+
+  /* reviews placeholder */
+  .revs .rev-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .rev {
+    background: #fff; border: 1px dashed var(--line-strong); border-radius: 12px;
+    padding: 26px 24px; color: var(--roast-soft); font-size: 14.5px;
+  }
+  .rev .stars { color: var(--gold); letter-spacing: 3px; margin-bottom: 10px; display: block; }
+  @media (max-width: 820px) { .revs .rev-grid { grid-template-columns: 1fr; } }
+
+  /* cta */
+  .cta { background: var(--rust); color: #fff; text-align: center; }
+  .cta h2 { font-family: "Archivo", sans-serif; font-weight: 900; font-size: clamp(32px, 5.6vw, 62px); letter-spacing: -0.03em; line-height: 1.02; max-width: 18ch; margin-inline: auto; }
+  .cta p { margin: 18px auto 0; max-width: 46ch; color: rgba(255,255,255,0.85); }
+  .cta .btn { background: #fff; border-color: #fff; color: var(--rust); margin-top: 30px; }
+  .cta .btn:hover { background: var(--roast); border-color: var(--roast); color: #fff; }
+
+  footer.foot { padding: 34px 0; font-size: 13px; color: var(--roast-soft); }
+  .foot .wrap { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+
+  .gs-ribbon {
+    position: fixed; left: 16px; bottom: 16px; z-index: 100;
+    background: #0a3325; color: #f7f5f0;
+    font-size: 12.5px; font-weight: 600;
+    padding: 9px 15px; border-radius: 999px;
+    box-shadow: 0 10px 30px rgba(43, 33, 24, 0.35);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .gs-ribbon .star { color: #8fd6b4; }
+
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; } }
+</style>
+</head>
+<body>
+
+<div class="draft"><b>DRAFT PROPOSAL</b> — this website was prepared for Desert Valley Roofing LLC by Green Star Solutions. It is not the company's live website. Questions or removal: robert@green-starsolutions.com</div>
+
+<header class="nav">
+  <div class="wrap nav__inner">
+    <a href="#top" class="logo">
+      <span class="logo__tile" aria-hidden="true"></span>
+      <span class="logo__name">Desert Valley Roofing<small>Family owned · Est. 27+ years</small></span>
+    </a>
+    <nav class="nav__links" aria-label="Primary">
+      <a href="#services">Services</a>
+      <a href="#tile">Tile Roofs</a>
+      <a href="#commercial">HOA &amp; Commercial</a>
+      <a href="#reviews">Reviews</a>
+    </nav>
+    <div class="nav__phone">
+      <small>Free roof inspection</small>
+      <a href="tel:7025588775">(702) 558-8775</a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap">
+      <p class="hero__kicker label">Las Vegas Valley · NV License #78062</p>
+      <h1 class="arch">Thousands of Vegas roofs. <span class="rust">One family's name</span> on every one.</h1>
+      <p class="hero__sub">
+        For over 27 years, the Wolmuth family has installed and repaired roofs across the Las Vegas
+        Valley — <b>licensed, bonded, insured, and certified</b>, with the owner's first 15 years
+        spent personally on the roof, not behind a desk.
+      </p>
+      <div class="hero__cta">
+        <a class="btn" href="tel:7025588775">Get a free inspection</a>
+        <a class="btn btn--ghost" href="#services">See what we do</a>
+      </div>
+      <div class="hero__proof">
+        <div class="proof"><b>27<span>+</span></b><small>Years in the valley</small></div>
+        <div class="proof"><b>1000s</b><small>Of roofs installed</small></div>
+        <div class="proof"><b>#78062</b><small>Licensed · Bonded · Insured</small></div>
+        <div class="proof"><b>Family</b><small>Owned &amp; operated</small></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="services">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="label">What we do</p>
+        <h2 class="arch">Every roof in the desert, done right.</h2>
+      </div>
+      <div class="svc-grid">
+        <div class="svc"><span class="svc__ico">🏠</span><h3 class="arch">Tile Roofs</h3><p>Energy-efficient tile — our specialty, built for 115° summers.</p></div>
+        <div class="svc"><span class="svc__ico">🔧</span><h3 class="arch">Roof Repairs</h3><p>All types of repairs, diagnosed honestly and fixed once.</p></div>
+        <div class="svc"><span class="svc__ico">🏢</span><h3 class="arch">Commercial Roofing</h3><p>HOAs, property managers, and commercial buildings valley-wide.</p></div>
+        <div class="svc"><span class="svc__ico">🏡</span><h3 class="arch">Residential Roofing</h3><p>Full replacements and re-roofs for Vegas homes.</p></div>
+        <div class="svc"><span class="svc__ico">📐</span><h3 class="arch">Flat Roofs</h3><p>Flat and low-slope systems installed to spec.</p></div>
+        <div class="svc"><span class="svc__ico">🚶</span><h3 class="arch">Walking Decks</h3><p>Waterproof decks that hold up to real use.</p></div>
+        <div class="svc"><span class="svc__ico">🛠️</span><h3 class="arch">Metal Roofs</h3><p>Durable metal systems for desert conditions.</p></div>
+        <div class="svc"><span class="svc__ico">🔍</span><h3 class="arch">Inspections</h3><p>Honest assessments — for sales, storms, or peace of mind.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="tile-band" id="tile">
+    <div class="wrap">
+      <div>
+        <p class="label">The specialty</p>
+        <h2 class="arch">Energy-efficient tile, built for the Mojave.</h2>
+        <p>
+          Tile isn't just how a Vegas roof looks — done right, it's how a Vegas house stays
+          cooler and cheaper to run. It's been our specialty for nearly three decades.
+        </p>
+        <ul>
+          <li>Energy-efficient tile systems that cut cooling load</li>
+          <li>Installed by crews who've done thousands of valley roofs</li>
+          <li>Repairs that match — no mismatched patchwork</li>
+        </ul>
+      </div>
+      <div class="tile-art" role="presentation"></div>
+    </div>
+  </section>
+
+  <section class="motto">
+    <div class="wrap">
+      <p class="label">The Wolmuth standard</p>
+      <blockquote class="arch">"We do it right <span class="rust">the first time."</span></blockquote>
+      <p class="story">
+        Owner <b>Mark Wolmuth</b> spent his first 15 years personally installing hundreds of roofs
+        before building the family company that's now installed thousands across the Las Vegas
+        Valley. That's who answers for the work — not a call center.
+      </p>
+    </div>
+  </section>
+
+  <section class="comm" id="commercial">
+    <div class="wrap-outer wrap" style="margin-bottom: 32px;">
+      <p class="label">Trusted at scale</p>
+      <h2 class="arch" style="font-family:'Archivo'; font-weight:800; font-size: clamp(26px, 4vw, 42px); letter-spacing: -0.03em; margin-top: 12px;">HOAs and property managers call us back.</h2>
+    </div>
+    <div class="wrap">
+      <div class="comm-card"><b class="arch">Homeowners Associations</b><p>Community-scale roofing with one accountable point of contact — including work for the Spanish Trail Masters Association.</p></div>
+      <div class="comm-card"><b class="arch">Property Managers</b><p>Fast, documented repairs across portfolios, priced straight.</p></div>
+      <div class="comm-card"><b class="arch">General Contractors</b><p>A roofing sub that shows up on schedule and passes inspection the first time.</p></div>
+    </div>
+  </section>
+
+  <section class="revs" id="reviews">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="label">Reviews</p>
+        <h2 class="arch">120+ reviews. We'll put your best ones right here.</h2>
+        <p>[Proposal note: this section features Desert Valley's real customer reviews, pulled from your Yelp and Google profiles — chosen with you.]</p>
+      </div>
+      <div class="rev-grid">
+        <div class="rev"><span class="stars">★★★★★</span>Your strongest tile-roof review goes here — real customer, real neighborhood.</div>
+        <div class="rev"><span class="stars">★★★★★</span>Your best repair story goes here — the one where you fixed what another roofer wouldn't.</div>
+        <div class="rev"><span class="stars">★★★★★</span>Your best HOA / commercial reference goes here.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="wrap">
+      <h2 class="arch">27 years on Vegas roofs. Let's look at yours.</h2>
+      <p>Free inspections, straight answers, and a family name behind every job.</p>
+      <a class="btn" href="tel:7025588775">Call (702) 558-8775</a>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <span>© 2026 Desert Valley Roofing LLC · NV License #78062 · Licensed, Bonded &amp; Insured</span>
+    <span>Serving the entire Las Vegas Valley</span>
+  </div>
+</footer>
+
+<a class="gs-ribbon" href="https://green-starsolutions.com" title="Draft proposal by Green Star Solutions">
+  <span class="star">✦</span> Draft proposal by Green Star Solutions · (702) 742-9285
+</a>
+
+</body>
+</html>

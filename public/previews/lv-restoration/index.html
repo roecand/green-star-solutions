@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>LV Restoration &amp; Plumbing — Draft Website Proposal by Green Star Solutions</title>
+<meta name="description" content="Draft website proposal prepared for LV Restoration & Plumbing by Green Star Solutions. Not the company's live website." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --navy: #0e2038;
+    --navy-2: #16294a;
+    --paper: #f6f7f9;
+    --steel: #93a3b8;
+    --steel-dim: #5d6f85;
+    --red: #d63324;
+    --red-deep: #b02418;
+    --gold: #e8b64c;
+    --line: rgba(246, 247, 249, 0.14);
+    --line-dark: rgba(14, 32, 56, 0.14);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--navy);
+    color: var(--paper);
+    font-family: "Inter", system-ui, sans-serif;
+    font-size: 16.5px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  ::selection { background: var(--red); color: #fff; }
+  a { color: inherit; text-decoration: none; }
+  .wrap { max-width: 1200px; margin-inline: auto; padding-inline: clamp(20px, 4vw, 48px); }
+  .osw { font-family: "Oswald", sans-serif; text-transform: uppercase; letter-spacing: 0.01em; }
+  .label {
+    font-size: 12px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--gold);
+  }
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: var(--red); color: #fff;
+    font-family: "Oswald", sans-serif; font-weight: 600; font-size: 16px;
+    text-transform: uppercase; letter-spacing: 0.06em;
+    padding: 15px 30px; border: 2px solid var(--red);
+    cursor: pointer; transition: background 0.2s, transform 0.2s;
+  }
+  .btn:hover { background: var(--red-deep); border-color: var(--red-deep); transform: translateY(-2px); }
+  .btn--ghost { background: transparent; color: var(--paper); border-color: rgba(246,247,249,0.35); }
+  .btn--ghost:hover { background: var(--paper); color: var(--navy); border-color: var(--paper); }
+
+  .draft {
+    background: #ffedd0; border-bottom: 1px solid #e8c992; color: #7a4d0d;
+    text-align: center; font-size: 13px; font-weight: 600; padding: 9px 16px;
+  }
+  .draft b { color: #5c3a08; }
+
+  header.nav {
+    position: sticky; top: 0; z-index: 50;
+    background: color-mix(in srgb, var(--navy) 90%, transparent);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav__inner { display: flex; align-items: center; justify-content: space-between; height: 78px; gap: 20px; }
+  .logo { display: flex; align-items: center; gap: 12px; }
+  .logo__mark {
+    width: 40px; height: 40px; display: grid; place-items: center;
+    background: var(--red); color: #fff;
+    font-family: "Oswald", sans-serif; font-weight: 700; font-size: 17px;
+    clip-path: polygon(50% 0, 100% 25%, 100% 100%, 0 100%, 0 25%);
+  }
+  .logo__name { font-family: "Oswald", sans-serif; font-weight: 600; font-size: 18px; text-transform: uppercase; line-height: 1.1; }
+  .logo__name small { display: block; font-family: "Inter", sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.2em; color: var(--steel); text-transform: uppercase; }
+  .nav__links { display: flex; gap: 30px; }
+  .nav__links a { font-size: 14.5px; font-weight: 600; color: var(--steel); }
+  .nav__links a:hover { color: var(--paper); }
+  .nav__phone { text-align: right; }
+  .nav__phone small { display: block; font-size: 10.5px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--red); }
+  .nav__phone a { font-family: "Oswald", sans-serif; font-weight: 700; font-size: 20px; }
+  @media (max-width: 940px) { .nav__links { display: none; } }
+
+  .hero {
+    position: relative;
+    padding: clamp(60px, 8vw, 110px) 0 clamp(50px, 6vw, 84px);
+    border-bottom: 1px solid var(--line);
+    background:
+      radial-gradient(800px 400px at 90% -10%, rgba(214, 51, 36, 0.18), transparent 65%),
+      var(--navy);
+  }
+  .hero__badge {
+    display: inline-flex; align-items: center; gap: 10px;
+    border: 1px solid rgba(232, 182, 76, 0.5);
+    color: var(--gold);
+    font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+    padding: 8px 16px; border-radius: 999px;
+    margin-bottom: 26px;
+  }
+  .hero h1 {
+    font-family: "Oswald", sans-serif; font-weight: 700; text-transform: uppercase;
+    font-size: clamp(42px, 7.4vw, 92px); line-height: 0.98; letter-spacing: 0;
+    max-width: 14ch;
+  }
+  .hero h1 .red { color: var(--red); }
+  .hero__sub { margin-top: 24px; font-size: clamp(16.5px, 1.6vw, 19.5px); color: var(--steel); max-width: 54ch; }
+  .hero__sub b { color: var(--paper); }
+  .hero__cta { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 34px; }
+  .hero__proof {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+    background: var(--line); border: 1px solid var(--line);
+    margin-top: clamp(44px, 6vw, 70px);
+  }
+  .proof { background: var(--navy-2); padding: 20px 22px; }
+  .proof b { display: block; font-family: "Oswald", sans-serif; font-weight: 700; font-size: clamp(20px, 2.6vw, 27px); }
+  .proof b span { color: var(--red); }
+  .proof small { font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--steel-dim); }
+  @media (max-width: 760px) { .hero__proof { grid-template-columns: 1fr 1fr; } }
+
+  section { padding: clamp(60px, 8.5vw, 104px) 0; }
+  .sec-head { max-width: 760px; margin-bottom: clamp(32px, 5vw, 52px); }
+  .sec-head h2 { font-family: "Oswald", sans-serif; font-weight: 700; text-transform: uppercase; font-size: clamp(28px, 4.6vw, 52px); line-height: 1.02; margin-top: 12px; }
+  .sec-head p { margin-top: 14px; color: var(--steel); }
+
+  /* two tracks */
+  .tracks { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .track { border: 1px solid var(--line); background: var(--navy-2); }
+  .track__head {
+    padding: 20px 26px; border-bottom: 1px solid var(--line);
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  }
+  .track__head h3 { font-family: "Oswald", sans-serif; font-weight: 600; text-transform: uppercase; font-size: 21px; }
+  .track__head .tag { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; padding: 5px 12px; }
+  .track--e .track__head .tag { background: var(--red); color: #fff; }
+  .track--r .track__head .tag { background: var(--gold); color: var(--navy); }
+  .track ul { list-style: none; padding: 22px 26px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px 20px; }
+  .track li { padding-left: 22px; position: relative; font-size: 15px; color: color-mix(in srgb, var(--paper) 85%, transparent); }
+  .track--e li::before { content: "⚡"; position: absolute; left: 0; font-size: 12px; top: 3px; }
+  .track--r li::before { content: "🔨"; position: absolute; left: 0; font-size: 12px; top: 3px; }
+  @media (max-width: 860px) { .tracks { grid-template-columns: 1fr; } .track ul { grid-template-columns: 1fr; } }
+
+  /* one-call band */
+  .onecall { background: var(--paper); color: var(--navy); }
+  .onecall .label { color: var(--red); }
+  .onecall .sec-head h2 { color: var(--navy); }
+  .onecall .sec-head p { color: var(--steel-dim); }
+  .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; counter-reset: s; }
+  .step {
+    background: #fff; border: 1px solid var(--line-dark); padding: 24px 22px;
+    counter-increment: s; position: relative;
+  }
+  .step::before {
+    content: "0" counter(s);
+    font-family: "Oswald", sans-serif; font-weight: 700; font-size: 15px;
+    color: var(--red);
+  }
+  .step h3 { font-family: "Oswald", sans-serif; font-weight: 600; text-transform: uppercase; font-size: 18px; margin: 10px 0 6px; }
+  .step p { font-size: 14px; color: var(--steel-dim); }
+  .onecall .punch {
+    margin-top: 34px; text-align: center;
+    font-family: "Oswald", sans-serif; font-weight: 600; text-transform: uppercase;
+    font-size: clamp(18px, 2.6vw, 26px);
+  }
+  .onecall .punch .red { color: var(--red); }
+  @media (max-width: 860px) { .steps { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 520px) { .steps { grid-template-columns: 1fr; } }
+
+  /* credentials */
+  .creds .cred-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .cred {
+    border: 1px solid var(--line); background: var(--navy-2); padding: 26px 24px;
+  }
+  .cred b { font-family: "Oswald", sans-serif; font-weight: 600; text-transform: uppercase; font-size: 17px; display: block; margin-bottom: 6px; color: var(--gold); }
+  .cred p { font-size: 14px; color: var(--steel); }
+  @media (max-width: 860px) { .creds .cred-grid { grid-template-columns: 1fr; } }
+
+  /* areas */
+  .areas ul { list-style: none; display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px 24px; }
+  .areas li {
+    border-bottom: 1px solid var(--line); padding-bottom: 10px;
+    font-family: "Oswald", sans-serif; font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em;
+    font-size: 15px; color: var(--steel);
+    display: flex; justify-content: space-between;
+  }
+  .areas li::after { content: "→"; color: var(--red); }
+  @media (max-width: 760px) { .areas ul { grid-template-columns: 1fr 1fr; } }
+
+  .cta { background: var(--red); text-align: center; }
+  .cta h2 { font-family: "Oswald", sans-serif; font-weight: 700; text-transform: uppercase; font-size: clamp(34px, 6vw, 72px); line-height: 1.0; max-width: 16ch; margin-inline: auto; }
+  .cta p { margin: 18px auto 0; max-width: 48ch; color: rgba(255,255,255,0.88); }
+  .cta .btn { background: #fff; border-color: #fff; color: var(--red); margin-top: 30px; }
+  .cta .btn:hover { background: var(--navy); border-color: var(--navy); color: #fff; }
+
+  footer.foot { padding: 34px 0; font-size: 13px; color: var(--steel-dim); border-top: 1px solid var(--line); }
+  .foot .wrap { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+
+  .gs-ribbon {
+    position: fixed; left: 16px; bottom: 16px; z-index: 100;
+    background: #f7f5f0; color: #16201b;
+    font-size: 12.5px; font-weight: 600;
+    padding: 9px 15px; border-radius: 999px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.45);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .gs-ribbon .star { color: #0e4a33; }
+
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; } }
+</style>
+</head>
+<body>
+
+<div class="draft"><b>DRAFT PROPOSAL</b> — this website was prepared for LV Restoration &amp; Plumbing by Green Star Solutions. It is not the company's live website. Questions or removal: robert@green-starsolutions.com</div>
+
+<header class="nav">
+  <div class="wrap nav__inner">
+    <a href="#top" class="logo">
+      <span class="logo__mark" aria-hidden="true">LV</span>
+      <span class="logo__name">LV Restoration<small>&amp; Plumbing · Veteran Owned</small></span>
+    </a>
+    <nav class="nav__links" aria-label="Primary">
+      <a href="#services">Services</a>
+      <a href="#onecall">One Call</a>
+      <a href="#credentials">Credentials</a>
+      <a href="#areas">Service Area</a>
+    </nav>
+    <div class="nav__phone">
+      <small>24/7 Emergency</small>
+      <a href="tel:7022558700">(702) 255-8700</a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap">
+      <span class="hero__badge">★ Service-Disabled Veteran-Owned Small Business</span>
+      <h1 class="osw">Flood. Fire. Burst pipe. <span class="red">One call rebuilds it all.</span></h1>
+      <p class="hero__sub">
+        Most restoration companies dry your walls and hand you off to a contractor. LV Restoration
+        &amp; Plumbing is <b>both</b> — licensed to handle the emergency <b>and</b> rebuild your home,
+        start to finish, 24/7, anywhere in Clark County.
+      </p>
+      <div class="hero__cta">
+        <a class="btn" href="tel:7022558700">⚡ Call (702) 255-8700</a>
+        <a class="btn btn--ghost" href="#services">What we handle</a>
+      </div>
+      <div class="hero__proof">
+        <div class="proof"><b>24<span>/</span>7</b><small>Emergency response</small></div>
+        <div class="proof"><b>10<span>+</span> yrs</b><small>In the Vegas valley</small></div>
+        <div class="proof"><b>3</b><small>NV licenses: B-2 · C-1D · C-2</small></div>
+        <div class="proof"><b>SDVOSB</b><small>Veteran owned &amp; operated</small></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="services">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="label">Two jobs. One company.</p>
+        <h2 class="osw">The emergency — and everything after.</h2>
+      </div>
+      <div class="tracks">
+        <div class="track track--e">
+          <div class="track__head"><h3 class="osw">Emergency Response</h3><span class="tag">24/7</span></div>
+          <ul>
+            <li>Water damage restoration</li>
+            <li>Fire &amp; smoke damage</li>
+            <li>Emergency plumbing</li>
+            <li>Leak detection &amp; repair</li>
+            <li>HVAC failures</li>
+            <li>Electrical emergencies</li>
+          </ul>
+        </div>
+        <div class="track track--r">
+          <div class="track__head"><h3 class="osw">The Rebuild</h3><span class="tag">Licensed GC</span></div>
+          <ul>
+            <li>Kitchen &amp; bath remodels</li>
+            <li>Drywall &amp; painting</li>
+            <li>Flooring &amp; carpentry</li>
+            <li>Masonry &amp; concrete</li>
+            <li>Pool repairs</li>
+            <li>New construction</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="onecall" id="onecall">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="label">Why one company matters</p>
+        <h2 class="osw">No handoffs. No finger-pointing. No second contract.</h2>
+        <p>When the restoration company and the rebuild contractor are the same license, nothing falls in the gap between them — and you tell the story once.</p>
+      </div>
+      <div class="steps">
+        <div class="step"><h3 class="osw">Respond</h3><p>On site fast, day or night. Stop the water, secure the damage.</p></div>
+        <div class="step"><h3 class="osw">Mitigate</h3><p>Dry-out, smoke remediation, and documentation your insurer needs.</p></div>
+        <div class="step"><h3 class="osw">Rebuild</h3><p>Our own licensed crews rebuild it — walls, floors, kitchen, all of it.</p></div>
+        <div class="step"><h3 class="osw">Done</h3><p>One company accountable from the 2am call to the final walkthrough.</p></div>
+      </div>
+      <p class="punch">The disaster was the hard part. <span class="red">The rebuild shouldn't be.</span></p>
+    </div>
+  </section>
+
+  <section class="creds" id="credentials">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="label">Credentials</p>
+        <h2 class="osw">Licensed for the whole job.</h2>
+      </div>
+      <div class="cred-grid">
+        <div class="cred"><b>NV Licenses B-2 · C-1D · C-2</b><p>General building, plumbing, and specialty licenses (#74159, #78898, #81606) — legally qualified for emergency work and full reconstruction.</p></div>
+        <div class="cred"><b>Veteran Owned (SDVOSB)</b><p>Service-Disabled Veteran-Owned Small Business. Discipline and accountability aren't marketing words here.</p></div>
+        <div class="cred"><b>Award-Winning Work</b><p>2021 Best Water Damage Restoration Company in Las Vegas · 2022 Henderson Plumbing Award · Water Smart Business Partner.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="areas" id="areas">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="label">Where we roll</p>
+        <h2 class="osw">All of Clark County. Around the clock.</h2>
+      </div>
+      <ul>
+        <li>Las Vegas</li>
+        <li>Henderson</li>
+        <li>North Las Vegas</li>
+        <li>Summerlin</li>
+        <li>Spring Valley</li>
+        <li>Enterprise</li>
+        <li>Paradise</li>
+        <li>Boulder City</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="wrap">
+      <h2 class="osw">Water's rising? We're rolling.</h2>
+      <p>One call, 24/7. A veteran-owned crew that handles the emergency and rebuilds what it broke.</p>
+      <a class="btn" href="tel:7022558700">Call (702) 255-8700 now</a>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <span>© 2026 LV Restoration &amp; Plumbing · 500 N Rainbow Blvd #300, Las Vegas, NV 89107</span>
+    <span>NV Lic. B-2 #74159 · C-1D #78898 · C-2 #81606</span>
+  </div>
+</footer>
+
+<a class="gs-ribbon" href="https://green-starsolutions.com" title="Draft proposal by Green Star Solutions">
+  <span class="star">✦</span> Draft proposal by Green Star Solutions · (702) 742-9285
+</a>
+
+</body>
+</html>
