@@ -3,5 +3,7 @@ Allow: /
 # Concept sites are fictional demo businesses — keep them out of search
 # results (their pages also carry meta noindex).
 Disallow: /concepts/
+# Client proposal drafts — private pitch material, never indexed.
+Disallow: /previews/
 
 Sitemap: https://green-starsolutions.com/sitemap.xml
