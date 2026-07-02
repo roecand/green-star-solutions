@@ -3,11 +3,12 @@
 import { useEffect, useState } from "react";
 import StarMark from "./StarMark";
 
+// Path-prefixed anchors so the nav works from /portfolio pages too.
 const links = [
-  { href: "#services", label: "Services" },
-  { href: "#how", label: "How it works" },
-  { href: "#industries", label: "Industries" },
-  { href: "#work", label: "Work" },
+  { href: "/#services", label: "Services" },
+  { href: "/#how", label: "How it works" },
+  { href: "/#industries", label: "Industries" },
+  { href: "/portfolio/", label: "Portfolio" },
 ];
 
 export default function Nav() {
@@ -31,7 +32,7 @@ export default function Nav() {
   return (
     <header className={`nav ${scrolled ? "nav--scrolled" : ""}`}>
       <div className="container nav__inner">
-        <a href="#top" className="nav__brand" aria-label="Green Star Solutions, home">
+        <a href="/" className="nav__brand" aria-label="Green Star Solutions, home">
           <StarMark size={22} />
           <span>
             Green Star <span className="nav__brand-sub">Solutions</span>
@@ -47,7 +48,7 @@ export default function Nav() {
         </nav>
 
         <div className="nav__right">
-          <a href="#start" className="btn nav__cta">
+          <a href="/#start" className="btn nav__cta">
             Book a call
           </a>
           <button
@@ -71,7 +72,7 @@ export default function Nav() {
               </a>
             ))}
             <a
-              href="#start"
+              href="/#start"
               className="btn"
               onClick={() => setOpen(false)}
               style={{ marginTop: "0.5rem" }}

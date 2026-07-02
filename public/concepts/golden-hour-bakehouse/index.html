@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex" />
+<title>Golden Hour Bakehouse — Neighborhood Bakery &amp; Café [Concept]</title>
+<meta name="description" content="Concept website by Green Star Solutions. Golden Hour Bakehouse is a fictional business." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Nunito+Sans:ital,wght@0,400;0,600;0,700;0,800;1,400&family=Caveat:wght@500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --milk: #fff6e8;
+    --butter: #ffd977;
+    --butter-deep: #f5b93c;
+    --espresso: #3d2b1f;
+    --espresso-soft: #6b5442;
+    --cherry: #d23c2e;
+    --pistachio: #7fa06b;
+    --line: rgba(61, 43, 31, 0.16);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--milk);
+    color: var(--espresso);
+    font-family: "Nunito Sans", system-ui, sans-serif;
+    font-size: 17px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  ::selection { background: var(--cherry); color: var(--milk); }
+  a { color: inherit; text-decoration: none; }
+
+  .wrap { max-width: 1160px; margin-inline: auto; padding-inline: clamp(20px, 4.5vw, 48px); }
+  .yserif { font-family: "Young Serif", Georgia, serif; font-weight: 400; }
+  .script { font-family: "Caveat", cursive; font-weight: 600; }
+  .kicker {
+    display: inline-block;
+    font-size: 12.5px;
+    font-weight: 800;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--cherry);
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--espresso);
+    color: var(--milk);
+    font-weight: 800;
+    font-size: 15.5px;
+    padding: 15px 28px;
+    border-radius: 999px;
+    border: 2px solid var(--espresso);
+    cursor: pointer;
+    transition: transform 0.2s, background 0.2s, color 0.2s;
+  }
+  .btn:hover { transform: translateY(-2px) rotate(-1deg); background: var(--cherry); border-color: var(--cherry); }
+  .btn--cherry { background: var(--cherry); border-color: var(--cherry); }
+  .btn--cherry:hover { background: var(--espresso); border-color: var(--espresso); }
+  .btn--outline { background: transparent; color: var(--espresso); }
+  .btn--outline:hover { background: var(--espresso); color: var(--milk); }
+
+  /* scalloped divider */
+  .scallop {
+    height: 22px;
+    background: radial-gradient(circle at 50% 0, var(--butter) 0 11px, transparent 11.5px);
+    background-size: 28px 22px;
+    background-repeat: repeat-x;
+  }
+  .scallop--flip { transform: scaleY(-1); }
+  .scallop--milk { background: radial-gradient(circle at 50% 0, var(--milk) 0 11px, transparent 11.5px); background-size: 28px 22px; background-repeat: repeat-x; }
+
+  /* ---------- announcement ---------- */
+  .announce {
+    background: var(--cherry);
+    color: var(--milk);
+    text-align: center;
+    font-weight: 700;
+    font-size: 14px;
+    padding: 9px 16px;
+    letter-spacing: 0.04em;
+  }
+  .announce .script { font-size: 18px; margin-right: 6px; }
+
+  /* ---------- nav ---------- */
+  header.nav {
+    position: sticky; top: 0; z-index: 50;
+    background: color-mix(in srgb, var(--milk) 92%, transparent);
+    backdrop-filter: blur(8px);
+    border-bottom: 2px solid var(--espresso);
+  }
+  .nav__inner { display: flex; align-items: center; justify-content: space-between; height: 80px; gap: 20px; }
+  .logo { display: flex; align-items: center; gap: 12px; }
+  .logo__sun {
+    width: 42px; height: 42px; border-radius: 50%;
+    background: var(--butter-deep);
+    position: relative;
+    display: grid; place-items: center;
+    font-size: 20px;
+  }
+  .logo__sun::before {
+    content: "";
+    position: absolute; inset: -7px;
+    border-radius: 50%;
+    background: repeating-conic-gradient(var(--butter-deep) 0 6deg, transparent 6deg 30deg);
+    z-index: -1;
+    animation: sunspin 24s linear infinite;
+  }
+  @keyframes sunspin { to { transform: rotate(360deg); } }
+  .logo__name { font-family: "Young Serif", serif; font-size: 20px; line-height: 1.05; }
+  .logo__name small { display: block; font-family: "Caveat", cursive; font-size: 16px; color: var(--cherry); font-weight: 600; }
+  .nav__links { display: flex; gap: 30px; }
+  .nav__links a { font-weight: 800; font-size: 15px; position: relative; }
+  .nav__links a:hover { color: var(--cherry); }
+  @media (max-width: 880px) { .nav__links { display: none; } }
+
+  /* ---------- hero ---------- */
+  .hero {
+    background: var(--butter);
+    position: relative;
+    overflow: hidden;
+    padding: clamp(64px, 9vw, 120px) 0 clamp(80px, 10vw, 130px);
+    text-align: center;
+  }
+  .hero::before {
+    content: "";
+    position: absolute; inset: -40%;
+    background: repeating-conic-gradient(from 8deg at 50% 45%, rgba(255, 246, 232, 0.4) 0 7deg, transparent 7deg 24deg);
+    pointer-events: none;
+  }
+  .hero > .wrap { position: relative; }
+  .hero__eyebrow { font-size: clamp(22px, 3vw, 30px); color: var(--cherry); }
+  .hero h1 {
+    font-family: "Young Serif", serif;
+    font-size: clamp(44px, 8.4vw, 108px);
+    line-height: 1.02;
+    margin: 14px auto 0;
+    max-width: 14ch;
+    letter-spacing: -0.01em;
+  }
+  .hero h1 .cherry { color: var(--cherry); }
+  .hero__sub { font-size: clamp(17px, 1.8vw, 21px); font-weight: 600; color: var(--espresso-soft); max-width: 46ch; margin: 24px auto 0; }
+  .hero__cta { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-top: 36px; }
+  .hero__badge {
+    position: absolute;
+    top: clamp(8px, 3vw, 40px); right: clamp(4px, 6vw, 80px);
+    width: 110px; height: 110px;
+    border-radius: 50%;
+    background: var(--cherry);
+    color: var(--milk);
+    display: grid; place-items: center;
+    text-align: center;
+    font-weight: 800;
+    font-size: 12px;
+    line-height: 1.25;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transform: rotate(10deg);
+    padding: 14px;
+    animation: bob 5s ease-in-out infinite;
+  }
+  @keyframes bob { 0%,100% { transform: rotate(10deg) translateY(0); } 50% { transform: rotate(7deg) translateY(-8px); } }
+  @media (max-width: 720px) { .hero__badge { display: none; } }
+
+  /* ---------- marquee ---------- */
+  .marquee { background: var(--espresso); color: var(--butter); overflow: hidden; padding: 13px 0; }
+  .marquee__inner {
+    display: flex; gap: 48px; white-space: nowrap; width: max-content;
+    font-family: "Young Serif", serif; font-size: 16px;
+    animation: slide 26s linear infinite;
+  }
+  .marquee__inner span::after { content: "✳"; margin-left: 48px; color: var(--cherry); }
+  @keyframes slide { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* ---------- sections ---------- */
+  section { padding: clamp(64px, 9vw, 110px) 0; }
+  .sec-head { text-align: center; margin-bottom: clamp(36px, 5vw, 60px); }
+  .sec-head h2 { font-family: "Young Serif", serif; font-size: clamp(32px, 5vw, 56px); margin-top: 10px; letter-spacing: -0.01em; }
+  .sec-head p.sub { color: var(--espresso-soft); font-weight: 600; max-width: 52ch; margin: 14px auto 0; }
+
+  /* menu */
+  .menu-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+  .item {
+    background: #fff;
+    border: 2px solid var(--espresso);
+    border-radius: 22px;
+    overflow: hidden;
+    box-shadow: 5px 5px 0 var(--espresso);
+    transition: transform 0.25s, box-shadow 0.25s;
+    display: flex; flex-direction: column;
+  }
+  .item:hover { transform: translate(-3px, -3px) rotate(-0.5deg); box-shadow: 9px 9px 0 var(--espresso); }
+  .item__art { height: 150px; display: grid; place-items: center; font-size: 56px; position: relative; }
+  .item__art--croissant { background: linear-gradient(135deg, #ffe3a8, #f5b93c); }
+  .item__art--sourdough { background: linear-gradient(135deg, #ecd9bd, #c9a877); }
+  .item__art--cinnamon { background: linear-gradient(135deg, #e8c39a, #b97f4b); }
+  .item__art--cake { background: linear-gradient(135deg, #ffd1cb, #e88a80); }
+  .item__art--cookie { background: linear-gradient(135deg, #e9d3b6, #a77b4e); }
+  .item__art--latte { background: linear-gradient(135deg, #d9c3ad, #8a6a50); }
+  .item__body { padding: 20px 22px 24px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+  .item__row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+  .item__name { font-family: "Young Serif", serif; font-size: 20px; }
+  .item__price { font-weight: 800; color: var(--cherry); font-size: 17px; white-space: nowrap; }
+  .item__desc { font-size: 14.5px; color: var(--espresso-soft); font-weight: 600; }
+  .item__tag {
+    align-self: flex-start;
+    margin-top: 10px;
+    font-size: 11px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase;
+    background: var(--butter); border-radius: 999px; padding: 4px 12px;
+  }
+  .item__tag--veg { background: color-mix(in srgb, var(--pistachio) 30%, white); }
+  @media (max-width: 880px) { .menu-grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 560px) { .menu-grid { grid-template-columns: 1fr; } }
+
+  /* story */
+  .story { background: var(--butter); position: relative; }
+  .story .wrap { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: clamp(32px, 6vw, 80px); align-items: center; }
+  .story__frame {
+    aspect-ratio: 4 / 5;
+    border: 2px solid var(--espresso);
+    border-radius: 200px 200px 22px 22px;
+    background:
+      radial-gradient(circle at 50% 30%, #fff0d2 0 28%, transparent 29%),
+      linear-gradient(160deg, #f9c96a, #e08c46);
+    box-shadow: 8px 8px 0 var(--espresso);
+    display: grid; place-items: center;
+    font-size: clamp(64px, 8vw, 110px);
+  }
+  .story h2 { font-family: "Young Serif", serif; font-size: clamp(30px, 4.6vw, 50px); margin-top: 10px; letter-spacing: -0.01em; }
+  .story p { margin-top: 18px; font-weight: 600; color: var(--espresso-soft); }
+  .story .script { font-size: 26px; color: var(--cherry); display: inline-block; margin-top: 22px; transform: rotate(-2deg); }
+  @media (max-width: 780px) { .story .wrap { grid-template-columns: 1fr; } .story__frame { max-width: 340px; margin-inline: auto; } }
+
+  /* hours / visit */
+  .visit-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+  .visit-card {
+    border: 2px solid var(--espresso);
+    border-radius: 22px;
+    padding: 30px 28px;
+    background: #fff;
+    box-shadow: 5px 5px 0 var(--espresso);
+  }
+  .visit-card h3 { font-family: "Young Serif", serif; font-size: 21px; margin-bottom: 14px; display: flex; align-items: center; gap: 10px; }
+  .visit-card p, .visit-card dl { font-size: 15.5px; font-weight: 600; color: var(--espresso-soft); }
+  .visit-card dl { display: grid; grid-template-columns: 1fr auto; gap: 8px 16px; }
+  .visit-card dd { font-weight: 800; color: var(--espresso); }
+  .visit-card .soldout { color: var(--cherry); }
+  @media (max-width: 880px) { .visit-grid { grid-template-columns: 1fr; } }
+
+  /* final cta */
+  .final { background: var(--espresso); color: var(--milk); text-align: center; }
+  .final .script { color: var(--butter); font-size: clamp(24px, 3vw, 32px); }
+  .final h2 { font-family: "Young Serif", serif; font-size: clamp(36px, 6.5vw, 76px); margin-top: 10px; letter-spacing: -0.01em; }
+  .final h2 em { font-style: normal; color: var(--butter); }
+  .final p { color: color-mix(in srgb, var(--milk) 75%, transparent); font-weight: 600; max-width: 44ch; margin: 20px auto 0; }
+  .final .hero__cta { margin-top: 34px; }
+  .final .btn { background: var(--butter); border-color: var(--butter); color: var(--espresso); }
+  .final .btn:hover { background: var(--cherry); border-color: var(--cherry); color: var(--milk); }
+
+  /* footer */
+  footer.foot { padding: 36px 0; font-weight: 700; font-size: 13.5px; color: var(--espresso-soft); }
+  .foot .wrap { display: flex; justify-content: space-between; gap: 14px; flex-wrap: wrap; }
+
+  /* concept ribbon */
+  .concept-ribbon {
+    position: fixed; left: 16px; bottom: 16px; z-index: 100;
+    background: var(--espresso); color: var(--milk);
+    font-size: 12.5px; font-weight: 700; letter-spacing: 0.02em;
+    padding: 9px 15px; border-radius: 999px;
+    box-shadow: 0 10px 30px rgba(61, 43, 31, 0.35);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .concept-ribbon .star { color: #8fd6b4; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { animation: none !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="announce"><span class="script">psst —</span> Cardamom morning buns drop every Saturday at 7am. They sell out by 9.</div>
+
+<header class="nav">
+  <div class="wrap nav__inner">
+    <a href="#top" class="logo" aria-label="Golden Hour Bakehouse">
+      <span class="logo__sun">🥐</span>
+      <span class="logo__name">Golden Hour<small>bakehouse &amp; café</small></span>
+    </a>
+    <nav class="nav__links" aria-label="Primary">
+      <a href="#menu">Menu</a>
+      <a href="#story">Our Story</a>
+      <a href="#visit">Visit</a>
+    </nav>
+    <a class="btn btn--cherry" href="#visit" style="padding: 11px 22px; font-size: 14px;">Order ahead</a>
+  </div>
+</header>
+
+<main id="top">
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap">
+      <p class="hero__eyebrow script">baked at dawn, gone by noon</p>
+      <h1 class="yserif">Fresh bread makes the <span class="cherry">whole day</span> better.</h1>
+      <p class="hero__sub">
+        Golden Hour is a neighborhood bakehouse doing things the slow way — naturally leavened
+        sourdough, laminated pastry, and coffee that respects both.
+      </p>
+      <div class="hero__cta">
+        <a class="btn" href="#menu">See today's bake</a>
+        <a class="btn btn--outline" href="#visit">Find us</a>
+      </div>
+    </div>
+    <div class="hero__badge">48-hour fermented sourdough</div>
+  </section>
+  <div class="scallop" role="presentation" style="background-color: transparent;"></div>
+
+  <!-- marquee -->
+  <div class="marquee" role="presentation">
+    <div class="marquee__inner">
+      <span>Baked fresh daily</span><span>Organic flour</span><span>House-made everything</span><span>Local eggs &amp; butter</span><span>Espresso by Vesta Roasters</span>
+      <span>Baked fresh daily</span><span>Organic flour</span><span>House-made everything</span><span>Local eggs &amp; butter</span><span>Espresso by Vesta Roasters</span>
+    </div>
+  </div>
+
+  <!-- MENU -->
+  <section id="menu">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="kicker">From the oven</span>
+        <h2>Today's bake</h2>
+        <p class="sub">The case changes with the seasons — this is the everyday lineup. Come early for the good stuff.</p>
+      </div>
+      <div class="menu-grid">
+        <article class="item">
+          <div class="item__art item__art--croissant">🥐</div>
+          <div class="item__body">
+            <div class="item__row"><span class="item__name">Butter Croissant</span><span class="item__price">$4.50</span></div>
+            <p class="item__desc">27 layers of French butter, laminated over three days. Shatters properly.</p>
+            <span class="item__tag">House classic</span>
+          </div>
+        </article>
+        <article class="item">
+          <div class="item__art item__art--sourdough">🍞</div>
+          <div class="item__body">
+            <div class="item__row"><span class="item__name">Country Sourdough</span><span class="item__price">$9</span></div>
+            <p class="item__desc">48-hour fermented, stone-baked. Our starter "Dolly" is eight years old.</p>
+            <span class="item__tag item__tag--veg">Naturally leavened</span>
+          </div>
+        </article>
+        <article class="item">
+          <div class="item__art item__art--cinnamon">🌀</div>
+          <div class="item__body">
+            <div class="item__row"><span class="item__name">Cardamom Morning Bun</span><span class="item__price">$5.50</span></div>
+            <p class="item__desc">Croissant dough, brown sugar, fresh-ground cardamom. Saturdays only.</p>
+            <span class="item__tag" style="background: var(--cherry); color: var(--milk);">Sells out</span>
+          </div>
+        </article>
+        <article class="item">
+          <div class="item__art item__art--cake">🍰</div>
+          <div class="item__body">
+            <div class="item__row"><span class="item__name">Olive Oil Citrus Cake</span><span class="item__price">$6</span></div>
+            <p class="item__desc">Almond flour, candied lemon, a whisper of rosemary. Gluten-friendly.</p>
+            <span class="item__tag item__tag--veg">GF option</span>
+          </div>
+        </article>
+        <article class="item">
+          <div class="item__art item__art--cookie">🍪</div>
+          <div class="item__body">
+            <div class="item__row"><span class="item__name">Rye Chocolate Chip</span><span class="item__price">$4</span></div>
+            <p class="item__desc">Dark rye, 70% chocolate, flaky salt. Baked in small batches all day.</p>
+            <span class="item__tag">Warm at 2pm</span>
+          </div>
+        </article>
+        <article class="item">
+          <div class="item__art item__art--latte">☕</div>
+          <div class="item__body">
+            <div class="item__row"><span class="item__name">Honey Oat Latte</span><span class="item__price">$5.75</span></div>
+            <p class="item__desc">Double shot, house oat milk, local desert wildflower honey.</p>
+            <span class="item__tag item__tag--veg">Fan favorite</span>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <div class="scallop scallop--flip" role="presentation"></div>
+
+  <!-- STORY -->
+  <section class="story" id="story">
+    <div class="wrap">
+      <div class="story__frame" aria-hidden="true">👩‍🍳</div>
+      <div>
+        <span class="kicker">Our story</span>
+        <h2>Started in a home kitchen. Perfected at 4am.</h2>
+        <p>
+          Golden Hour began as a Saturday farmers-market stand with one folding table and forty
+          loaves that sold out in an hour. Three years later we have a brick oven, a small crew of
+          bakers who genuinely argue about hydration percentages, and a line out the door on weekends.
+        </p>
+        <p>
+          Everything is mixed, shaped, and baked in-house. No freezer trucks, no par-baked anything.
+          If it's in the case, someone here made it before sunrise.
+        </p>
+        <span class="script">— Maya &amp; June, the bakers ♡</span>
+      </div>
+    </div>
+  </section>
+  <div class="scallop scallop--milk scallop--flip" role="presentation" style="background-color: var(--butter);"></div>
+
+  <!-- VISIT -->
+  <section id="visit">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="kicker">Come say hi</span>
+        <h2>Visit the bakehouse</h2>
+      </div>
+      <div class="visit-grid">
+        <div class="visit-card">
+          <h3>⏰ Hours</h3>
+          <dl>
+            <dt>Wed – Fri</dt><dd>7am – 2pm</dd>
+            <dt>Sat – Sun</dt><dd>7am – 1pm</dd>
+            <dt>Mon – Tue</dt><dd class="soldout">Resting the oven</dd>
+          </dl>
+        </div>
+        <div class="visit-card">
+          <h3>📍 Find us</h3>
+          <p>1140 Meridian Ave<br />Arts District<br /><br />Street parking on 3rd — or bike, we have racks and we'll fill your bottle.</p>
+        </div>
+        <div class="visit-card">
+          <h3>🛒 Order ahead</h3>
+          <p>Skip the line — whole loaves and pastry boxes ready for pickup. Order by 6pm for next-morning pickup.</p>
+          <a class="btn btn--cherry" href="#" onclick="return false;" style="margin-top: 16px; padding: 12px 24px; font-size: 14.5px;">Start an order</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL -->
+  <section class="final">
+    <div class="wrap">
+      <span class="script">one more thing…</span>
+      <h2>Life is short. <em>Eat the croissant.</em></h2>
+      <p>Follow the bake — daily case photos, sell-out alerts, and the occasional flour-dusted dog.</p>
+      <div class="hero__cta">
+        <a class="btn" href="#" onclick="return false;">@goldenhourbakehouse</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <span>© 2026 Golden Hour Bakehouse (a fictional bakery)</span>
+    <span>Made with butter, patience &amp; Dolly the starter</span>
+  </div>
+</footer>
+
+<a class="concept-ribbon" href="/" title="This is a fictional concept website designed by Green Star Solutions">
+  <span class="star">✦</span> Concept Website — designed by Green Star Solutions
+</a>
+
+</body>
+</html>
