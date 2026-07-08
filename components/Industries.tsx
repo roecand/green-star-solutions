@@ -4,23 +4,23 @@ import Reveal from "./Reveal";
 const industries = [
   {
     name: "HVAC",
-    body: "Fill your schedule with tune-ups, repairs, and installs — year-round, not just at peak season.",
+    body: "Look like the company that installs the $30k system — and fill the schedule year-round, not just at peak.",
   },
   {
     name: "Plumbing",
-    body: "Capture emergency calls the moment they search, and book more high-ticket jobs.",
+    body: "Win the panicked 2am search on trust at first glance, and book more of the high-ticket repipes and remodels.",
   },
   {
     name: "Electrical",
-    body: "Win panel upgrades, EV chargers, and service calls with a presence that builds trust fast.",
+    body: "Panel upgrades and EV chargers go to the company that reads licensed, exact, and safe — before the first call.",
   },
   {
     name: "Roofing",
-    body: "Turn storm season into your biggest months with ads and follow-up that actually close.",
+    body: "Five-figure jobs in a low-trust industry go to whoever looks most established. Be that company by storm season.",
   },
   {
     name: "Landscaping",
-    body: "Book recurring maintenance and design projects with a brand that looks the part.",
+    body: "Charge design fees instead of bidding against lawn crews — with a brand that reads like a studio.",
   },
 ];
 
@@ -36,8 +36,8 @@ export default function Industries() {
             We speak your <span className="serif accent">trade</span>.
           </h2>
           <p className="lead measure-wide ind__intro">
-            We focus on home-service businesses, so the website, the ad copy, and
-            the follow-up are built around how your customers actually buy.
+            We focus on home-service businesses, so the brand, the website, and
+            the follow-up are built around how your customers actually decide.
           </p>
         </Reveal>
 

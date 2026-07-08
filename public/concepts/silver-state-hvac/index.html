@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Silver State Heating &amp; Air — Premium HVAC in Las Vegas</title>
+<meta name="description" content="Premium heating & air conditioning for the Las Vegas Valley. Same-day AC repair, high-efficiency installs, 24/7 emergency service, financing, and maintenance plans." />
+<link rel="preconnect" href="https://api.fontshare.com" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preconnect" href="https://images.unsplash.com" />
+<link href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&f[]=satoshi@400,500,700,900&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+:root{
+  /* light surfaces */
+  --paper:#f5f8f9; --surface:#ffffff; --surface-2:#eef3f5;
+  --ink:#0b1116; --ink-2:#34434d; --muted:#64757f; --line:rgba(11,17,22,.10); --line-2:rgba(11,17,22,.16);
+  /* dark surfaces */
+  --night:#0a0f14; --night-2:#0f161d; --night-3:#161f28; --on-night:#e9f1f4; --on-night-muted:#8fa1ac; --line-night:rgba(255,255,255,.10);
+  /* accents — cool (air) + warm (heat) */
+  --cool:#21a7d6; --cool-bright:#5fd2f3; --cool-deep:#0c7aa3;
+  --warm:#eb9a36; --warm-bright:#ffc46b;
+  --maxw:1240px; --gut:clamp(1.2rem,4vw,3.5rem);
+  --fdisp:"Clash Display",system-ui,sans-serif;
+  --fbody:"Satoshi",system-ui,sans-serif;
+  --fmono:"JetBrains Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{background:var(--paper);color:var(--ink);font-family:var(--fbody);font-size:1.0625rem;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+h1,h2,h3,h4{font-family:var(--fdisp);font-weight:600;line-height:1.04;letter-spacing:-.02em}
+::selection{background:var(--cool);color:#fff}
+
+.wrap{width:100%;max-width:var(--maxw);margin-inline:auto;padding-inline:var(--gut)}
+.section{padding-block:clamp(4.5rem,9vw,8rem)}
+.eyebrow{font-family:var(--fmono);font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:var(--cool-deep);display:inline-flex;align-items:center;gap:.7em;font-weight:500}
+.eyebrow::before{content:"";width:22px;height:1px;background:var(--cool)}
+.eyebrow--light{color:var(--cool-bright)}
+.eyebrow--light::before{background:var(--cool-bright)}
+.h1{font-size:clamp(2.7rem,6.4vw,5.4rem)}
+.h2{font-size:clamp(2.1rem,4.4vw,3.6rem)}
+.lead{font-size:clamp(1.08rem,1.6vw,1.3rem);color:var(--ink-2);line-height:1.5}
+.measure{max-width:54ch}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;gap:.6em;font-family:var(--fbody);font-weight:700;font-size:1rem;padding:.95em 1.6em;border-radius:14px;border:1px solid transparent;cursor:pointer;transition:transform .25s cubic-bezier(.2,.8,.2,1),box-shadow .25s,background .25s,color .25s;white-space:nowrap}
+.btn .ar{transition:transform .25s}
+.btn:hover .ar{transform:translate(3px,-3px)}
+.btn--primary{background:var(--cool);color:#022633;box-shadow:0 8px 30px -8px rgba(33,167,214,.6)}
+.btn--primary:hover{transform:translateY(-2px);background:var(--cool-bright);box-shadow:0 14px 40px -10px rgba(33,167,214,.7)}
+.btn--warm{background:var(--warm);color:#2a1903;box-shadow:0 8px 30px -8px rgba(235,154,54,.55)}
+.btn--warm:hover{transform:translateY(-2px);background:var(--warm-bright)}
+.btn--ghost{background:transparent;border-color:var(--line-2);color:var(--ink)}
+.btn--ghost:hover{background:var(--ink);color:#fff;border-color:var(--ink);transform:translateY(-2px)}
+.btn--glass{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.22);color:#fff;backdrop-filter:blur(6px)}
+.btn--glass:hover{background:rgba(255,255,255,.16);transform:translateY(-2px)}
+
+/* reveal */
+[data-reveal]{opacity:0;transform:translateY(26px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1)}
+[data-reveal].in{opacity:1;transform:none}
+
+/* logo */
+.logo{display:inline-flex;align-items:center;gap:.7rem;font-family:var(--fdisp);font-weight:600;letter-spacing:-.01em;font-size:1.12rem;line-height:1}
+.logo small{display:block;font-family:var(--fmono);font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;font-weight:400;opacity:.6;margin-top:.25rem}
+.logo>span{white-space:nowrap}
+.mark{width:38px;height:38px;flex:none}
+
+/* ===== emergency bar ===== */
+.emerg{background:var(--night);color:var(--on-night);font-size:.85rem}
+.emerg__in{display:flex;align-items:center;justify-content:center;gap:1rem;padding:.6rem var(--gut);text-align:center;flex-wrap:wrap}
+.pulse{width:8px;height:8px;border-radius:50%;background:var(--warm);box-shadow:0 0 0 0 rgba(235,154,54,.7);animation:pulse 2s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(235,154,54,.6)}70%{box-shadow:0 0 0 10px rgba(235,154,54,0)}100%{box-shadow:0 0 0 0 rgba(235,154,54,0)}}
+.emerg b{color:#fff}.emerg__call{color:var(--warm-bright);font-weight:700;font-family:var(--fmono)}
+
+/* ===== nav ===== */
+.nav{position:sticky;top:0;z-index:60;transition:background .35s,box-shadow .35s,color .35s}
+.nav__in{display:flex;align-items:center;justify-content:space-between;gap:1.5rem;padding:1.05rem var(--gut);flex-wrap:nowrap}
+.nav__links{white-space:nowrap}.nav__phone{white-space:nowrap}
+.nav{color:#fff}
+.nav__links{display:flex;gap:2rem;align-items:center}
+.nav__links a{font-weight:500;font-size:.96rem;opacity:.86;position:relative;padding:.2rem 0}
+.nav__links a::after{content:"";position:absolute;left:0;bottom:-2px;height:1.5px;width:100%;background:currentColor;transform:scaleX(0);transform-origin:left;transition:transform .3s}
+.nav__links a:hover{opacity:1}.nav__links a:hover::after{transform:scaleX(1)}
+.nav__cta{display:flex;align-items:center;gap:.8rem}
+.nav__phone{font-family:var(--fmono);font-weight:500;font-size:.95rem;opacity:.9}
+.nav.scrolled{background:rgba(255,255,255,.86);backdrop-filter:saturate(1.4) blur(14px);box-shadow:0 1px 0 var(--line);color:var(--ink)}
+.nav.scrolled .nav__links a{opacity:.7}.nav.scrolled .nav__links a:hover{opacity:1}
+.nav__toggle{display:none;width:44px;height:44px;border:1px solid currentColor;border-radius:12px;background:transparent;color:inherit;cursor:pointer;flex-direction:column;gap:5px;align-items:center;justify-content:center;opacity:.8}
+.nav__toggle span{width:18px;height:1.6px;background:currentColor;display:block}
+.sheet{display:none}
+
+/* ===== hero ===== */
+.hero{position:relative;background:var(--night);color:var(--on-night);overflow:hidden;margin-top:calc(-1 * (1.05rem*2 + 38px))}
+.hero__bg{position:absolute;inset:0;z-index:0;background:
+  radial-gradient(78% 60% at 82% 4%,rgba(33,167,214,.16),transparent 62%),
+  radial-gradient(66% 52% at 6% 106%,rgba(235,154,54,.11),transparent 60%)}
+.hero__bg::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.045) 1px,transparent 1px);background-size:26px 26px;mask-image:radial-gradient(70% 60% at 70% 40%,#000,transparent 80%);opacity:.6}
+.glow{position:absolute;border-radius:50%;filter:blur(80px);z-index:0;opacity:.5;animation:drift 16s ease-in-out infinite}
+.glow--cool{width:520px;height:520px;background:radial-gradient(circle,rgba(33,167,214,.5),transparent 70%);top:-140px;right:-40px}
+.glow--warm{width:380px;height:380px;background:radial-gradient(circle,rgba(235,154,54,.3),transparent 70%);bottom:-120px;left:-90px;animation-delay:-7s}
+@keyframes drift{0%,100%{transform:translate(0,0)}50%{transform:translate(-24px,22px)}}
+.hero__grid{position:relative;z-index:2;display:grid;grid-template-columns:1.08fr .92fr;gap:clamp(2rem,5vw,4rem);align-items:center;padding-top:clamp(3.5rem,9vw,6.5rem);padding-bottom:clamp(3.5rem,8vw,6rem)}
+.hero h1{margin:1.4rem 0 1.3rem;max-width:13ch}
+.hero h1 .warm{color:var(--warm-bright)}
+.hero__sub{color:var(--on-night-muted);max-width:46ch;font-size:clamp(1.06rem,1.6vw,1.3rem);line-height:1.5}
+.hero__cta{display:flex;gap:1rem;flex-wrap:wrap;margin-top:2rem}
+.hero__trust{display:flex;gap:.9rem 1.8rem;flex-wrap:wrap;margin-top:2.6rem;padding-top:1.8rem;border-top:1px solid var(--line-night);align-items:center}
+.hero__trust .ti{display:flex;align-items:center;gap:.55rem;font-size:.88rem;color:var(--on-night-muted)}
+.hero__trust b{color:#fff;font-weight:700}
+.stars{color:var(--warm);letter-spacing:1px;font-size:.9rem}
+.hero-rise{opacity:0;transform:translateY(28px);animation:rise .9s cubic-bezier(.2,.8,.2,1) forwards}
+@keyframes rise{to{opacity:1;transform:none}}
+
+/* comfort dial — the signature */
+.hero__dial{position:relative;justify-self:end;width:min(100%,410px);aspect-ratio:1;opacity:0;animation:rise 1s cubic-bezier(.2,.8,.2,1) .45s forwards}
+.dial{width:100%;height:100%;display:block;overflow:visible}
+.dial__ticks{fill:none;stroke:rgba(143,161,172,.32);stroke-width:11;stroke-dasharray:1.5 15}
+.dial__track{fill:none;stroke:rgba(255,255,255,.06);stroke-width:14}
+.dial__prog{fill:none;stroke:url(#dialg);stroke-width:14;stroke-linecap:round;stroke-dasharray:785;stroke-dashoffset:785;transform:rotate(-90deg);transform-origin:150px 150px;animation:dialfill 1.7s cubic-bezier(.2,.8,.2,1) .8s forwards}
+@keyframes dialfill{to{stroke-dashoffset:292}}
+.dial__set{font-family:var(--fmono);font-size:10.5px;letter-spacing:.22em;fill:var(--on-night-muted)}
+.dial__temp{font-family:var(--fdisp);font-weight:600;font-size:78px;fill:#fff;letter-spacing:-.03em}
+.dial__mode{font-family:var(--fmono);font-size:11.5px;letter-spacing:.16em;fill:var(--cool-bright)}
+.dial-chip{position:absolute;display:flex;align-items:center;gap:.5rem;background:rgba(12,17,22,.72);backdrop-filter:blur(8px);border:1px solid var(--line-night);border-radius:12px;padding:.55rem .85rem;font-size:.82rem;color:var(--on-night);white-space:nowrap;opacity:0;animation:rise .7s ease forwards}
+.dial-chip b{color:#fff;font-weight:700}
+.dial-chip .dot{width:8px;height:8px;border-radius:50%;box-shadow:0 0 10px currentColor}
+.dial-chip--hot{top:4%;right:-5%;animation-delay:1.35s}
+.dial-chip--hot .dot{background:var(--warm);color:var(--warm)}
+.dial-chip--cool{bottom:7%;left:-6%;animation-delay:1.55s}
+.dial-chip--cool .dot{background:var(--cool-bright);color:var(--cool-bright)}
+
+/* ===== stat band ===== */
+.stats{background:var(--surface);border-bottom:1px solid var(--line)}
+.stats__grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line)}
+.stat{background:var(--surface);padding:clamp(1.8rem,4vw,2.8rem) clamp(1rem,2vw,1.6rem);text-align:center}
+.stat__n{font-family:var(--fdisp);font-weight:600;font-size:clamp(2rem,4vw,3rem);letter-spacing:-.03em;line-height:1;background:linear-gradient(120deg,var(--cool-deep),var(--cool));-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat__l{color:var(--muted);font-size:.9rem;margin-top:.5rem}
+
+/* section heads */
+.shead{max-width:680px;margin-bottom:clamp(2.5rem,5vw,3.8rem)}
+.shead h2{margin:1rem 0 1.1rem}
+.shead--center{margin-inline:auto;text-align:center}
+.shead--center .eyebrow{justify-content:center}
+
+/* ===== services ===== */
+.svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem}
+.svc{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:1.8rem;transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s,border-color .35s;position:relative;overflow:hidden}
+.svc::before{content:"";position:absolute;inset:0 0 auto 0;height:3px;background:linear-gradient(90deg,var(--cool),var(--cool-bright));transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.svc:hover{transform:translateY(-6px);box-shadow:0 30px 60px -36px rgba(11,17,22,.35);border-color:transparent}
+.svc:hover::before{transform:scaleX(1)}
+.svc__ic{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;background:var(--surface-2);color:var(--cool-deep);margin-bottom:1.3rem}
+.svc h3{font-size:1.35rem;margin-bottom:.5rem}
+.svc p{color:var(--muted);font-size:.97rem}
+.svc__link{margin-top:1.1rem;display:inline-flex;gap:.4rem;font-weight:700;font-size:.9rem;color:var(--cool-deep)}
+
+/* ===== feature / why ===== */
+.feature{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(2rem,5vw,4.5rem);align-items:center}
+.feature__img{border-radius:24px;overflow:hidden;position:relative;aspect-ratio:4/5;background:var(--night-2)}
+.feature__img img{width:100%;height:100%;object-fit:cover;filter:grayscale(.28) contrast(1.04) brightness(.94)}
+.feature__img::after{content:"";position:absolute;inset:0;background:linear-gradient(158deg,rgba(33,167,214,.22),rgba(10,15,20,.15) 45%,rgba(10,15,20,.62))}
+.feature__badge{position:absolute;z-index:2;left:1.2rem;bottom:1.2rem;background:rgba(10,15,20,.78);backdrop-filter:blur(8px);color:#fff;border:1px solid var(--line-night);border-radius:16px;padding:1rem 1.2rem;display:flex;gap:.9rem;align-items:center}
+.feature__badge .big{font-family:var(--fdisp);font-size:1.7rem;line-height:1;color:var(--warm-bright)}
+.vlist{display:flex;flex-direction:column;gap:1.2rem;margin-top:1.8rem}
+.vitem{display:flex;gap:1rem;align-items:flex-start}
+.vitem .vk{width:42px;height:42px;flex:none;border-radius:12px;background:var(--surface);border:1px solid var(--line);display:grid;place-items:center;color:var(--cool-deep)}
+.vitem h4{font-size:1.1rem;margin-bottom:.2rem;font-family:var(--fbody);font-weight:700;letter-spacing:0}
+.vitem p{color:var(--muted);font-size:.95rem}
+
+/* ===== financing ===== */
+.fin{background:var(--night);color:var(--on-night);position:relative;overflow:hidden}
+.fin .glow--warm{opacity:.6;bottom:auto;top:-120px;right:-60px;left:auto}
+.fin__grid{position:relative;z-index:2;display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(2rem,5vw,4rem);align-items:center}
+.fin h2{margin:1rem 0 1.2rem}.fin h2 .warm{color:var(--warm-bright)}
+.fin p{color:var(--on-night-muted)}
+.fin__card{background:linear-gradient(160deg,var(--night-3),var(--night-2));border:1px solid var(--line-night);border-radius:24px;padding:2rem;box-shadow:0 40px 80px -40px rgba(0,0,0,.6)}
+.fin__quote{font-family:var(--fmono);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--on-night-muted)}
+.fin__amt{font-family:var(--fdisp);font-size:clamp(3rem,7vw,4.6rem);letter-spacing:-.03em;line-height:1;margin:.4rem 0;color:#fff}
+.fin__amt span{font-size:1.3rem;color:var(--warm-bright);vertical-align:top}
+.fin__row{display:flex;gap:1.4rem;margin:1.4rem 0;flex-wrap:wrap}
+.fin__row div{flex:1;min-width:120px}
+.fin__row .k{font-size:.8rem;color:var(--on-night-muted)}
+.fin__row .v{font-weight:700;color:#fff;margin-top:.2rem}
+.fin__bar{height:8px;border-radius:99px;background:rgba(255,255,255,.1);overflow:hidden;margin-bottom:.5rem}
+.fin__bar i{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,var(--warm),var(--warm-bright));transition:width 1.4s cubic-bezier(.2,.8,.2,1)}
+.fin.in .fin__bar i{width:82%}
+
+/* ===== maintenance plans ===== */
+.plans{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;align-items:start}
+.plan{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:2rem;transition:transform .35s,box-shadow .35s}
+.plan:hover{transform:translateY(-5px);box-shadow:0 30px 60px -38px rgba(11,17,22,.32)}
+.plan--featured{background:var(--night);color:var(--on-night);border-color:transparent;box-shadow:0 40px 80px -40px rgba(11,17,22,.5);position:relative;transform:scale(1.03)}
+.plan--featured:hover{transform:scale(1.03) translateY(-5px)}
+.plan__tag{font-family:var(--fmono);font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;color:var(--cool-deep);font-weight:500}
+.plan--featured .plan__tag{color:var(--cool-bright)}
+.plan__name{font-size:1.5rem;margin:.3rem 0 1rem}
+.plan__price{font-family:var(--fdisp);font-size:3rem;letter-spacing:-.03em;line-height:1}
+.plan__price span{font-size:1rem;font-family:var(--fbody);color:var(--muted);font-weight:500}
+.plan--featured .plan__price span{color:var(--on-night-muted)}
+.plan__list{list-style:none;margin:1.4rem 0 1.8rem;display:flex;flex-direction:column;gap:.8rem}
+.plan__list li{display:flex;gap:.7rem;align-items:flex-start;font-size:.95rem;color:var(--ink-2)}
+.plan--featured .plan__list li{color:var(--on-night-muted)}
+.plan__list svg{flex:none;margin-top:3px;color:var(--cool)}
+.plan .btn{width:100%;justify-content:center}
+.pop{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--warm);color:#2a1903;font-family:var(--fmono);font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;font-weight:500;padding:.4em 1em;border-radius:99px}
+
+/* ===== reviews ===== */
+.reviews{background:var(--surface-2)}
+.rev-top{display:flex;justify-content:space-between;align-items:flex-end;gap:2rem;flex-wrap:wrap;margin-bottom:2.5rem}
+.gscore{display:flex;align-items:center;gap:1rem}
+.gscore .num{font-family:var(--fdisp);font-size:3.2rem;line-height:1;letter-spacing:-.03em}
+.gscore .sub{font-size:.9rem;color:var(--muted)}
+.gbadge{display:inline-flex;align-items:center;gap:.5rem;background:var(--surface);border:1px solid var(--line);border-radius:99px;padding:.5rem .9rem;font-size:.85rem;font-weight:600}
+.rev-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem}
+.rev{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:1.6rem;display:flex;flex-direction:column;gap:.9rem}
+.rev p{color:var(--ink-2);font-size:.98rem;line-height:1.55}
+.rev__who{display:flex;align-items:center;gap:.8rem;margin-top:auto}
+.rev__av{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-weight:700;color:#fff;font-size:.95rem;background:linear-gradient(135deg,var(--cool),var(--cool-deep))}
+.rev__n{font-weight:700;font-size:.92rem}.rev__m{font-size:.78rem;color:var(--muted)}
+
+/* ===== service area ===== */
+.area__grid{display:grid;grid-template-columns:.95fr 1.05fr;gap:clamp(2rem,5vw,4rem);align-items:center}
+.map{border-radius:24px;overflow:hidden;border:1px solid var(--line);position:relative;aspect-ratio:1/1;background:#0c141b}
+.map__svg{width:100%;height:100%;display:block}
+.pin__glow{fill:var(--cool);opacity:.22}
+.pin__dot{fill:var(--cool-bright)}
+.pin text{fill:var(--on-night-muted);font-family:var(--fmono);font-size:11px;letter-spacing:.04em}
+.pin--hq .pin__dot{fill:var(--warm-bright)}
+.pin--hq text{fill:#fff;font-size:12px;font-weight:500}
+.pin--hq .ring{fill:none;stroke:var(--warm);stroke-width:1.5;transform-origin:center;animation:ping 2.6s ease-out infinite}
+@keyframes ping{0%{r:9px;opacity:.7}100%{r:30px;opacity:0}}
+.map__cap{position:absolute;left:1rem;bottom:1rem;font-family:var(--fmono);font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--on-night-muted);background:rgba(10,15,20,.6);padding:.45em .8em;border-radius:9px;border:1px solid var(--line-night)}
+.areas{display:grid;grid-template-columns:1fr 1fr;gap:.7rem 1.4rem;margin-top:1.8rem}
+.areas li{list-style:none;display:flex;gap:.6rem;align-items:center;font-weight:500;padding:.55rem 0;border-bottom:1px solid var(--line)}
+.areas li svg{color:var(--cool);flex:none}
+
+/* ===== booking CTA ===== */
+.book{background:var(--night);color:var(--on-night);position:relative;overflow:hidden}
+.book .glow--cool{opacity:.45;top:auto;bottom:-160px;left:50%;right:auto;transform:translateX(-50%)}
+.book__in{position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,5vw,4rem);align-items:center}
+.book h2{margin:1rem 0 1.2rem}.book h2 .cool{color:var(--cool-bright)}
+.book p{color:var(--on-night-muted);max-width:42ch}
+.book__cta{display:flex;gap:1rem;flex-wrap:wrap;margin-top:2rem}
+.bw{background:linear-gradient(160deg,var(--night-3),var(--night-2));border:1px solid var(--line-night);border-radius:24px;padding:1.8rem;box-shadow:0 40px 80px -40px rgba(0,0,0,.6)}
+.bw__step{font-family:var(--fmono);font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:var(--on-night-muted);margin:1.2rem 0 .7rem}
+.bw__step:first-child{margin-top:0}
+.chips{display:flex;flex-wrap:wrap;gap:.55rem}
+.chip{border:1px solid var(--line-night);background:rgba(255,255,255,.04);color:var(--on-night);border-radius:12px;padding:.6em 1em;font:inherit;font-size:.9rem;font-weight:500;cursor:pointer;transition:all .2s}
+.chip:hover{border-color:var(--cool)}
+.chip.sel{background:var(--cool);color:#022633;border-color:var(--cool)}
+.bw .btn{width:100%;justify-content:center;margin-top:1.4rem}
+
+/* ===== footer ===== */
+.foot{background:var(--night);color:var(--on-night-muted);padding-top:clamp(3.5rem,7vw,5.5rem);padding-bottom:2.5rem;border-top:1px solid var(--line-night)}
+.foot__grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1.2fr;gap:2.5rem;padding-bottom:3rem;border-bottom:1px solid var(--line-night)}
+.foot__grid h5{font-family:var(--fmono);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:#fff;font-weight:500;margin-bottom:1.1rem}
+.foot__grid a,.foot__grid li{display:block;list-style:none;margin-bottom:.55rem;font-size:.93rem;transition:color .2s}
+.foot__grid a:hover{color:#fff}
+.foot .logo{color:#fff;margin-bottom:1rem}
+.foot__p{font-size:.93rem;max-width:34ch}
+.foot__base{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;padding-top:1.6rem;font-size:.82rem}
+.foot__base .concept{color:var(--on-night-muted)}
+.foot__base a{color:var(--cool-bright)}
+
+@media(max-width:1024px){
+  .nav__links,.nav__phone{display:none}
+  .nav__toggle{display:flex}
+  .sheet{position:fixed;inset:auto 0 0 0;top:70px;background:rgba(10,15,20,.97);backdrop-filter:blur(10px);z-index:55;padding:1.5rem var(--gut);display:none;flex-direction:column;gap:.4rem;color:#fff}
+  .sheet.open{display:flex}
+  .sheet a{padding:.8rem 0;border-bottom:1px solid var(--line-night);font-size:1.2rem;font-family:var(--fdisp)}
+}
+@media(max-width:1000px){
+  .svc-grid,.plans,.rev-grid{grid-template-columns:repeat(2,1fr)}
+  .feature,.fin__grid,.area__grid,.book__in{grid-template-columns:1fr}
+  .feature__img{aspect-ratio:16/10;max-height:440px}
+  .plan--featured{transform:none}.plan--featured:hover{transform:translateY(-5px)}
+  .stats__grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:900px){
+  .hero__grid{grid-template-columns:1fr}
+  .hero__dial{justify-self:center;width:min(86%,330px);margin-top:1rem}
+  .hero__trust{margin-top:2rem}
+}
+@media(max-width:760px){
+  .svc-grid,.plans,.rev-grid,.areas{grid-template-columns:1fr}
+  .nav__book{display:none}
+}
+/* ===== concept ribbon ===== */
+.concept-ribbon{position:fixed;left:16px;bottom:16px;z-index:100;background:#fff;color:var(--ink);font-family:var(--fbody);font-size:12.5px;font-weight:500;letter-spacing:.01em;padding:9px 15px;border-radius:999px;border:1px solid var(--line);box-shadow:0 10px 30px rgba(11,17,22,.3);display:flex;align-items:center;gap:8px}
+.concept-ribbon .star{color:#0e4a33}
+.concept-ribbon:hover{border-color:var(--line-2)}
+
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+  [data-reveal]{opacity:1;transform:none}
+  .hero-rise{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+
+<!-- mark gradient def -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<linearGradient id="markg" x1="0" y1="0" x2="1" y2="1">
+<stop offset="0" stop-color="#5fd2f3"/><stop offset=".55" stop-color="#21a7d6"/><stop offset="1" stop-color="#eb9a36"/>
+</linearGradient></defs></svg>
+
+<!-- emergency bar -->
+<div class="emerg">
+  <div class="emerg__in">
+    <span class="pulse" aria-hidden="true"></span>
+    <span><b>24/7 emergency service</b> — no cooling in the Vegas heat? We answer day or night.</span>
+    <a href="tel:+17025550142" class="emerg__call">Call (702) 555-0142 →</a>
+  </div>
+</div>
+
+<!-- nav -->
+<header class="nav" id="nav">
+  <div class="nav__in">
+    <a href="#top" class="logo" aria-label="Silver State Heating and Air, home">
+      <svg class="mark" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+        <rect x="2" y="2" width="36" height="36" rx="11" fill="url(#markg)"/>
+        <path d="M20 9v22M11 14l18 12M29 14L11 26" stroke="#0a0f14" stroke-width="2.1" stroke-linecap="round" opacity=".9"/>
+        <circle cx="20" cy="20" r="3.4" fill="#0a0f14"/>
+      </svg>
+      <span>Silver State<small>Heating &amp; Air</small></span>
+    </a>
+    <nav class="nav__links" aria-label="Primary">
+      <a href="#services">Services</a>
+      <a href="#plans">Maintenance</a>
+      <a href="#financing">Financing</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#area">Service Area</a>
+    </nav>
+    <div class="nav__cta">
+      <a href="tel:+17025550142" class="nav__phone">(702) 555-0142</a>
+      <a href="#book" class="btn btn--primary nav__book" style="padding:.7em 1.2em">Book Online</a>
+      <button class="nav__toggle" id="navToggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <div class="sheet" id="sheet">
+    <a href="#services">Services</a><a href="#plans">Maintenance</a><a href="#financing">Financing</a>
+    <a href="#reviews">Reviews</a><a href="#area">Service Area</a><a href="#book" class="btn btn--primary" style="margin-top:.6rem">Book Online</a>
+  </div>
+</header>
+
+<!-- hero -->
+<section class="hero" id="top">
+  <div class="hero__bg" aria-hidden="true"></div>
+  <div class="glow glow--cool"></div>
+  <div class="glow glow--warm"></div>
+  <div class="wrap hero__grid">
+    <div class="hero__copy">
+      <p class="eyebrow eyebrow--light hero-rise" style="animation-delay:.05s">Las Vegas · Henderson · Summerlin</p>
+      <h1 class="h1 hero-rise" style="animation-delay:.14s"><span class="warm">108°</span> out there.<br />Perfect <span style="color:var(--cool-bright)">in here</span>.</h1>
+      <p class="hero__sub hero-rise" style="animation-delay:.24s">Silver State keeps Las Vegas homes cool, efficient, and worry-free — with same-day AC repair, premium installs, and round-the-clock emergency service.</p>
+      <div class="hero__cta hero-rise" style="animation-delay:.34s">
+        <a href="#book" class="btn btn--primary">Book Online <span class="ar">↗</span></a>
+        <a href="tel:+17025550142" class="btn btn--glass">Call (702) 555-0142</a>
+      </div>
+      <div class="hero__trust hero-rise" style="animation-delay:.46s">
+        <span class="ti"><span class="stars">★★★★★</span> <b>4.9</b>&nbsp;/ 600+ reviews</span>
+        <span class="ti"><b>Licensed</b> &amp; insured</span>
+        <span class="ti"><b>NATE-certified</b></span>
+        <span class="ti"><b>$0-down</b> financing</span>
+      </div>
+    </div>
+    <div class="hero__dial">
+      <svg class="dial" viewBox="0 0 300 300" role="img" aria-label="Smart thermostat set to 72 degrees, cooling; 108 degrees outside">
+        <defs><linearGradient id="dialg" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#0c7aa3"/><stop offset=".5" stop-color="#21a7d6"/><stop offset="1" stop-color="#5fd2f3"/>
+        </linearGradient></defs>
+        <circle class="dial__ticks" cx="150" cy="150" r="140"/>
+        <circle class="dial__track" cx="150" cy="150" r="125"/>
+        <circle class="dial__prog" cx="150" cy="150" r="125"/>
+        <text class="dial__set" x="150" y="116" text-anchor="middle">SET · COOL</text>
+        <text class="dial__temp" x="150" y="178" text-anchor="middle">72°</text>
+        <text class="dial__mode" x="150" y="204" text-anchor="middle">COOLING</text>
+      </svg>
+      <div class="dial-chip dial-chip--hot"><span class="dot"></span>Outside <b>108°</b></div>
+      <div class="dial-chip dial-chip--cool"><span class="dot"></span>Inside <b>72°</b> · perfect</div>
+    </div>
+  </div>
+</section>
+
+<!-- stats -->
+<section class="stats">
+  <div class="wrap" style="padding-inline:0">
+    <div class="stats__grid">
+      <div class="stat"><div class="stat__n" data-count="600" data-suffix="+">0</div><div class="stat__l">5-star reviews</div></div>
+      <div class="stat"><div class="stat__n" data-count="15" data-suffix=" yrs">0</div><div class="stat__l">Serving the valley</div></div>
+      <div class="stat"><div class="stat__n" data-count="60" data-suffix=" min">0</div><div class="stat__l">Avg. response time</div></div>
+      <div class="stat"><div class="stat__n" data-count="100" data-suffix="%">0</div><div class="stat__l">Satisfaction guarantee</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- services -->
+<section class="section" id="services">
+  <div class="wrap">
+    <div class="shead" data-reveal>
+      <p class="eyebrow">What we do</p>
+      <h2 class="h2">Everything it takes to keep you comfortable.</h2>
+      <p class="lead measure">One team for repair, installation, and the upkeep in between — engineered for how hard Vegas runs an AC system.</p>
+    </div>
+    <div class="svc-grid">
+      <article class="svc" data-reveal>
+        <div class="svc__ic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6L5.6 18.4"/></svg></div>
+        <h3>AC Repair</h3>
+        <p>Fast, honest diagnostics and same-day fixes that get your home cool again — often within hours.</p>
+        <span class="svc__link">Same-day service →</span>
+      </article>
+      <article class="svc" data-reveal>
+        <div class="svc__ic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="14" rx="2"/><path d="M7 21h10M9 17v4M15 17v4M8 7h8M8 11h5"/></svg></div>
+        <h3>AC Installation</h3>
+        <p>High-efficiency systems, expertly sized and installed for the Vegas climate — built to last and cut your bills.</p>
+        <span class="svc__link">Free estimate →</span>
+      </article>
+      <article class="svc" data-reveal>
+        <div class="svc__ic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c2.5 3 4 5.5 4 8a4 4 0 1 1-8 0c0-2.5 1.5-5 4-8Z"/><path d="M12 14a2 2 0 0 0 0 4"/></svg></div>
+        <h3>Heating</h3>
+        <p>Furnace and heat-pump repair and installs that keep you warm through cold desert nights.</p>
+        <span class="svc__link">Stay warm →</span>
+      </article>
+      <article class="svc" data-reveal>
+        <div class="svc__ic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.7 5.7l-5 5 2 2 5-5a4 4 0 0 0 5.7-5.7l-2.5 2.5-2-2 2.5-2.5Z"/></svg></div>
+        <h3>Maintenance</h3>
+        <p>Seasonal tune-ups that prevent breakdowns, protect your warranty, and lower energy costs.</p>
+        <span class="svc__link">Comfort Club →</span>
+      </article>
+      <article class="svc" data-reveal>
+        <div class="svc__ic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h18M3 12h18M3 17h18M7 4v3M14 9v3M10 14v3"/></svg></div>
+        <h3>Indoor Air Quality</h3>
+        <p>Filtration, UV purification, and humidity control for cleaner, healthier desert air inside.</p>
+        <span class="svc__link">Breathe easy →</span>
+      </article>
+      <article class="svc" data-reveal>
+        <div class="svc__ic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V7l7-4 7 4v14M7 21v-5h6v5M21 21V11l-4-2"/></svg></div>
+        <h3>Commercial HVAC</h3>
+        <p>Rooftop units and light-commercial service that keep your business — and your customers — comfortable.</p>
+        <span class="svc__link">Get a bid →</span>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- feature / why -->
+<section class="section" style="padding-top:0">
+  <div class="wrap feature">
+    <div class="feature__img" data-reveal>
+      <img src="https://picsum.photos/seed/silverstate-comfort/1000/1250" alt="Silver State Heating & Air" loading="lazy" />
+      <div class="feature__badge"><span class="big">2 hrs</span><span style="font-size:.85rem;line-height:1.3">Average time<br>to get you cool</span></div>
+    </div>
+    <div data-reveal>
+      <p class="eyebrow">Why Silver State</p>
+      <h2 class="h2">A premium experience, from the first call to the last filter.</h2>
+      <div class="vlist">
+        <div class="vitem"><span class="vk"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 6v6l4 2"/><circle cx="12" cy="12" r="9"/></svg></span><div><h4>On-time, every time</h4><p>Real arrival windows and live text updates — no all-day waiting around.</p></div></div>
+        <div class="vitem"><span class="vk"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-6 9 6v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 13l2 2 4-4"/></svg></span><div><h4>Upfront, flat-rate pricing</h4><p>You approve the price before we start. No surprises, no overtime gotchas.</p></div></div>
+        <div class="vitem"><span class="vk"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 5 5.6.8-4 3.9 1 5.6L12 20l-5 2.3 1-5.6-4-3.9 5.6-.8z"/></svg></span><div><h4>NATE-certified technicians</h4><p>Background-checked, factory-trained pros who treat your home like their own.</p></div></div>
+        <div class="vitem"><span class="vk"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span><div><h4>100% satisfaction guarantee</h4><p>If it's not right, we make it right — that's the Silver State promise.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- financing -->
+<section class="section fin" id="financing">
+  <div class="glow glow--warm"></div>
+  <div class="wrap fin__grid">
+    <div data-reveal>
+      <p class="eyebrow eyebrow--light">Financing</p>
+      <h2 class="h2">A new system shouldn't wait for <span class="warm">summer to break you</span>.</h2>
+      <p class="lead" style="color:var(--on-night-muted)">Get approved in minutes with $0 down and flexible terms. Spread a premium, energy-saving install across low monthly payments — and start saving on bills right away.</p>
+      <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-top:2rem">
+        <a href="#book" class="btn btn--warm">Check your rate <span class="ar">↗</span></a>
+        <a href="#book" class="btn btn--glass">Talk to an advisor</a>
+      </div>
+    </div>
+    <div class="fin__card" data-reveal>
+      <div class="fin__quote">New high-efficiency system from</div>
+      <div class="fin__amt"><span>$</span>89<span style="font-size:1.3rem;color:var(--on-night-muted)">/mo</span></div>
+      <div class="fin__bar"><i></i></div>
+      <div style="font-size:.82rem;color:var(--on-night-muted)">82% of customers qualify for $0 down</div>
+      <div class="fin__row">
+        <div><div class="k">Down payment</div><div class="v">$0</div></div>
+        <div><div class="k">Approval</div><div class="v">~3 min</div></div>
+        <div><div class="k">Terms</div><div class="v">Up to 120 mo</div></div>
+      </div>
+      <a href="#book" class="btn btn--warm" style="width:100%;justify-content:center">Apply for financing</a>
+    </div>
+  </div>
+</section>
+
+<!-- maintenance plans -->
+<section class="section" id="plans">
+  <div class="wrap">
+    <div class="shead shead--center" data-reveal>
+      <p class="eyebrow">Maintenance · The Comfort Club</p>
+      <h2 class="h2">Membership that pays for itself.</h2>
+      <p class="lead" style="margin-inline:auto">Priority service, big repair discounts, and tune-ups that keep your system running at peak — through every 115° afternoon.</p>
+    </div>
+    <div class="plans">
+      <div class="plan" data-reveal>
+        <div class="plan__tag">Silver</div>
+        <div class="plan__name">Essential</div>
+        <div class="plan__price">$14<span>/mo</span></div>
+        <ul class="plan__list">
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>1 precision tune-up / year</li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>15% off all repairs</li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Priority scheduling</li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>No trip-charge on visits</li>
+        </ul>
+        <a href="#book" class="btn btn--ghost">Choose Essential</a>
+      </div>
+      <div class="plan plan--featured" data-reveal>
+        <span class="pop">Most popular</span>
+        <div class="plan__tag">Gold</div>
+        <div class="plan__name">Comfort</div>
+        <div class="plan__price">$24<span>/mo</span></div>
+        <ul class="plan__list">
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>2 tune-ups / year (heat + cool)</li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>20% off all repairs</li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>No overtime / emergency fees</li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Front-of-line priority</li>
+        </ul>
+        <a href="#book" class="btn btn--primary">Choose Comfort</a>
+      </div>
+      <div class="plan" data-reveal>
+        <div class="plan__tag">Platinum</div>
+        <div class="plan__name">Total Care</div>
+        <div class="plan__price">$39<span>/mo</span></div>
+        <ul class="plan__list">
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Everything in Comfort</li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>25% off repairs + free filters</li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Zero diagnostic fees</li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Annual whole-home checkup</li>
+        </ul>
+        <a href="#book" class="btn btn--ghost">Choose Total Care</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- reviews -->
+<section class="section reviews" id="reviews">
+  <div class="wrap">
+    <div class="rev-top" data-reveal>
+      <div class="gscore">
+        <div class="num">4.9</div>
+        <div><div class="stars" style="font-size:1.1rem">★★★★★</div><div class="sub">based on 600+ reviews</div></div>
+      </div>
+      <span class="gbadge"><svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.5 12.2c0-.7-.1-1.4-.2-2H12v3.9h5.9a5 5 0 0 1-2.2 3.3v2.7h3.6c2.1-2 3.2-4.9 3.2-7.9z"/><path fill="#34A853" d="M12 23c2.9 0 5.4-1 7.2-2.7l-3.6-2.7c-1 .7-2.3 1.1-3.6 1.1-2.8 0-5.1-1.9-6-4.4H2.3v2.8A11 11 0 0 0 12 23z"/><path fill="#FBBC05" d="M6 14.3a6.6 6.6 0 0 1 0-4.2V7.3H2.3a11 11 0 0 0 0 9.8z"/><path fill="#EA4335" d="M12 5.6c1.6 0 3 .5 4.1 1.6l3.1-3.1A11 11 0 0 0 2.3 7.3L6 10.1c.9-2.6 3.2-4.5 6-4.5z"/></svg>Google Reviews</span>
+    </div>
+    <div class="rev-grid">
+      <article class="rev" data-reveal><div class="stars">★★★★★</div><p>"Our AC died at 9pm during a heat wave and Silver State had a tech here by 10:30. Fixed in under an hour and the price was exactly what they quoted. Lifesavers."</p><div class="rev__who"><div class="rev__av">DM</div><div><div class="rev__n">Daniel M.</div><div class="rev__m">Summerlin · via Google</div></div></div></article>
+      <article class="rev" data-reveal><div class="stars">★★★★★</div><p>"They replaced our whole system and financed it at $0 down. The new unit cut our July bill by almost a third. Cleanest, most professional crew we've had in the house."</p><div class="rev__who"><div class="rev__av">RT</div><div><div class="rev__n">Rosa T.</div><div class="rev__m">Henderson · via Google</div></div></div></article>
+      <article class="rev" data-reveal><div class="stars">★★★★★</div><p>"The Comfort Club membership paid for itself the first time we needed a repair. On time, texted before arrival, and genuinely honest about what did and didn't need fixing."</p><div class="rev__who"><div class="rev__av">JK</div><div><div class="rev__n">James K.</div><div class="rev__m">North Las Vegas · via Google</div></div></div></article>
+    </div>
+  </div>
+</section>
+
+<!-- service area -->
+<section class="section" id="area">
+  <div class="wrap area__grid">
+    <div class="map" data-reveal>
+      <svg class="map__svg" viewBox="0 0 500 500" role="img" aria-label="Service area map of the Las Vegas Valley, showing neighborhoods served">
+        <defs>
+          <radialGradient id="mapglow" cx="51%" cy="50%" r="56%">
+            <stop offset="0" stop-color="#21a7d6" stop-opacity=".26"/>
+            <stop offset="1" stop-color="#21a7d6" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <rect width="500" height="500" fill="#0c141b"/>
+        <circle cx="252" cy="252" r="235" fill="url(#mapglow)"/>
+        <!-- 215 beltway -->
+        <ellipse cx="252" cy="256" rx="186" ry="174" fill="none" stroke="#5fd2f3" stroke-opacity=".14" stroke-width="1.5" stroke-dasharray="3 7"/>
+        <!-- highways -->
+        <path d="M176 34 C 232 160 258 320 322 476" fill="none" stroke="#5fd2f3" stroke-opacity=".2" stroke-width="2"/>
+        <path d="M74 150 C 210 208 300 246 430 296" fill="none" stroke="#5fd2f3" stroke-opacity=".13" stroke-width="1.6"/>
+        <path d="M120 470 C 210 360 300 300 470 250" fill="none" stroke="#5fd2f3" stroke-opacity=".1" stroke-width="1.4"/>
+        <!-- pins -->
+        <g class="pin"><circle class="pin__glow" cx="110" cy="196" r="13"/><circle class="pin__dot" cx="110" cy="196" r="4"/><text x="124" y="200" text-anchor="start">Summerlin</text></g>
+        <g class="pin"><circle class="pin__glow" cx="206" cy="96" r="13"/><circle class="pin__dot" cx="206" cy="96" r="4"/><text x="220" y="100" text-anchor="start">Centennial Hills</text></g>
+        <g class="pin"><circle class="pin__glow" cx="342" cy="118" r="13"/><circle class="pin__dot" cx="342" cy="118" r="4"/><text x="328" y="122" text-anchor="end">North Las Vegas</text></g>
+        <g class="pin"><circle class="pin__glow" cx="404" cy="182" r="11"/><circle class="pin__dot" cx="404" cy="182" r="3.4"/><text x="390" y="186" text-anchor="end">Aliante</text></g>
+        <g class="pin"><circle class="pin__glow" cx="166" cy="300" r="13"/><circle class="pin__dot" cx="166" cy="300" r="4"/><text x="180" y="304" text-anchor="start">Spring Valley</text></g>
+        <g class="pin"><circle class="pin__glow" cx="240" cy="386" r="13"/><circle class="pin__dot" cx="240" cy="386" r="4"/><text x="254" y="390" text-anchor="start">Enterprise</text></g>
+        <g class="pin"><circle class="pin__glow" cx="340" cy="300" r="11"/><circle class="pin__dot" cx="340" cy="300" r="3.4"/><text x="354" y="304" text-anchor="start">Paradise</text></g>
+        <g class="pin"><circle class="pin__glow" cx="402" cy="392" r="13"/><circle class="pin__dot" cx="402" cy="392" r="4"/><text x="388" y="396" text-anchor="end">Henderson</text></g>
+        <!-- HQ -->
+        <g class="pin pin--hq">
+          <circle class="ring" cx="256" cy="250" r="9"/>
+          <circle class="pin__glow" cx="256" cy="250" r="17" style="fill:var(--warm);opacity:.28"/>
+          <circle class="pin__dot" cx="256" cy="250" r="6"/>
+          <text x="256" y="232" text-anchor="middle">Silver State HQ</text>
+        </g>
+      </svg>
+      <span class="map__cap">10 neighborhoods · one Las Vegas Valley</span>
+    </div>
+    <div data-reveal>
+      <p class="eyebrow">Service area</p>
+      <h2 class="h2">Proudly serving the whole valley.</h2>
+      <p class="lead measure">From Summerlin to Henderson and everywhere between — if you're in the Las Vegas metro, we've got you covered, fast.</p>
+      <ul class="areas">
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Summerlin</li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Henderson</li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>North Las Vegas</li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Spring Valley</li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Enterprise</li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Paradise</li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Green Valley</li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Centennial Hills</li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Aliante</li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Boulder City</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- booking CTA -->
+<section class="section book" id="book">
+  <div class="glow glow--cool"></div>
+  <div class="wrap book__in">
+    <div data-reveal>
+      <p class="eyebrow eyebrow--light">Book online</p>
+      <h2 class="h2">Schedule service in <span class="cool">about 60 seconds</span>.</h2>
+      <p>Pick a service and a time that works — we'll confirm by text and show up on time. Or call and talk to a real person, day or night.</p>
+      <div class="book__cta">
+        <a href="tel:+17025550142" class="btn btn--glass">Call (702) 555-0142</a>
+        <span style="color:var(--on-night-muted);align-self:center;font-size:.9rem">Avg. response · <b style="color:#fff">under 60 min</b></span>
+      </div>
+    </div>
+    <div class="bw" data-reveal>
+      <div class="bw__step">1 · What do you need?</div>
+      <div class="chips" data-group="svc">
+        <button class="chip sel" type="button">AC Repair</button>
+        <button class="chip" type="button">New System</button>
+        <button class="chip" type="button">Tune-up</button>
+        <button class="chip" type="button">Heating</button>
+        <button class="chip" type="button">Air Quality</button>
+      </div>
+      <div class="bw__step">2 · When works?</div>
+      <div class="chips" data-group="day">
+        <button class="chip sel" type="button">Today</button>
+        <button class="chip" type="button">Tomorrow</button>
+        <button class="chip" type="button">This week</button>
+        <button class="chip" type="button">Pick a date</button>
+      </div>
+      <div class="bw__step">3 · Time window</div>
+      <div class="chips" data-group="time">
+        <button class="chip sel" type="button">Morning</button>
+        <button class="chip" type="button">Midday</button>
+        <button class="chip" type="button">Afternoon</button>
+        <button class="chip" type="button">Evening</button>
+      </div>
+      <a href="#" class="btn btn--primary" id="bookConfirm">Confirm booking <span class="ar">↗</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- footer -->
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot__grid">
+      <div>
+        <a href="#top" class="logo"><svg class="mark" viewBox="0 0 40 40" fill="none" aria-hidden="true"><rect x="2" y="2" width="36" height="36" rx="11" fill="url(#markg)"/><path d="M20 9v22M11 14l18 12M29 14L11 26" stroke="#0a0f14" stroke-width="2.1" stroke-linecap="round" opacity=".9"/><circle cx="20" cy="20" r="3.4" fill="#0a0f14"/></svg><span style="color:#fff">Silver State<small>Heating &amp; Air</small></span></a>
+        <p class="foot__p">Premium heating &amp; air conditioning for the Las Vegas Valley. Cool, comfortable, done right.</p>
+      </div>
+      <div>
+        <h5>Services</h5>
+        <a href="#services">AC Repair</a><a href="#services">AC Installation</a><a href="#services">Heating</a><a href="#plans">Maintenance Plans</a><a href="#services">Indoor Air Quality</a>
+      </div>
+      <div>
+        <h5>Company</h5>
+        <a href="#financing">Financing</a><a href="#reviews">Reviews</a><a href="#area">Service Area</a><a href="#book">Book Online</a>
+      </div>
+      <div>
+        <h5>Get in touch</h5>
+        <a href="tel:+17025550142" style="color:#fff;font-family:var(--fmono)">(702) 555-0142</a>
+        <a href="mailto:hello@silverstatehvac.com">hello@silverstatehvac.com</a>
+        <li>Open 24/7 · 365 days</li>
+        <li>Las Vegas, NV</li>
+        <li style="margin-top:.6rem;font-size:.8rem;opacity:.7">NV Lic. #0089421 · Bonded &amp; insured</li>
+      </div>
+    </div>
+    <div class="foot__base">
+      <span>© <span id="yr"></span> Silver State Heating &amp; Air. All rights reserved.</span>
+      <span class="concept">Fictional concept design — built by <a href="https://green-starsolutions.com">Green Star Solutions</a></span>
+    </div>
+  </div>
+</footer>
+
+<a class="concept-ribbon" href="/" title="This is a fictional concept website designed by Green Star Solutions">
+  <span class="star">✦</span> Concept Website — designed by Green Star Solutions
+</a>
+
+<script>
+(function(){
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var io = new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+  },{threshold:.14, rootMargin:'0px 0px -8% 0px'});
+  document.querySelectorAll('[data-reveal]').forEach(function(el){ io.observe(el); });
+
+  var finIo = new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); finIo.unobserve(e.target);} }); },{threshold:.4});
+  document.querySelectorAll('.fin').forEach(function(el){ finIo.observe(el); });
+
+  var nav = document.getElementById('nav');
+  function onScroll(){ nav.classList.toggle('scrolled', window.scrollY > 24); }
+  onScroll(); addEventListener('scroll', onScroll, {passive:true});
+
+  var toggle = document.getElementById('navToggle'), sheet = document.getElementById('sheet');
+  toggle.addEventListener('click', function(){ sheet.classList.toggle('open'); });
+  sheet.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', function(){ sheet.classList.remove('open'); }); });
+
+  function countUp(el){
+    var target = parseInt(el.dataset.count,10), suffix = el.dataset.suffix || '', dur = 1500, start = performance.now();
+    function tick(now){ var p = Math.min(1,(now-start)/dur), eased = 1-Math.pow(1-p,3);
+      el.textContent = Math.round(target*eased).toLocaleString() + suffix;
+      if(p<1) requestAnimationFrame(tick); }
+    requestAnimationFrame(tick);
+  }
+  var statIo = new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ countUp(e.target); statIo.unobserve(e.target);} }); },{threshold:.6});
+  document.querySelectorAll('[data-count]').forEach(function(el){
+    if(reduce){ el.textContent = parseInt(el.dataset.count,10).toLocaleString() + (el.dataset.suffix||''); }
+    else statIo.observe(el);
+  });
+
+  document.querySelectorAll('.chips').forEach(function(group){
+    group.addEventListener('click', function(e){
+      var b = e.target.closest('.chip'); if(!b) return;
+      group.querySelectorAll('.chip').forEach(function(c){ c.classList.remove('sel'); });
+      b.classList.add('sel');
+    });
+  });
+  var bc = document.getElementById('bookConfirm');
+  bc.addEventListener('click', function(e){ e.preventDefault();
+    bc.textContent = "✓ Request sent — we'll text to confirm";
+    bc.style.background = 'var(--warm)'; bc.style.color = '#2a1903';
+  });
+
+  document.getElementById('yr').textContent = new Date().getFullYear();
+})();
+</script>
+</body>
+</html>

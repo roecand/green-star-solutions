@@ -314,6 +314,13 @@ a {
 .hero__head {
   margin: 0;
 }
+/* Sentence-length headline: slightly smaller than the punchy h-xl so all
+   three lines hold at every viewport without wrapping mid-thought. */
+.hero__head--sentence {
+  font-size: clamp(2.15rem, 5.6vw, 4.5rem);
+  letter-spacing: -0.015em;
+  max-width: 21ch;
+}
 .hero__line {
   display: block;
   overflow: hidden;
@@ -782,6 +789,19 @@ a {
   border: 1px solid var(--line);
   border-radius: 4px;
   padding: 0.4em 0.7em;
+}
+/* pricing anchor line at the foot of each department */
+.rung__price {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+  margin: 1.6rem 0 0;
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--forest);
+  border-top: 1px solid var(--line);
+  padding-top: 1.1rem;
 }
 @media (max-width: 640px) {
   .rung {

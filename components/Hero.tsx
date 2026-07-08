@@ -6,24 +6,27 @@ export default function Hero() {
       <div className="container hero__grid">
         <div className="hero__main">
           <p className="eyebrow hero__eyebrow">
-            <StarMark size={15} /> Growth agency for local service businesses
+            <StarMark size={15} /> A perception studio for the trades
           </p>
 
-          <h1 className="display h-xl hero__head">
+          <h1 className="display h-xl hero__head hero__head--sentence">
             <span className="hero__line">
-              <span>More Calls.</span>
+              <span>
+                We redesign the <span className="accent serif">feeling</span>
+              </span>
             </span>
             <span className="hero__line">
-              <span>More Jobs.</span>
+              <span>people get when they</span>
             </span>
             <span className="hero__line">
-              <span className="accent serif">Less Busy Work.</span>
+              <span>look at your business.</span>
             </span>
           </h1>
 
           <p className="lead hero__lead measure-wide">
-            We build high-converting websites, run Google &amp; Meta ads, and
-            automate follow-up so local service businesses can grow faster.
+            Brand, website, socials, and ads that make homeowners see the
+            company worth premium prices — and a follow-up system that makes
+            sure none of the new calls slip away.
           </p>
 
           <div className="hero__cta">
@@ -31,7 +34,7 @@ export default function Hero() {
               Book a Free Strategy Call <span className="arrow">↗</span>
             </a>
             <a className="tlink hero__see" href="#work">
-              View Our Work <span aria-hidden>↓</span>
+              See the transformations <span aria-hidden>↓</span>
             </a>
           </div>
         </div>
@@ -40,16 +43,16 @@ export default function Hero() {
           <StarMark size={34} className="hero__star" />
           <dl className="hero__meta-list">
             <div>
-              <dt>We do</dt>
-              <dd>Websites · Google &amp; Meta ads · Automation</dd>
+              <dt>Dept. 01 — Perception</dt>
+              <dd>Brand · Website · Socials · Ads</dd>
+            </div>
+            <div>
+              <dt>Dept. 02 — Conversion</dt>
+              <dd>Follow-up · Booking · CRM · Reviews</dd>
             </div>
             <div>
               <dt>Built for</dt>
               <dd>HVAC · Plumbing · Electrical · Roofing · Landscaping</dd>
-            </div>
-            <div>
-              <dt>The promise</dt>
-              <dd>More qualified calls and booked jobs — less admin</dd>
             </div>
           </dl>
         </aside>

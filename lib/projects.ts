@@ -37,6 +37,156 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    slug: "summit-climate",
+    name: "Summit Climate Solutions",
+    industry: "HVAC",
+    sector: "Trades",
+    styleLabel: "Quiet luxury · Editorial calm · Engineered restraint",
+    tagline:
+      "A luxury HVAC brand that sells comfort the way Apple sells hardware — calm, precise, and priced like it belongs in the homes it serves.",
+    url: "/concepts/summit-climate/index.html",
+    accent: "#175ee4",
+    overview: [
+      "Summit Climate is a concept for a high-end heating and cooling company in Las Vegas — the contractor a homeowner calls when the house is architect-designed and the budget says 'do it properly.' Most HVAC sites shout urgency; this one projects calm competence, because at the top of the market, composure is the sales pitch.",
+      "White space, a single alpine-blue accent, grotesk type, and mono coordinates ('36.17° N · elev. 2,001 ft') give it the register of a premium product launch, not a service directory. Heat pumps are presented like flagship hardware — spec grids, 19-decibel whisper claims — and membership and financing are packaged with the same polish.",
+    ],
+    designGoals: [
+      {
+        title: "Sell composure, not urgency",
+        body: "Emergency service exists (there's a 24/7 bar), but the brand leads with design consultations and engineering. The customer who spends $30k on a system buys from the company that doesn't look desperate.",
+      },
+      {
+        title: "Present equipment like a flagship product",
+        body: "The heat pump gets a dark 'product page' treatment with a spec grid — 22 SEER2, 19 dB — borrowed from consumer-electronics launches. Specs signal engineering; engineering justifies price.",
+      },
+      {
+        title: "Make the premium tier the default",
+        body: "Summit Care membership and $0-down financing are designed like subscription cards, normalizing the high-end path and smoothing a five-figure decision into a monthly number.",
+      },
+      {
+        title: "Let restraint do the pricing",
+        body: "One accent color, generous whitespace, mono microlabels. Nothing shouts, so everything reads expensive — the same trick luxury architecture firms use.",
+      },
+    ],
+    features: [
+      "24/7 emergency bar with live-dispatch pulse",
+      "Editorial hero with altitude-and-coordinates microcopy",
+      "Photographed before/after install showcase",
+      "Dark product-launch section for heat pumps with spec grid",
+      "Indoor-air-quality feature with custom airflow illustration",
+      "Summit Care membership card with contour-line motif",
+      "Financing card anchored to a monthly number ($0 down)",
+      "Trust strip: 4.9 rating, factory authorizations, 12-year guarantee",
+    ],
+    problem: {
+      lead: "In luxury home services, the website is the first walkthrough — the company that looks like a premium product gets the premium install.",
+      body: [
+        "High-end homeowners don't shop HVAC on price; they shop on trust and taste. But nearly every HVAC site in a metro looks the same — red 'CALL NOW' banners, coupon pop-ups, clip-art snowflakes. A company that actually does $30,000 installs has no way to look like it.",
+        "This concept gives the top of the market something to recognize. The calm layout, product-grade equipment presentation, and membership packaging tell an affluent homeowner 'this is the company your architect would pick' — which moves the conversation from 'how much?' to 'when can you start?'",
+      ],
+    },
+    palette: [
+      { name: "Snow", hex: "#ffffff" },
+      { name: "Azure", hex: "#175ee4", onDark: true },
+      { name: "Charcoal", hex: "#12161b", onDark: true },
+      { name: "Mist", hex: "#f3f6fb" },
+    ],
+    fonts: [
+      { role: "Display", name: "Schibsted Grotesk", sample: "The summit of home comfort." },
+      { role: "Body", name: "Geist", sample: "Engineered, installed, and maintained to the summit standard." },
+      { role: "Labels", name: "Geist Mono", sample: "LAS VEGAS · 36.17° N · ELEV. 2,001 FT" },
+    ],
+    before: [
+      "Red 'CALL NOW' urgency banners everywhere",
+      "Coupon pop-ups undercutting premium work",
+      "Equipment listed like a parts catalog",
+      "No path designed for the luxury buyer",
+      "Indistinguishable from every HVAC site in town",
+    ],
+    after: [
+      "Calm, product-launch presentation",
+      "Whitespace and restraint signal expense",
+      "Heat pumps staged like flagship hardware",
+      "Membership and financing packaged premium",
+      "Reads like the company an architect would pick",
+    ],
+  },
+  {
+    slug: "silver-state-hvac",
+    name: "Silver State Heating & Air",
+    industry: "HVAC",
+    sector: "Trades",
+    styleLabel: "Kinetic · High-contrast · Conversion-engineered",
+    tagline:
+      "The same trade as Summit Climate, a completely different voice — a bold, dark-mode HVAC brand built to convert the '108° and my AC just died' search at speed.",
+    url: "/concepts/silver-state-hvac/index.html",
+    accent: "#21a7d6",
+    overview: [
+      "Silver State is a concept for a high-volume premium HVAC company in Las Vegas — and a deliberate counterpoint to the Summit Climate concept. Same industry, same city, opposite brief: where Summit whispers to the luxury buyer, Silver State moves fast for the homeowner staring at a 108° forecast with a dead AC.",
+      "A dark, kinetic interface — animated thermostat dial, drifting heat-and-cool glows, count-up stat band — makes the brand feel like the cavalry arriving. Warm amber means heat and urgency, cool cyan means relief and action, and every scroll ends in a booking path.",
+    ],
+    designGoals: [
+      {
+        title: "Dramatize the problem in one glance",
+        body: "The hero's '108° out there. Perfect in here.' pairs an animated thermostat dial with outside/inside temperature chips — the entire value proposition rendered before a word of body copy is read.",
+      },
+      {
+        title: "Engineer every section toward booking",
+        body: "Same-day service links, financing, maintenance plans, and a chip-based booking widget mean a visitor is never more than one viewport away from starting an appointment.",
+      },
+      {
+        title: "Split the palette by physics",
+        body: "Amber is heat, urgency, and money; cyan is cool, relief, and action. The two-tone system keeps a fast, dense page feeling coherent instead of loud.",
+      },
+      {
+        title: "Prove reliability with numbers in motion",
+        body: "Count-up stats, a Google review badge, neighborhood-anchored testimonials, and a pinned service-area map make 'we show up fast, everywhere' feel measured rather than claimed.",
+      },
+    ],
+    features: [
+      "Animated comfort-dial hero with live temperature chips",
+      "Count-up stat band (600+ reviews, 60-min response)",
+      "Six-service grid with hover accent sweeps",
+      "Dark financing section with animated qualification bar",
+      "Three-tier Comfort Club maintenance plans",
+      "Google-badged review cards anchored to neighborhoods",
+      "Custom SVG service-area map with pinging HQ pin",
+      "Chip-based booking widget with confirmation state",
+    ],
+    problem: {
+      lead: "When the AC dies in a Vegas July, the job goes to the company that looks fastest and most alive — within seconds of the page loading.",
+      body: [
+        "Emergency-adjacent HVAC is won on momentum. Most competitors greet a sweating homeowner with a static stock photo and a contact form that feels like paperwork. Every extra second of doubt sends the visitor back to the search results.",
+        "This concept converts urgency into motion. The animated dial mirrors exactly what the visitor is feeling, the stat band and reviews de-risk the call, and the booking widget turns 'I should deal with this' into a tapped-out appointment. Paired with the Summit concept, it also proves a point: one trade, two different companies, two completely different designs.",
+      ],
+    },
+    palette: [
+      { name: "Night", hex: "#0a0f14", onDark: true },
+      { name: "Glacier Cyan", hex: "#21a7d6", onDark: true },
+      { name: "Desert Amber", hex: "#eb9a36", onDark: true },
+      { name: "Paper", hex: "#f5f8f9" },
+    ],
+    fonts: [
+      { role: "Display", name: "Clash Display", sample: "108° out there. Perfect in here." },
+      { role: "Body", name: "Satoshi", sample: "Same-day AC repair, premium installs, zero surprises." },
+      { role: "Labels", name: "JetBrains Mono", sample: "LAS VEGAS · HENDERSON · SUMMERLIN" },
+    ],
+    before: [
+      "Static stock photo of condenser units",
+      "Contact form that feels like paperwork",
+      "No proof of speed anywhere on the page",
+      "Urgent visitor left to dig for the number",
+      "Same beige template as every competitor",
+    ],
+    after: [
+      "Animated dial mirrors the visitor's problem",
+      "Booking widget books the visit in taps",
+      "Count-up stats make speed measurable",
+      "Emergency path visible in every viewport",
+      "A brand with a pulse — impossible to confuse",
+    ],
+  },
+  {
     slug: "rio-verde-plumbing",
     name: "Rio Verde Plumbing Co.",
     industry: "Plumbing",

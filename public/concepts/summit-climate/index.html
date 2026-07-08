@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Summit Climate Solutions — Luxury Heating &amp; Cooling, Las Vegas</title>
+<meta name="description" content="Luxury climate systems for Las Vegas homes. Heat pumps, indoor air quality, membership care, and financing — engineered to the summit of home comfort." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preconnect" href="https://images.unsplash.com" />
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700&family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --snow:#ffffff; --mist:#f3f6fb; --cloud:#e8edf4; --line:#e3e9f0; --line-2:#d3dbe6;
+  --ink:#191d23; --ink-soft:#3a424c; --slate:#5c6672; --slate-2:#93a0ad;
+  --azure:#175ee4; --azure-deep:#0a2f86; --azure-bright:#4f8bff; --azure-soft:#eaf1ff;
+  --char:#12161b; --char-2:#191f26; --on-char:#eef2f6; --on-char-mut:#8d99a6; --line-char:rgba(255,255,255,.1);
+  --maxw:1200px; --gut:clamp(1.25rem,4vw,4rem);
+  --fdisp:"Schibsted Grotesk",system-ui,sans-serif;
+  --fbody:"Geist",system-ui,sans-serif;
+  --fmono:"Geist Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{background:var(--snow);color:var(--ink);font-family:var(--fbody);font-size:1.0625rem;line-height:1.6;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+h1,h2,h3,h4{font-family:var(--fdisp);font-weight:600;letter-spacing:-.025em;line-height:1.04}
+
+.wrap{width:100%;max-width:var(--maxw);margin-inline:auto;padding-inline:var(--gut)}
+.section{padding-block:clamp(5rem,10vw,8.5rem)}
+.kicker{font-family:var(--fmono);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--azure);font-weight:500;display:inline-flex;align-items:center;gap:.7em}
+.kicker::before{content:"▲";font-size:.7em;color:var(--azure)}
+.kicker--mut{color:var(--slate-2)}
+.kicker--light{color:var(--azure-bright)}
+.h1{font-size:clamp(2.7rem,6.4vw,5.5rem)}
+.h2{font-size:clamp(2rem,4.3vw,3.5rem)}
+.lead{font-size:clamp(1.1rem,1.6vw,1.32rem);line-height:1.5;color:var(--slate)}
+.measure{max-width:52ch}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;gap:.55em;font-family:var(--fbody);font-weight:500;font-size:1rem;padding:.85em 1.5em;border-radius:100px;border:1px solid transparent;cursor:pointer;transition:transform .3s cubic-bezier(.2,.8,.2,1),background .3s,color .3s,box-shadow .3s;white-space:nowrap}
+.btn .ar{transition:transform .3s}
+.btn:hover .ar{transform:translateX(3px)}
+.btn--primary{background:var(--azure);color:#fff;box-shadow:0 10px 30px -12px rgba(23,94,228,.65)}
+.btn--primary:hover{background:#0f4fd0;transform:translateY(-2px);box-shadow:0 16px 40px -14px rgba(23,94,228,.7)}
+.btn--dark{background:var(--ink);color:#fff}
+.btn--dark:hover{background:#000;transform:translateY(-2px)}
+.btn--light{background:#fff;color:var(--ink)}
+.btn--light:hover{transform:translateY(-2px);box-shadow:0 14px 36px -16px rgba(0,0,0,.4)}
+.tlink{display:inline-flex;align-items:center;gap:.4em;font-weight:500;color:var(--azure);position:relative}
+.tlink .ar{transition:transform .3s}
+.tlink:hover .ar{transform:translateX(4px)}
+
+/* reveal */
+[data-reveal]{opacity:0;transform:translateY(24px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1)}
+[data-reveal].in{opacity:1;transform:none}
+
+/* logo */
+.logo{display:inline-flex;align-items:center;gap:.6rem;font-family:var(--fdisp);font-weight:600;font-size:1.08rem;letter-spacing:-.02em}
+.peak{width:26px;height:26px;flex:none}
+
+/* ===== emergency bar ===== */
+.ebar{background:var(--char);color:var(--on-char-mut);font-size:.82rem}
+.ebar__in{display:flex;align-items:center;justify-content:center;gap:.9rem;padding:.55rem var(--gut);text-align:center;flex-wrap:wrap}
+.dotpulse{width:7px;height:7px;border-radius:50%;background:var(--azure-bright);box-shadow:0 0 0 0 rgba(79,139,255,.7);animation:pulse 2.2s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(79,139,255,.6)}70%{box-shadow:0 0 0 9px rgba(79,139,255,0)}100%{box-shadow:0 0 0 0 rgba(79,139,255,0)}}
+.ebar b{color:#fff;font-weight:500}
+.ebar a{color:#fff;font-family:var(--fmono);font-weight:500}
+
+/* ===== nav ===== */
+.nav{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.72);backdrop-filter:saturate(1.6) blur(18px);border-bottom:1px solid transparent;transition:border-color .3s,background .3s}
+.nav.scrolled{border-bottom-color:var(--line)}
+.nav__in{display:flex;align-items:center;justify-content:space-between;gap:1.5rem;padding:.95rem var(--gut)}
+.nav__links{display:flex;gap:2rem}
+.nav__links a{font-size:.92rem;font-weight:450;color:var(--ink-soft);position:relative;padding:.2rem 0;transition:color .2s}
+.nav__links a:hover{color:var(--azure)}
+.nav__cta{display:flex;align-items:center;gap:1rem}
+.nav__phone{font-family:var(--fmono);font-size:.86rem;color:var(--slate);white-space:nowrap}
+.nav__book{padding:.6em 1.15em;font-size:.9rem}
+.nav__toggle{display:none;width:42px;height:42px;border:1px solid var(--line-2);border-radius:11px;background:transparent;cursor:pointer;flex-direction:column;gap:5px;align-items:center;justify-content:center}
+.nav__toggle span{width:17px;height:1.6px;background:var(--ink);display:block}
+.sheet{display:none}
+
+/* ===== hero ===== */
+.hero{position:relative;overflow:hidden}
+.hero__grid{display:grid;grid-template-columns:1fr 1.04fr;gap:clamp(1.5rem,4vw,3.5rem);align-items:center;padding-block:clamp(2.5rem,5vw,4.5rem)}
+.hero__alt{font-family:var(--fmono);font-size:.72rem;letter-spacing:.16em;color:var(--slate-2);margin-bottom:1.1rem}
+.hero h1{margin:0 0 1.3rem;max-width:14ch;font-size:clamp(2.6rem,5vw,4.7rem)}
+.hero h1 .grad{background:linear-gradient(100deg,var(--azure),var(--azure-bright));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero__sub{max-width:45ch}
+.hero__cta{display:flex;gap:1.2rem;align-items:center;flex-wrap:wrap;margin-top:2rem}
+.hero__media{position:relative;border-radius:22px;overflow:hidden;aspect-ratio:5/4;background:linear-gradient(160deg,#eef3fb,#dbe8ff);box-shadow:0 40px 90px -50px rgba(10,47,134,.42);border:1px solid var(--line)}
+.hero__media img{width:100%;height:100%;object-fit:cover;object-position:64% center}
+.hero__cap{position:absolute;left:1rem;bottom:1rem;font-family:var(--fmono);font-size:.66rem;letter-spacing:.1em;color:#fff;background:rgba(18,22,27,.5);backdrop-filter:blur(6px);padding:.4em .75em;border-radius:8px}
+.hero-rise{opacity:0;transform:translateY(24px);animation:rise 1s cubic-bezier(.2,.8,.2,1) forwards}
+@keyframes rise{to{opacity:1;transform:none}}
+
+/* before/after showcase */
+.showcase{position:relative;border-radius:22px;overflow:hidden;box-shadow:0 40px 90px -50px rgba(10,47,134,.5);border:1px solid var(--line);line-height:0}
+.showcase img{width:100%;display:block}
+
+/* ===== trust strip ===== */
+.trust{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--mist)}
+.trust__in{display:flex;flex-wrap:wrap;justify-content:center;gap:1rem 2.6rem;padding:1.4rem var(--gut);font-family:var(--fmono);font-size:.8rem;letter-spacing:.04em;color:var(--slate)}
+.trust__in .hi{color:var(--ink);font-weight:500}
+.trust__in span{display:inline-flex;align-items:center;gap:.5rem}
+.trust__in .st{color:var(--azure)}
+
+/* section head */
+.shead{max-width:640px}
+.shead h2{margin:1rem 0 1.1rem}
+.shead--c{margin-inline:auto;text-align:center}
+.shead--c .kicker{justify-content:center}
+
+/* ===== before/after ===== */
+.ba{position:relative;border-radius:22px;overflow:hidden;aspect-ratio:16/9;user-select:none;box-shadow:0 40px 90px -50px rgba(10,47,134,.5);border:1px solid var(--line);touch-action:pan-y;background:#0b0f14}
+.ba__layer{position:absolute;inset:0}
+.ba__layer img{width:100%;height:100%;object-fit:cover}
+.ba__after{background:linear-gradient(140deg,#123a86,#1f6fe6 60%,#5fb0ff)}
+.ba__after img{filter:saturate(1.06) contrast(1.03) brightness(1.03)}
+.ba__before{background:linear-gradient(140deg,#20262d,#3a434d);clip-path:polygon(0 0,var(--pos,55%) 0,var(--pos,55%) 100%,0 100%)}
+.ba__before img{filter:grayscale(1) brightness(.72) contrast(.95)}
+.ba__tag{position:absolute;top:1rem;font-family:var(--fmono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;padding:.35em .7em;border-radius:7px;background:rgba(18,22,27,.66);backdrop-filter:blur(6px);color:#fff;z-index:4}
+.ba__tag--b{left:1rem}.ba__tag--a{right:1rem}
+.ba__line{position:absolute;top:0;bottom:0;left:var(--pos,55%);width:2px;background:#fff;z-index:5;transform:translateX(-1px);box-shadow:0 0 20px rgba(0,0,0,.4)}
+.ba__grip{position:absolute;top:50%;left:var(--pos,55%);z-index:6;transform:translate(-50%,-50%);width:52px;height:52px;border-radius:50%;background:#fff;box-shadow:0 8px 24px rgba(10,47,134,.4);display:grid;place-items:center;color:var(--azure)}
+.ba__range{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:ew-resize;z-index:7;margin:0}
+.ba__cap{margin-top:1.1rem;font-size:.92rem;color:var(--slate);text-align:center}
+
+/* ===== heat pump (dark product feature) ===== */
+.pump{background:var(--char);color:var(--on-char)}
+.pump__grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,5vw,4.5rem);align-items:center}
+.pump h2{color:#fff}
+.pump p{color:var(--on-char-mut)}
+.pump__stage{position:relative;aspect-ratio:1;border-radius:24px;overflow:hidden;background:radial-gradient(120% 120% at 60% 20%,#20304f,#12161b 70%);border:1px solid var(--line-char);display:grid;place-items:center}
+.pump__stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:2}
+.pump__unit{width:74%;z-index:1}
+.specs{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line-char);border:1px solid var(--line-char);border-radius:16px;overflow:hidden;margin-top:2rem}
+.spec{background:var(--char);padding:1.3rem 1.4rem}
+.spec__n{font-family:var(--fdisp);font-size:1.9rem;font-weight:600;letter-spacing:-.03em;color:#fff}
+.spec__n .u{font-size:.9rem;color:var(--azure-bright);font-family:var(--fmono)}
+.spec__l{font-family:var(--fmono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--on-char-mut);margin-top:.35rem}
+
+/* ===== indoor air quality ===== */
+.iaq__grid{display:grid;grid-template-columns:.92fr 1.08fr;gap:clamp(2rem,5vw,4.5rem);align-items:center}
+.iaq__viz{position:relative;aspect-ratio:1;border-radius:24px;background:linear-gradient(160deg,#f7faff,#eaf1ff);border:1px solid var(--line);overflow:hidden;display:grid;place-items:center}
+.iaq__viz svg{width:100%;height:100%}
+.iaq__list{display:flex;flex-direction:column;gap:1.4rem;margin-top:1.8rem}
+.iaq__item{display:flex;gap:1rem;align-items:flex-start}
+.iaq__item .k{width:44px;height:44px;flex:none;border-radius:12px;background:var(--azure-soft);color:var(--azure);display:grid;place-items:center}
+.iaq__item h4{font-family:var(--fbody);font-weight:600;font-size:1.08rem;letter-spacing:0;margin-bottom:.2rem}
+.iaq__item p{color:var(--slate);font-size:.96rem}
+
+/* ===== membership ===== */
+.mem{background:var(--mist)}
+.mem__card{max-width:760px;margin-inline:auto;background:#fff;border:1px solid var(--line);border-radius:26px;overflow:hidden;box-shadow:0 40px 90px -55px rgba(10,47,134,.4);display:grid;grid-template-columns:1.1fr .9fr}
+.mem__left{padding:clamp(2rem,4vw,3rem)}
+.mem__badge{font-family:var(--fmono);font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:var(--azure)}
+.mem__name{font-size:2rem;margin:.4rem 0 1rem}
+.mem__list{list-style:none;display:flex;flex-direction:column;gap:.85rem}
+.mem__list li{display:flex;gap:.65rem;align-items:flex-start;font-size:.97rem;color:var(--ink-soft)}
+.mem__list svg{flex:none;margin-top:3px;color:var(--azure)}
+.mem__right{background:linear-gradient(165deg,var(--azure),var(--azure-deep));color:#fff;padding:clamp(2rem,4vw,3rem);display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden}
+.mem__price{font-family:var(--fdisp);font-size:3.6rem;font-weight:600;letter-spacing:-.03em;line-height:1}
+.mem__price span{font-size:1.05rem;font-family:var(--fbody);opacity:.8}
+.mem__right p{color:rgba(255,255,255,.82);font-size:.92rem;margin:.6rem 0 1.6rem}
+.mem__right .btn{width:100%;justify-content:center}
+.mem__contour{position:absolute;inset:0;opacity:.22;pointer-events:none}
+
+/* ===== financing ===== */
+.fin__grid{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(2rem,5vw,4rem);align-items:center}
+.fin__card{border:1px solid var(--line);border-radius:22px;padding:2rem;background:var(--mist)}
+.fin__amt{font-family:var(--fdisp);font-size:clamp(2.8rem,6vw,4rem);font-weight:600;letter-spacing:-.03em;line-height:1;color:var(--ink)}
+.fin__amt span{font-size:1.1rem;color:var(--azure);font-family:var(--fmono)}
+.fin__row{display:flex;gap:1.4rem;margin:1.5rem 0;flex-wrap:wrap}
+.fin__row div{flex:1;min-width:110px}
+.fin__row .k{font-family:var(--fmono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--slate-2)}
+.fin__row .v{font-weight:600;color:var(--ink);margin-top:.25rem}
+
+/* ===== emergency band ===== */
+.eband{background:var(--char);color:var(--on-char);position:relative;overflow:hidden}
+.eband__in{position:relative;z-index:2;display:flex;justify-content:space-between;align-items:center;gap:2rem;flex-wrap:wrap}
+.eband h2{color:#fff;max-width:16ch}
+.eband p{color:var(--on-char-mut);margin-top:.8rem;max-width:42ch}
+.eband__contour{position:absolute;inset:0;opacity:.3;z-index:1}
+
+/* ===== final cta ===== */
+.cta{text-align:center}
+.cta h2{max-width:18ch;margin:1rem auto 1.2rem}
+.cta__cta{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-top:2rem}
+
+/* ===== footer ===== */
+.foot{background:var(--char);color:var(--on-char-mut);padding-top:clamp(3.5rem,7vw,5rem);padding-bottom:2.2rem}
+.foot__grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:2.4rem;padding-bottom:2.8rem;border-bottom:1px solid var(--line-char)}
+.foot__grid h5{font-family:var(--fmono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:#fff;font-weight:500;margin-bottom:1rem}
+.foot__grid a,.foot__grid li{display:block;list-style:none;margin-bottom:.5rem;font-size:.9rem;transition:color .2s}
+.foot__grid a:hover{color:#fff}
+.foot .logo{color:#fff;margin-bottom:1rem}
+.foot__p{font-size:.9rem;max-width:32ch}
+.foot__base{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;padding-top:1.5rem;font-size:.8rem}
+.foot__base a{color:var(--azure-bright)}
+
+@media(max-width:1024px){
+  .nav__links,.nav__phone{display:none}
+  .nav__toggle{display:flex}
+  .sheet{position:fixed;inset:auto 0 0 0;top:63px;background:rgba(255,255,255,.97);backdrop-filter:blur(12px);z-index:55;padding:1.4rem var(--gut);flex-direction:column;gap:.3rem;border-top:1px solid var(--line)}
+  .sheet.open{display:flex}
+  .sheet a{padding:.85rem 0;border-bottom:1px solid var(--line);font-family:var(--fdisp);font-size:1.3rem;color:var(--ink)}
+}
+@media(max-width:920px){
+  .hero__grid,.pump__grid,.iaq__grid,.fin__grid{grid-template-columns:1fr}
+  .hero__media{aspect-ratio:16/10;max-height:420px}
+  .mem__card{grid-template-columns:1fr}
+  .specs{grid-template-columns:1fr 1fr}
+}
+@media(max-width:760px){
+  .nav__book{display:none}
+  .eband__in{flex-direction:column;align-items:flex-start}
+  .stage{aspect-ratio:4/3}
+  .foot__grid{grid-template-columns:1fr 1fr;gap:2rem 1.5rem}
+  .foot__grid>div:first-child{grid-column:1 / -1}
+  .foot__grid a,.foot__grid li{word-break:break-word}
+}
+@media(max-width:440px){
+  .foot__grid{grid-template-columns:1fr}
+  .specs{grid-template-columns:1fr}
+}
+/* ===== concept ribbon ===== */
+.concept-ribbon{position:fixed;left:16px;bottom:16px;z-index:100;background:#fff;color:var(--ink);font-family:var(--fbody);font-size:12.5px;font-weight:500;letter-spacing:.01em;padding:9px 15px;border-radius:999px;border:1px solid var(--line);box-shadow:0 10px 30px rgba(10,47,134,.22);display:flex;align-items:center;gap:8px}
+.concept-ribbon .star{color:#0e4a33}
+.concept-ribbon:hover{border-color:var(--line-2)}
+
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+  [data-reveal]{opacity:1;transform:none}.hero-rise{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+
+<!-- emergency bar -->
+<div class="ebar">
+  <div class="ebar__in">
+    <span class="dotpulse" aria-hidden="true"></span>
+    <span><b>24/7 emergency service</b> — a Summit technician is always on call.</span>
+    <a href="tel:+17025550199">(702) 555-0199</a>
+  </div>
+</div>
+
+<!-- nav -->
+<header class="nav" id="nav">
+  <div class="nav__in">
+    <a href="#top" class="logo" aria-label="Summit Climate Solutions, home">
+      <svg class="peak" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+        <path d="M14 3.5 25 24H3L14 3.5Z" stroke="url(#pk)" stroke-width="2" stroke-linejoin="round"/>
+        <path d="M10.5 15.5 14 9l3.5 6.5" stroke="url(#pk)" stroke-width="2" stroke-linejoin="round" opacity=".55"/>
+        <defs><linearGradient id="pk" x1="3" y1="3" x2="25" y2="24"><stop stop-color="#4f8bff"/><stop offset="1" stop-color="#0a2f86"/></linearGradient></defs>
+      </svg>
+      Summit Climate
+    </a>
+    <nav class="nav__links" aria-label="Primary">
+      <a href="#difference">The difference</a>
+      <a href="#heatpump">Heat pumps</a>
+      <a href="#air">Air quality</a>
+      <a href="#membership">Membership</a>
+      <a href="#financing">Financing</a>
+    </nav>
+    <div class="nav__cta">
+      <a href="tel:+17025550199" class="nav__phone">(702) 555-0199</a>
+      <a href="#book" class="btn btn--dark nav__book">Book a consultation</a>
+      <button class="nav__toggle" id="navToggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <div class="sheet" id="sheet">
+    <a href="#difference">The difference</a><a href="#heatpump">Heat pumps</a><a href="#air">Air quality</a>
+    <a href="#membership">Membership</a><a href="#financing">Financing</a>
+    <a href="#book" class="btn btn--dark" style="margin-top:.7rem">Book a consultation</a>
+  </div>
+</header>
+
+<!-- hero -->
+<section class="hero" id="top">
+  <div class="wrap hero__grid">
+    <div class="hero__content">
+      <p class="hero__alt hero-rise" style="animation-delay:.04s">Las Vegas · 36.17° N · elev. 2,001 ft</p>
+      <h1 class="h1 hero-rise" style="animation-delay:.12s">The summit of<br>home <span class="grad">comfort</span>.</h1>
+      <p class="lead hero__sub hero-rise" style="animation-delay:.22s">Summit Climate Solutions designs, installs, and maintains the quietest, cleanest, most efficient heating and cooling systems in the desert — for homes that accept nothing less.</p>
+      <div class="hero__cta hero-rise" style="animation-delay:.32s">
+        <a href="#book" class="btn btn--primary">Book a consultation <span class="ar">→</span></a>
+        <a href="#heatpump" class="tlink">Explore heat pumps <span class="ar">→</span></a>
+      </div>
+    </div>
+    <div class="hero__media hero-rise" style="animation-delay:.42s" data-reveal>
+      <img src="assets/hero.jpg" alt="A Summit technician arriving at a modern Las Vegas home at dusk" />
+      <span class="hero__cap">White-glove service, on time</span>
+    </div>
+  </div>
+</section>
+
+<!-- trust strip -->
+<div class="trust">
+  <div class="trust__in">
+    <span><span class="st">★</span> <span class="hi">4.9</span> · 420 reviews</span>
+    <span><span class="hi">Factory-authorized</span> Carrier &amp; Mitsubishi</span>
+    <span><span class="hi">12-year</span> comfort guarantee</span>
+    <span><span class="hi">0%</span> financing available</span>
+    <span><span class="hi">NATE</span>-certified technicians</span>
+  </div>
+</div>
+
+<!-- before/after -->
+<section class="section" id="difference">
+  <div class="wrap">
+    <div class="shead shead--c" data-reveal>
+      <p class="kicker">The Summit difference</p>
+      <h2 class="h2">See what a proper install looks like.</h2>
+      <p class="lead" style="margin-inline:auto">On the left, what we usually replace — loud, corroded, and oversized. On the right, the same home with a Summit system: sealed, sized, and silent.</p>
+    </div>
+
+    <div style="max-width:1000px;margin:clamp(2.5rem,5vw,3.5rem) auto 0" data-reveal>
+      <figure class="showcase">
+        <img src="assets/before-after.jpg" alt="A dated, corroded furnace, and the same home after a clean Summit heat-pump installation" />
+        <span class="ba__tag ba__tag--b">Before</span>
+        <span class="ba__tag ba__tag--a">After · Summit</span>
+      </figure>
+      <p class="ba__cap">Every install is photographed, commissioned, and airflow-balanced before we call it done.</p>
+    </div>
+  </div>
+</section>
+
+<!-- heat pump -->
+<section class="section pump" id="heatpump">
+  <div class="wrap pump__grid">
+    <div data-reveal>
+      <p class="kicker kicker--light">Heat pumps</p>
+      <h2 class="h2">One system. Heats, cools, and barely whispers.</h2>
+      <p class="lead" style="color:var(--on-char-mut);margin-top:1.1rem">A modern heat pump replaces your furnace and AC with a single, wildly efficient unit — moving heat instead of burning it. In a Vegas climate, that means lower bills, a quieter home, and federal rebates that soften the cost.</p>
+      <div class="specs">
+        <div class="spec"><div class="spec__n">22<span class="u"> SEER2</span></div><div class="spec__l">Peak efficiency</div></div>
+        <div class="spec"><div class="spec__n">19<span class="u"> dB</span></div><div class="spec__l">As quiet as a whisper</div></div>
+        <div class="spec"><div class="spec__n">$2,000<span class="u"> +</span></div><div class="spec__l">In available rebates</div></div>
+        <div class="spec"><div class="spec__n">1<span class="u"> unit</span></div><div class="spec__l">Whole-home, year-round</div></div>
+      </div>
+      <a href="#book" class="btn btn--light" style="margin-top:2rem">Design my system <span class="ar">→</span></a>
+    </div>
+    <div class="pump__stage" data-reveal>
+      <svg class="pump__unit" viewBox="0 0 300 300" fill="none" aria-hidden="true">
+        <rect x="42" y="70" width="216" height="176" rx="18" fill="#0e1319" stroke="#31404f" stroke-width="2"/>
+        <rect x="42" y="70" width="216" height="176" rx="18" fill="url(#pg)" fill-opacity=".25"/>
+        <circle cx="150" cy="158" r="66" fill="#0b1016" stroke="#3a4a5c" stroke-width="2"/>
+        <g stroke="#5fb0ff" stroke-width="3" stroke-linecap="round" opacity=".85">
+          <path d="M150 158 C 150 120 178 108 196 128"/>
+          <path d="M150 158 C 184 172 186 200 160 210"/>
+          <path d="M150 158 C 116 158 104 186 122 204"/>
+          <path d="M150 158 C 128 128 100 130 96 158"/>
+        </g>
+        <circle cx="150" cy="158" r="9" fill="#4f8bff"/>
+        <rect x="66" y="90" width="60" height="7" rx="3.5" fill="#2a3745"/>
+        <rect x="66" y="104" width="40" height="7" rx="3.5" fill="#2a3745"/>
+        <defs><linearGradient id="pg" x1="42" y1="70" x2="258" y2="246"><stop stop-color="#4f8bff"/><stop offset="1" stop-color="#0a2f86"/></linearGradient></defs>
+      </svg>
+      <img src="assets/heat-pump.jpg" alt="A modern heat pump beside a luxury desert home at dusk" style="object-position:72% center" />
+    </div>
+  </div>
+</section>
+
+<!-- indoor air quality -->
+<section class="section" id="air">
+  <div class="wrap iaq__grid">
+    <div class="iaq__viz" data-reveal aria-hidden="true">
+      <svg viewBox="0 0 400 400" fill="none">
+        <defs><radialGradient id="ag" cx="50%" cy="42%" r="55%"><stop offset="0" stop-color="#4f8bff" stop-opacity=".28"/><stop offset="1" stop-color="#4f8bff" stop-opacity="0"/></radialGradient></defs>
+        <circle cx="200" cy="180" r="150" fill="url(#ag)"/>
+        <g stroke="#175ee4" stroke-width="1.5" fill="none" opacity=".5">
+          <path d="M70 150 C 140 120 260 120 330 150"/>
+          <path d="M60 200 C 140 168 260 168 340 200"/>
+          <path d="M70 250 C 140 220 260 220 330 250"/>
+        </g>
+        <g fill="#175ee4">
+          <circle cx="120" cy="150" r="3" opacity=".7"/><circle cx="200" cy="120" r="4" opacity=".9"/>
+          <circle cx="280" cy="160" r="3" opacity=".6"/><circle cx="160" cy="210" r="3.5" opacity=".8"/>
+          <circle cx="250" cy="230" r="3" opacity=".6"/><circle cx="200" cy="180" r="5" opacity="1"/>
+        </g>
+        <circle cx="200" cy="180" r="150" stroke="#175ee4" stroke-opacity=".18" stroke-width="1.5"/>
+      </svg>
+    </div>
+    <div data-reveal>
+      <p class="kicker">Indoor air quality</p>
+      <h2 class="h2">Air as clean as ten thousand feet.</h2>
+      <p class="lead" style="margin-top:1rem">Desert air carries dust, allergens, and dryness indoors. We build filtration and purification into the system itself — so every room breathes like a clear morning on the ridge.</p>
+      <div class="iaq__list">
+        <div class="iaq__item"><span class="k"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h16M4 12h16M4 17h16" stroke-linecap="round"/></svg></span><div><h4>Whole-home filtration</h4><p>MERV-16 media that captures particles down to a fraction of a micron — without choking airflow.</p></div></div>
+        <div class="iaq__item"><span class="k"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3M12 18v3M5 12H2M22 12h-3M6 6l-2-2M20 20l-2-2M6 18l-2 2M20 4l-2 2"/><circle cx="12" cy="12" r="4"/></svg></span><div><h4>UV purification</h4><p>Inline UV neutralizes mold and bacteria before they ever reach a vent.</p></div></div>
+        <div class="iaq__item"><span class="k"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c2.5 3 4 5.5 4 8a4 4 0 1 1-8 0c0-2.5 1.5-5 4-8Z"/></svg></span><div><h4>Balanced humidity</h4><p>Whole-home humidity control keeps skin, wood floors, and sleep comfortable year-round.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- membership -->
+<section class="section mem" id="membership">
+  <div class="wrap">
+    <div class="shead shead--c" data-reveal>
+      <p class="kicker">Membership</p>
+      <h2 class="h2">Summit Care</h2>
+      <p class="lead" style="margin-inline:auto">One membership that keeps a premium system performing like the day it was installed.</p>
+    </div>
+    <div class="mem__card" data-reveal>
+      <div class="mem__left">
+        <div class="mem__badge">Summit Care · Annual membership</div>
+        <div class="mem__name">Everything, handled.</div>
+        <ul class="mem__list">
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Two precision tune-ups a year — before summer and winter</li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Priority scheduling and front-of-line emergency response</li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>15% off any repair, and no diagnostic fees — ever</li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Filters delivered to your door on schedule</li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Comfort guarantee: we make it right, or it's on us</li>
+        </ul>
+      </div>
+      <div class="mem__right">
+        <svg class="mem__contour" viewBox="0 0 400 400" preserveAspectRatio="none" aria-hidden="true"><g fill="none" stroke="#fff" stroke-width="1.5"><path d="M0 300 C 120 260 260 320 400 280"/><path d="M0 250 C 120 210 260 270 400 230"/><path d="M0 200 C 120 160 260 220 400 180"/><path d="M0 150 C 120 110 260 170 400 130"/></g></svg>
+        <div class="mem__price">$29<span>/mo</span></div>
+        <p>Billed annually. Cancel anytime. Pays for itself with a single avoided breakdown.</p>
+        <a href="#book" class="btn btn--light">Join Summit Care</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- financing -->
+<section class="section" id="financing">
+  <div class="wrap fin__grid">
+    <div data-reveal>
+      <p class="kicker">Financing</p>
+      <h2 class="h2">Comfort now. Paid over time.</h2>
+      <p class="lead" style="margin-top:1rem">A new system is an investment in the next fifteen years of your home. With $0 down and approval in minutes, you can spread it across low monthly payments — and start saving on energy the same week.</p>
+      <a href="#book" class="btn btn--primary" style="margin-top:1.8rem">Check your rate <span class="ar">→</span></a>
+    </div>
+    <div class="fin__card" data-reveal>
+      <div style="font-family:var(--fmono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--slate-2)">A full premium system from</div>
+      <div class="fin__amt" style="margin-top:.4rem">$79<span>/mo</span></div>
+      <div class="fin__row">
+        <div><div class="k">Down</div><div class="v">$0</div></div>
+        <div><div class="k">APR</div><div class="v">0% avail.</div></div>
+        <div><div class="k">Approval</div><div class="v">~3 min</div></div>
+      </div>
+      <div style="font-size:.86rem;color:var(--slate)">Terms up to 120 months on approved credit. No prepayment penalty.</div>
+    </div>
+  </div>
+</section>
+
+<!-- emergency band -->
+<section class="section eband">
+  <svg class="eband__contour" viewBox="0 0 1200 300" preserveAspectRatio="none" aria-hidden="true"><g fill="none" stroke="#4f8bff" stroke-opacity=".25" stroke-width="1.5"><path d="M0 210 C 200 170 400 240 600 200 C 800 160 1000 230 1200 190"/><path d="M0 160 C 200 120 400 190 600 150 C 800 110 1000 180 1200 140"/><path d="M0 110 C 200 70 400 140 600 100 C 800 60 1000 130 1200 90"/></g></svg>
+  <div class="wrap eband__in">
+    <div data-reveal>
+      <p class="kicker kicker--light">Emergency service</p>
+      <h2 class="h2" style="margin-top:.8rem">When comfort fails, we don't.</h2>
+      <p>115° outside and no cooling is not an inconvenience — it's an emergency. A Summit technician answers, day or night, every day of the year.</p>
+    </div>
+    <div data-reveal style="display:flex;flex-direction:column;gap:1rem;align-items:flex-start">
+      <a href="tel:+17025550199" class="btn btn--light">Call (702) 555-0199</a>
+      <span style="font-family:var(--fmono);font-size:.8rem;color:var(--on-char-mut)">Average response · <b style="color:#fff">under 90 min</b></span>
+    </div>
+  </div>
+</section>
+
+<!-- final cta -->
+<section class="section cta" id="book">
+  <div class="wrap">
+    <p class="kicker" data-reveal>Book a consultation</p>
+    <h2 class="h2" data-reveal>Let's design the most comfortable home you've ever lived in.</h2>
+    <p class="lead" data-reveal style="margin-inline:auto;max-width:46ch">A Summit comfort advisor will walk your home, map the airflow, and give you a clear, fixed quote — no pressure, no jargon.</p>
+    <div class="cta__cta" data-reveal>
+      <a href="#" class="btn btn--primary">Book a consultation <span class="ar">→</span></a>
+      <a href="tel:+17025550199" class="btn btn--dark">Call (702) 555-0199</a>
+    </div>
+  </div>
+</section>
+
+<!-- footer -->
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot__grid">
+      <div>
+        <a href="#top" class="logo"><svg class="peak" viewBox="0 0 28 28" fill="none" aria-hidden="true"><path d="M14 3.5 25 24H3L14 3.5Z" stroke="url(#pk2)" stroke-width="2" stroke-linejoin="round"/><path d="M10.5 15.5 14 9l3.5 6.5" stroke="url(#pk2)" stroke-width="2" stroke-linejoin="round" opacity=".55"/><defs><linearGradient id="pk2" x1="3" y1="3" x2="25" y2="24"><stop stop-color="#4f8bff"/><stop offset="1" stop-color="#0a2f86"/></linearGradient></defs></svg><span style="color:#fff">Summit Climate</span></a>
+        <p class="foot__p">Luxury heating &amp; cooling for the Las Vegas Valley. The summit of home comfort.</p>
+      </div>
+      <div><h5>Systems</h5><a href="#heatpump">Heat pumps</a><a href="#air">Indoor air quality</a><a href="#difference">Installations</a><a href="#book">Design consult</a></div>
+      <div><h5>Company</h5><a href="#membership">Summit Care</a><a href="#financing">Financing</a><a href="#difference">Our work</a><a href="#book">Contact</a></div>
+      <div><h5>Support</h5><a href="tel:+17025550199" style="color:#fff;font-family:var(--fmono)">(702) 555-0199</a><a href="mailto:hello@summitclimate.co">hello@summitclimate.co</a><li>Open 24/7 · 365</li><li>Las Vegas, NV</li></div>
+    </div>
+    <div class="foot__base">
+      <span>© <span id="yr"></span> Summit Climate Solutions · NV Lic. #0104882 · Bonded &amp; insured</span>
+      <span>Fictional concept design — built by <a href="https://green-starsolutions.com">Green Star Solutions</a></span>
+    </div>
+  </div>
+</footer>
+
+<a class="concept-ribbon" href="/" title="This is a fictional concept website designed by Green Star Solutions">
+  <span class="star">✦</span> Concept Website — designed by Green Star Solutions
+</a>
+
+<script>
+(function(){
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var io = new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.12, rootMargin:'0px 0px -8% 0px'});
+  document.querySelectorAll('[data-reveal]').forEach(function(el){io.observe(el);});
+
+  var nav=document.getElementById('nav');
+  addEventListener('scroll',function(){nav.classList.toggle('scrolled',scrollY>10);},{passive:true});
+
+  var t=document.getElementById('navToggle'),sh=document.getElementById('sheet');
+  t.addEventListener('click',function(){sh.classList.toggle('open');});
+  sh.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){sh.classList.remove('open');});});
+
+  // before/after slider
+  var range=document.getElementById('baRange'),before=document.getElementById('baBefore'),line=document.getElementById('baLine'),grip=document.getElementById('baGrip');
+  function setPos(v){var p=v+'%';before.style.setProperty('--pos',p);line.style.left=p;grip.style.left=p;}
+  if(range){range.addEventListener('input',function(){setPos(range.value);});setPos(range.value);}
+
+  document.getElementById('yr').textContent=new Date().getFullYear();
+})();
+</script>
+</body>
+</html>

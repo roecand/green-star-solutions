@@ -37,23 +37,24 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://green-starsolutions.com"),
   title: {
     default:
-      "Green Star Solutions — Growth Agency for the Trades | Las Vegas, NV",
+      "Green Star Solutions — Perception Studio for the Trades | Las Vegas, NV",
     template: "%s | Green Star Solutions",
   },
   description:
-    "More calls, more jobs, less busy work. Las Vegas growth agency building high-converting websites, Google & Meta ads, and automated follow-up for HVAC, plumbing, electrical, roofing, and landscaping businesses.",
+    "We redesign the feeling people get when they look at your business. Brand, website, socials, and ads that let trade companies charge premium prices — plus the follow-up system that books every new call. Las Vegas, NV.",
   keywords: [
-    "trades marketing agency Las Vegas",
+    "trades branding agency Las Vegas",
     "HVAC website design",
+    "contractor rebrand",
     "plumber marketing",
     "roofing company websites",
     "contractor Google Ads",
     "local service business marketing",
   ],
   openGraph: {
-    title: "Green Star Solutions — Growth Agency for the Trades",
+    title: "Green Star Solutions — Perception Studio for the Trades",
     description:
-      "High-converting websites, Google & Meta ads, and automated follow-up so local service businesses grow faster.",
+      "We redesign the feeling people get when they look at your business — brand, website, socials, ads, and the conversion system behind them.",
     type: "website",
     locale: "en_US",
     siteName: "Green Star Solutions",
@@ -69,7 +70,7 @@ const jsonLd = {
   email: "robert@green-starsolutions.com",
   telephone: "+1-702-742-9285",
   description:
-    "Growth agency for local service businesses: high-converting websites, Google & Meta ads, and automated follow-up for HVAC, plumbing, electrical, roofing, and landscaping companies.",
+    "Perception studio for the trades: brand, website, social, and ad design that lets HVAC, plumbing, electrical, roofing, and landscaping companies charge premium prices — with automated follow-up that books every call.",
   address: {
     "@type": "PostalAddress",
     addressLocality: "Las Vegas",
@@ -78,6 +79,7 @@ const jsonLd = {
   },
   areaServed: { "@type": "City", name: "Las Vegas" },
   knowsAbout: [
+    "Brand design",
     "Website design",
     "Google Ads",
     "Meta Ads",
