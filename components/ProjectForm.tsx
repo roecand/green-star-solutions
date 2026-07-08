@@ -14,8 +14,8 @@ const TRADES = [
 ];
 
 const GOALS = [
+  "A brand & site that look premium",
   "More phone calls & leads",
-  "A new or better website",
   "Run Google or Meta ads",
   "Automate follow-up & reviews",
   "Stop missing calls",
@@ -162,11 +162,11 @@ export default function ProjectForm() {
           <p className="eyebrow eyebrow--ink">
             <StarMark size={14} /> Book a free strategy call
           </p>
-          <h2 className="display h-lg">Let&rsquo;s map out your growth.</h2>
+          <h2 className="display h-lg">Let&rsquo;s map out your transformation.</h2>
           <p className="lead measure-wide">
-            Four quick questions. On the call we&rsquo;ll show you exactly where
-            you&rsquo;re leaving jobs on the table and how to fix it — no
-            obligation, no hard sell.
+            Four quick questions. On the call we&rsquo;ll show you exactly how
+            your company reads to a homeowner today — and where the jobs are
+            leaking. No obligation, no hard sell.
           </p>
         </div>
 

@@ -16,10 +16,11 @@ export default function Home() {
       <main>
         <Hero />
         <hr className="container rule" />
+        {/* Proof first: the portfolio is the pitch. */}
+        <Portfolio />
         <Services />
         <Process />
         <Industries />
-        <Portfolio />
         <ClosingCTA />
         <ProjectForm />
       </main>

@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og";
 
 export const dynamic = "force-static";
 export const alt =
-  "Green Star Solutions — Growth Agency for the Trades, Las Vegas";
+  "Green Star Solutions — Perception Studio for the Trades, Las Vegas";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -43,26 +43,37 @@ export default function OgImage() {
           <div
             style={{
               display: "flex",
-              fontSize: 82,
+              fontSize: 66,
               fontWeight: 700,
-              lineHeight: 1.05,
-              letterSpacing: "-2px",
+              lineHeight: 1.08,
+              letterSpacing: "-1.5px",
             }}
           >
-            More Calls. More Jobs.
+            We redesign the feeling
           </div>
           <div
             style={{
               display: "flex",
-              fontSize: 82,
+              fontSize: 66,
               fontWeight: 700,
-              lineHeight: 1.05,
-              letterSpacing: "-2px",
+              lineHeight: 1.08,
+              letterSpacing: "-1.5px",
+            }}
+          >
+            people get when they
+          </div>
+          <div
+            style={{
+              display: "flex",
+              fontSize: 66,
+              fontWeight: 700,
+              lineHeight: 1.08,
+              letterSpacing: "-1.5px",
               color: "#8fd6b4",
               fontStyle: "italic",
             }}
           >
-            Less Busy Work.
+            look at your business.
           </div>
         </div>
         <div
@@ -74,7 +85,7 @@ export default function OgImage() {
           }}
         >
           <div style={{ display: "flex" }}>
-            Websites · Google Ads · Automated Follow-up
+            Perception · Brand · Website · Conversion
           </div>
           <div style={{ display: "flex" }}>Las Vegas, NV</div>
         </div>

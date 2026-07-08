@@ -4,23 +4,23 @@ import Reveal from "./Reveal";
 const steps = [
   {
     no: "01",
-    title: "Build your digital foundation",
-    body: "We launch a high-converting website and get your Google profile, tracking, and CRM dialed in — the base everything else runs on.",
+    title: "The perception audit",
+    body: "We tear down how your company reads today — site, brand, reviews, socials — and show you exactly what a homeowner feels in the 8 seconds they look at you.",
   },
   {
     no: "02",
-    title: "Generate qualified leads",
-    body: "Google & Meta ads put you in front of people who are actively looking for your service, right now, in your service area.",
+    title: "The transformation",
+    body: "Brand, website, content, and ads rebuilt in your company's own voice — designed so the $15,000 job stops going to whoever looked more established.",
   },
   {
     no: "03",
-    title: "Automate follow-up",
-    body: "Missed-call text-back and AI follow-up respond in seconds, so every lead gets chased and no job goes cold.",
+    title: "The conversion system",
+    body: "AI follow-up, missed-call text-back, and booking automation switch on — so every call the new brand creates gets answered, chased, and closed.",
   },
   {
     no: "04",
-    title: "Scale profitably",
-    body: "We track what's working, double down on it, and grow your booked jobs — without growing your busywork.",
+    title: "Ongoing growth",
+    body: "We sharpen the ads, feed the reviews, and track what's booking jobs — your reputation compounds while you're on the tools.",
   },
 ];
 
@@ -33,7 +33,9 @@ export default function Process() {
             <StarMark size={14} className="process__star" /> How it works
           </p>
           <h2 className="display h-lg">
-            A simple system that compounds.
+            First we change how you look.
+            <br />
+            Then we make sure it pays.
           </h2>
         </Reveal>
 

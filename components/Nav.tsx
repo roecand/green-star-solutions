@@ -5,9 +5,9 @@ import StarMark from "./StarMark";
 
 // Path-prefixed anchors so the nav works from /portfolio pages too.
 const links = [
-  { href: "/#services", label: "Services" },
+  { href: "/#work", label: "The Work" },
+  { href: "/#services", label: "Departments" },
   { href: "/#how", label: "How it works" },
-  { href: "/#industries", label: "Industries" },
   { href: "/portfolio/", label: "Portfolio" },
 ];
 

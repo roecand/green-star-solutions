@@ -10,7 +10,7 @@ import { projects } from "@/lib/projects";
 export const metadata: Metadata = {
   title: "Portfolio — Concept Work | Green Star Solutions",
   description:
-    "Full concept websites for four very different businesses — a 24/7 plumber, a desert landscape studio, a roofing company, and a neighborhood bakery. Each designed in its own visual language.",
+    "Six full concept websites — including two HVAC companies designed as completely different brands, a luxury landscape studio, a 24/7 plumber, a roofing company, and a neighborhood bakery. Each in its own visual language.",
 };
 
 export default function PortfolioPage() {
@@ -31,9 +31,10 @@ export default function PortfolioPage() {
             </h1>
             <p className="lead measure-wide pfhero__lead">
               A great trades website doesn&rsquo;t look like a template — it looks
-              like the business. To prove it, we designed complete concept
-              websites for four very different companies, each in its own visual
-              language. Every one is live: click in, scroll around, resize it.
+              like the business. To prove it, we designed six complete concept
+              websites, each in its own visual language — including two HVAC
+              companies built as completely different brands. Every one is
+              live: click in, scroll around, resize it.
             </p>
             <div className="pfhero__disclaimer">
               <span className="mono">✦ Concept Website</span>
