@@ -1,0 +1,384 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Input, Label, Select } from "@/components/ui/input";
+import { Card, CardContent } from "@/components/ui/card";
+
+const INDUSTRIES = [
+  "HVAC",
+  "Plumbing",
+  "Roofing",
+  "Electrical",
+  "Landscaping",
+  "Auto Repair",
+  "Med Spa",
+  "Dental",
+  "Chiropractic",
+  "Law Firm",
+  "Real Estate",
+  "Cleaning Services",
+  "Pest Control",
+  "Restaurant",
+  "Salon / Barber",
+  "Fitness / Gym",
+  "Home Remodeling",
+  "Painting",
+  "Moving Company",
+  "Other",
+];
+
+const GOALS = [
+  { value: "more_calls", label: "More phone calls" },
+  { value: "more_bookings", label: "More bookings / appointments" },
+  { value: "more_form_leads", label: "More form leads / quotes" },
+  { value: "more_reviews", label: "More reviews" },
+  { value: "more_visibility", label: "More local visibility" },
+] as const;
+
+const SCAN_STAGES = [
+  "Reading website",
+  "Checking conversion signals",
+  "Checking local visibility",
+  "Checking AI-readiness",
+  "Checking trust signals",
+  "Building action plan",
+];
+
+const STAGE_COPY: Record<string, string> = {
+  "Reading website": "Fetching your public pages the way a first-time visitor (or an AI system) sees them.",
+  "Checking conversion signals": "Looking for the things that turn visitors into calls: CTAs, phone visibility, forms.",
+  "Checking local visibility": "Checking whether your site clearly says where you work and who you serve.",
+  "Checking AI-readiness": "Checking whether answer engines have enough clear information to understand you.",
+  "Checking trust signals": "Looking for reviews, proof, credentials — the things skeptical buyers need.",
+  "Building action plan": "Turning the findings into a prioritized fix roadmap.",
+};
+
+interface FormState {
+  businessName: string;
+  websiteUrl: string;
+  industry: string;
+  city: string;
+  state: string;
+  primaryGoal: string;
+  email: string;
+  contactName: string;
+  competitor1: string;
+  competitor2: string;
+  competitor3: string;
+}
+
+const TOTAL_STEPS = 5;
+
+export function ScannerForm() {
+  const router = useRouter();
+  const [step, setStep] = useState(0);
+  const [form, setForm] = useState<FormState>({
+    businessName: "",
+    websiteUrl: "",
+    industry: "",
+    city: "",
+    state: "",
+    primaryGoal: "more_calls",
+    email: "",
+    contactName: "",
+    competitor1: "",
+    competitor2: "",
+    competitor3: "",
+  });
+  const [error, setError] = useState<string | null>(null);
+  const [upgradeHint, setUpgradeHint] = useState(false);
+  const [scanning, setScanning] = useState(false);
+  const [stage, setStage] = useState<string>(SCAN_STAGES[0]);
+  const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (pollRef.current) clearInterval(pollRef.current);
+    };
+  }, []);
+
+  const set = (key: keyof FormState) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
+    setForm((f) => ({ ...f, [key]: e.target.value }));
+
+  function validateStep(): string | null {
+    if (step === 0) {
+      if (!form.businessName.trim()) return "What's your business called?";
+      if (!form.websiteUrl.trim()) return "We need your website address to scan it.";
+    }
+    if (step === 1 && !form.industry) return "Pick the closest industry so we score you fairly.";
+    if (step === 3) {
+      if (!form.email.trim() || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(form.email))
+        return "Enter the email where we should send your report.";
+    }
+    return null;
+  }
+
+  function next() {
+    const problem = validateStep();
+    if (problem) {
+      setError(problem);
+      return;
+    }
+    setError(null);
+    setStep((s) => Math.min(s + 1, TOTAL_STEPS - 1));
+  }
+
+  function back() {
+    setError(null);
+    setStep((s) => Math.max(s - 1, 0));
+  }
+
+  async function submit() {
+    setError(null);
+    setUpgradeHint(false);
+    setScanning(true);
+    setStage(SCAN_STAGES[0]);
+    try {
+      const competitorUrls = [form.competitor1, form.competitor2, form.competitor3]
+        .map((c) => c.trim())
+        .filter(Boolean);
+      const res = await fetch("/api/scans", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          businessName: form.businessName.trim(),
+          websiteUrl: form.websiteUrl.trim(),
+          industry: form.industry,
+          city: form.city.trim() || undefined,
+          state: form.state.trim() || undefined,
+          email: form.email.trim(),
+          contactName: form.contactName.trim() || undefined,
+          primaryGoal: form.primaryGoal,
+          competitorUrls: competitorUrls.length ? competitorUrls : undefined,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setScanning(false);
+        setError(data.error ?? "Something went wrong starting the scan.");
+        setUpgradeHint(!!data.upgrade);
+        return;
+      }
+
+      pollRef.current = setInterval(async () => {
+        try {
+          const statusRes = await fetch(`/api/scans/${data.scanId}/status`);
+          const status = await statusRes.json();
+          if (status.progressStage) setStage(status.progressStage);
+          if (status.status === "completed") {
+            if (pollRef.current) clearInterval(pollRef.current);
+            router.push(`/report/${data.shareToken}`);
+          } else if (status.status === "failed") {
+            if (pollRef.current) clearInterval(pollRef.current);
+            setScanning(false);
+            setError(status.errorMessage ?? "The scan failed. Please check the URL and try again.");
+          }
+        } catch {
+          // transient poll errors are fine; keep polling
+        }
+      }, 1500);
+    } catch {
+      setScanning(false);
+      setError("Network error. Please try again.");
+    }
+  }
+
+  if (scanning) {
+    const activeIndex = Math.max(0, SCAN_STAGES.indexOf(stage));
+    return (
+      <Card className="w-full max-w-xl">
+        <CardContent className="p-8">
+          <h2 className="text-lg font-semibold">Scanning your revenue leaks…</h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            {form.websiteUrl.replace(/^https?:\/\//, "")}
+          </p>
+          <ol className="mt-6 space-y-3">
+            {SCAN_STAGES.map((s, i) => (
+              <li key={s} className="flex items-center gap-3 text-sm">
+                <span
+                  className={
+                    i < activeIndex
+                      ? "flex h-6 w-6 items-center justify-center rounded-full bg-primary text-xs text-white"
+                      : i === activeIndex
+                        ? "flex h-6 w-6 items-center justify-center rounded-full border-2 border-primary text-xs text-primary-strong animate-pulse"
+                        : "flex h-6 w-6 items-center justify-center rounded-full border border-border text-xs text-muted-foreground"
+                  }
+                >
+                  {i < activeIndex ? "✓" : i + 1}
+                </span>
+                <span className={i <= activeIndex ? "text-foreground" : "text-muted-foreground"}>
+                  {s}
+                </span>
+              </li>
+            ))}
+          </ol>
+          <p className="mt-6 rounded-lg bg-muted p-3 text-sm text-muted-foreground">
+            {STAGE_COPY[stage] ?? "Working…"}
+          </p>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  return (
+    <Card className="w-full max-w-xl">
+      <CardContent className="p-8">
+        <div className="mb-6 flex items-center gap-2">
+          {Array.from({ length: TOTAL_STEPS }).map((_, i) => (
+            <div
+              key={i}
+              className={
+                i <= step ? "h-1.5 flex-1 rounded-full bg-primary" : "h-1.5 flex-1 rounded-full bg-muted"
+              }
+            />
+          ))}
+        </div>
+
+        {step === 0 && (
+          <div className="animate-fade-up space-y-4">
+            <div>
+              <h2 className="text-lg font-semibold">Let&apos;s find your leaks</h2>
+              <p className="text-sm text-muted-foreground">Start with the basics — this takes about a minute.</p>
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <Label htmlFor="businessName">Business name</Label>
+              <Input id="businessName" value={form.businessName} onChange={set("businessName")} placeholder="Desert Air HVAC" autoFocus />
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <Label htmlFor="websiteUrl">Website</Label>
+              <Input id="websiteUrl" value={form.websiteUrl} onChange={set("websiteUrl")} placeholder="yourbusiness.com" inputMode="url" />
+            </div>
+          </div>
+        )}
+
+        {step === 1 && (
+          <div className="animate-fade-up space-y-4">
+            <div>
+              <h2 className="text-lg font-semibold">Where do you work?</h2>
+              <p className="text-sm text-muted-foreground">We score local visibility against your actual market.</p>
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <Label htmlFor="industry">Industry</Label>
+              <Select id="industry" value={form.industry} onChange={set("industry")}>
+                <option value="">Choose your industry…</option>
+                {INDUSTRIES.map((i) => (
+                  <option key={i} value={i}>{i}</option>
+                ))}
+              </Select>
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <div className="flex flex-col gap-1.5">
+                <Label htmlFor="city">City</Label>
+                <Input id="city" value={form.city} onChange={set("city")} placeholder="Las Vegas" />
+              </div>
+              <div className="flex flex-col gap-1.5">
+                <Label htmlFor="state">State / region</Label>
+                <Input id="state" value={form.state} onChange={set("state")} placeholder="NV" />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {step === 2 && (
+          <div className="animate-fade-up space-y-4">
+            <div>
+              <h2 className="text-lg font-semibold">What matters most right now?</h2>
+              <p className="text-sm text-muted-foreground">We&apos;ll prioritize your fix roadmap around this.</p>
+            </div>
+            <div className="space-y-2">
+              {GOALS.map((g) => (
+                <label
+                  key={g.value}
+                  className={
+                    form.primaryGoal === g.value
+                      ? "flex cursor-pointer items-center gap-3 rounded-lg border-2 border-primary bg-accent/40 p-3 text-sm font-medium"
+                      : "flex cursor-pointer items-center gap-3 rounded-lg border border-border p-3 text-sm hover:bg-muted"
+                  }
+                >
+                  <input
+                    type="radio"
+                    name="primaryGoal"
+                    value={g.value}
+                    checked={form.primaryGoal === g.value}
+                    onChange={set("primaryGoal")}
+                    className="accent-[var(--primary)]"
+                  />
+                  {g.label}
+                </label>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {step === 3 && (
+          <div className="animate-fade-up space-y-4">
+            <div>
+              <h2 className="text-lg font-semibold">Where should we send your report?</h2>
+              <p className="text-sm text-muted-foreground">
+                You&apos;ll see the report immediately — the email is your permanent link to it.
+              </p>
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <Label htmlFor="contactName">Your name (optional)</Label>
+              <Input id="contactName" value={form.contactName} onChange={set("contactName")} placeholder="Robert" />
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <Label htmlFor="email">Business email</Label>
+              <Input id="email" type="email" value={form.email} onChange={set("email")} placeholder="you@business.com" />
+            </div>
+          </div>
+        )}
+
+        {step === 4 && (
+          <div className="animate-fade-up space-y-4">
+            <div>
+              <h2 className="text-lg font-semibold">Any competitors we should know about?</h2>
+              <p className="text-sm text-muted-foreground">
+                Optional. Paid plans compare your signals side-by-side with theirs.
+              </p>
+            </div>
+            {(["competitor1", "competitor2", "competitor3"] as const).map((key, i) => (
+              <div key={key} className="flex flex-col gap-1.5">
+                <Label htmlFor={key}>Competitor website {i + 1}</Label>
+                <Input id={key} value={form[key]} onChange={set(key)} placeholder="competitor.com" inputMode="url" />
+              </div>
+            ))}
+          </div>
+        )}
+
+        {error && (
+          <div className="mt-4 rounded-lg bg-red-50 p-3 text-sm text-danger">
+            {error}
+            {upgradeHint && (
+              <>
+                {" "}
+                <a href="/pricing" className="font-medium underline">See plans</a>
+              </>
+            )}
+          </div>
+        )}
+
+        <div className="mt-6 flex items-center justify-between">
+          {step > 0 ? (
+            <Button variant="ghost" onClick={back}>
+              Back
+            </Button>
+          ) : (
+            <span />
+          )}
+          {step < TOTAL_STEPS - 1 ? (
+            <Button onClick={next} size="lg">
+              Continue
+            </Button>
+          ) : (
+            <Button onClick={submit} size="lg">
+              Scan my website
+            </Button>
+          )}
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
