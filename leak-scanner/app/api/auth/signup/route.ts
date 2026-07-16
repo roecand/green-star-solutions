@@ -21,7 +21,7 @@ export async function POST(request: Request) {
   }
 
   try {
-    const user = registerUser(parsed.data);
+    const user = await registerUser(parsed.data);
     await createSession(user.id);
     trackEvent({ eventType: "signup", userId: user.id });
     return NextResponse.json({ ok: true });

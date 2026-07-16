@@ -1,0 +1,59 @@
+# Render Blueprint for the Greenstar Revenue Leak Scanner (leak-scanner/).
+# The agency marketing site deploys separately on Netlify; Render only runs
+# the scanner web app. Free plan: the service spins down after ~15 min idle
+# and cold-starts in ~1 min. Database is Turso (free), which persists data
+# across spin-downs since Render's free tier has no disk.
+#
+# Deploy: connect this repo in the Render dashboard → "New Blueprint".
+# Set the secret env vars (marked sync:false) in the dashboard after first deploy.
+services:
+  - type: web
+    name: greenstar-leak-scanner
+    runtime: node
+    plan: free
+    rootDir: leak-scanner
+    buildCommand: npm ci && npm run build
+    startCommand: npm run start
+    healthCheckPath: /
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: "20"
+      # Public URL of the deployed app (used in emails + shareable report links).
+      # Set to your Render URL, or scan.green-starsolutions.com once DNS is pointed.
+      - key: NEXT_PUBLIC_APP_URL
+        sync: false
+      # Turso database (free). Create at turso.tech, then:
+      #   turso db create greenstar
+      #   turso db show greenstar --url        -> TURSO_DATABASE_URL
+      #   turso db tokens create greenstar     -> TURSO_AUTH_TOKEN
+      - key: TURSO_DATABASE_URL
+        sync: false
+      - key: TURSO_AUTH_TOKEN
+        sync: false
+      # Signups with this email get the admin role (Greenstar admin bootstrap).
+      - key: ADMIN_EMAIL
+        sync: false
+      # Optional integrations — the app runs without them (mock/fallback modes).
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: AI_MODEL
+        value: claude-sonnet-5
+      - key: RESEND_API_KEY
+        sync: false
+      - key: EMAIL_FROM
+        sync: false
+      - key: ADMIN_NOTIFICATION_EMAIL
+        sync: false
+      - key: STRIPE_SECRET_KEY
+        sync: false
+      - key: STRIPE_WEBHOOK_SECRET
+        sync: false
+      - key: STRIPE_PRICE_STARTER
+        sync: false
+      - key: STRIPE_PRICE_GROWTH
+        sync: false
+      - key: STRIPE_PRICE_PRO
+        sync: false
+      - key: NEXT_PUBLIC_BOOKING_URL
+        sync: false

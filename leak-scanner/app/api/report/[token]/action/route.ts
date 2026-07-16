@@ -31,14 +31,14 @@ export async function POST(
   }
   const { action, email } = parsed.data;
 
-  const scan = db
+  const scan = await db
     .select()
     .from(schema.scans)
     .where(eq(schema.scans.shareToken, token))
     .get();
   if (!scan) return NextResponse.json({ error: "Report not found." }, { status: 404 });
 
-  const lead = db
+  const lead = await db
     .select()
     .from(schema.leads)
     .where(eq(schema.leads.scanId, scan.id))
@@ -46,7 +46,7 @@ export async function POST(
 
   if (lead) {
     const isHelpRequest = action === "book_call" || action === "request_fix_plan";
-    const recommendations = db
+    const recommendations = await db
       .select({ severity: schema.recommendations.severity })
       .from(schema.recommendations)
       .where(eq(schema.recommendations.scanId, scan.id))
@@ -68,7 +68,7 @@ export async function POST(
       recommendations,
     });
 
-    db.update(schema.leads)
+    await db.update(schema.leads)
       .set({
         lifecycleStatus: nextStatus,
         hotScore,

@@ -19,7 +19,7 @@ export async function POST(request: Request) {
       { status: 401 }
     );
   }
-  const organization = getUserOrganization(user.id);
+  const organization = await getUserOrganization(user.id);
   if (!organization) {
     return NextResponse.json({ error: "No organization found." }, { status: 400 });
   }
@@ -33,14 +33,14 @@ export async function POST(request: Request) {
 
   // Mock mode: no Stripe keys — apply the plan directly, clearly labeled.
   if (!isStripeConfigured()) {
-    db.update(schema.organizations)
+    await db.update(schema.organizations)
       .set({ plan })
       .where(eq(schema.organizations.id, organization.id))
       .run();
-    db.insert(schema.subscriptions)
+    await db.insert(schema.subscriptions)
       .values({ organizationId: organization.id, plan, status: "mock_active" })
       .run();
-    db.insert(schema.auditEvents)
+    await db.insert(schema.auditEvents)
       .values({
         organizationId: organization.id,
         actorUserId: user.id,
@@ -71,7 +71,7 @@ export async function POST(request: Request) {
       metadata: { organizationId: organization.id },
     });
     customerId = customer.id;
-    db.update(schema.organizations)
+    await db.update(schema.organizations)
       .set({ stripeCustomerId: customerId })
       .where(eq(schema.organizations.id, organization.id))
       .run();

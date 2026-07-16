@@ -18,10 +18,10 @@ export default async function BusinessDetailPage({
 }) {
   const { id } = await params;
   const { organization } = await requireUserWithOrg();
-  const business = businessForOrg(organization.id, id);
+  const business = await businessForOrg(organization.id, id);
   if (!business) notFound();
 
-  const scans = db
+  const scans = await db
     .select()
     .from(schema.scans)
     .where(eq(schema.scans.businessId, business.id))

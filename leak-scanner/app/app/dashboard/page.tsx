@@ -13,8 +13,8 @@ export const metadata: Metadata = { title: "Dashboard" };
 
 export default async function DashboardPage() {
   const { user, organization } = await requireUserWithOrg();
-  const businesses = businessesForOrg(organization.id);
-  const scans = scansForOrg(organization.id);
+  const businesses = await businessesForOrg(organization.id);
+  const scans = await scansForOrg(organization.id);
   const completed = scans.filter((s) => s.status === "completed");
   const latest = completed[0] ?? null;
   const previous = completed[1] ?? null;

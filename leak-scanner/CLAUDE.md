@@ -17,7 +17,7 @@ which has breaking changes vs older versions (docs in `node_modules/next/dist/do
 | Decision | Why |
 |---|---|
 | Next.js 16 App Router, TS, Tailwind v4 | one deployable, stable, spec-preferred |
-| SQLite + Drizzle (not Supabase) | zero-setup local MVP; schema ports to Postgres via driver swap; data layer isolated in `lib/db/` |
+| libSQL/SQLite + Drizzle (not Supabase) | `@libsql/client`: local file for dev/tests, hosted **Turso** in prod (free, survives Render's disk-less free tier). Driver auto-switches on `TURSO_DATABASE_URL`. All db calls are async (`await db…`); `dbReady()` awaits migrate-on-boot. |
 | Hand-rolled shadcn-style `components/ui/` | same look, no CLI/registry dependency |
 | DB-session auth (scrypt + httpOnly cookie) | no external auth service; simple, auditable |
 | Scans run inline in the API route | no queue infra needed at MVP volume; revisit at scale |

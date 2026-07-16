@@ -6,7 +6,7 @@
  * Run: npm run db:seed   (idempotent — safe to re-run)
  */
 import { eq } from "drizzle-orm";
-import { db, schema } from "@/lib/db";
+import { db, dbReady, schema } from "@/lib/db";
 import { hashPassword } from "@/lib/auth/password";
 import { extractPage } from "@/lib/scanner/extractor";
 import { runScoringEngine } from "@/lib/scoring/engine";
@@ -19,19 +19,19 @@ import type { ExtractedSite } from "@/lib/scanner/types";
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? "admin@greenstar.local";
 const ADMIN_PASSWORD = process.env.SEED_ADMIN_PASSWORD ?? "greenstar-admin";
 
-function ensureAdmin(): string {
-  const existing = db
+async function ensureAdmin(): Promise<string> {
+  const existing = await db
     .select()
     .from(schema.users)
     .where(eq(schema.users.email, ADMIN_EMAIL))
     .get();
   if (existing) {
     if (existing.role !== "admin") {
-      db.update(schema.users).set({ role: "admin" }).where(eq(schema.users.id, existing.id)).run();
+      await db.update(schema.users).set({ role: "admin" }).where(eq(schema.users.id, existing.id)).run();
     }
     return existing.id;
   }
-  const user = db
+  const user = await db
     .insert(schema.users)
     .values({
       email: ADMIN_EMAIL,
@@ -41,16 +41,17 @@ function ensureAdmin(): string {
     })
     .returning()
     .get();
-  db.insert(schema.organizations)
+  await db
+    .insert(schema.organizations)
     .values({ ownerUserId: user.id, name: "Greenstar Solutions", plan: "pro" })
     .run();
   console.log(`created admin user ${ADMIN_EMAIL} (password: ${ADMIN_PASSWORD})`);
   return user.id;
 }
 
-function seedDemoBusinesses() {
+async function seedDemoBusinesses(): Promise<void> {
   for (const demo of DEMO_BUSINESSES) {
-    const existing = db
+    const existing = await db
       .select({ id: schema.scans.id })
       .from(schema.scans)
       .where(eq(schema.scans.shareToken, demo.shareToken))
@@ -87,7 +88,7 @@ function seedDemoBusinesses() {
       fetchErrors: [],
     });
 
-    const business = db
+    const business = await db
       .insert(schema.businesses)
       .values({
         businessName: demo.businessName,
@@ -101,7 +102,7 @@ function seedDemoBusinesses() {
       .returning()
       .get();
 
-    const scan = db
+    const scan = await db
       .insert(schema.scans)
       .values({
         businessId: business.id,
@@ -134,7 +135,7 @@ function seedDemoBusinesses() {
       .get();
 
     for (const rec of recommendations) {
-      db.insert(schema.recommendations)
+      await db.insert(schema.recommendations)
         .values({
           scanId: scan.id,
           category: rec.category,
@@ -158,7 +159,7 @@ function seedDemoBusinesses() {
       websiteReachable: true,
       recommendations,
     });
-    db.insert(schema.leads)
+    await db.insert(schema.leads)
       .values({
         scanId: scan.id,
         businessName: demo.businessName,
@@ -181,6 +182,14 @@ function seedDemoBusinesses() {
   }
 }
 
-ensureAdmin();
-seedDemoBusinesses();
-console.log("seed complete");
+async function main() {
+  await dbReady();
+  await ensureAdmin();
+  await seedDemoBusinesses();
+  console.log("seed complete");
+}
+
+main().catch((error) => {
+  console.error("seed failed", error);
+  process.exit(1);
+});

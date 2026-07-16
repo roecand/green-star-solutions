@@ -23,18 +23,15 @@ export function trackEvent(event: {
   userId?: string;
   metadata?: Record<string, unknown>;
 }): void {
-  try {
-    db.insert(schema.analyticsEvents)
-      .values({
-        eventType: event.eventType,
-        path: event.path,
-        scanId: event.scanId,
-        leadId: event.leadId,
-        userId: event.userId,
-        metadataJson: event.metadata ? JSON.stringify(event.metadata) : null,
-      })
-      .run();
-  } catch (error) {
-    console.error("analytics tracking failed", error);
-  }
+  db.insert(schema.analyticsEvents)
+    .values({
+      eventType: event.eventType,
+      path: event.path,
+      scanId: event.scanId,
+      leadId: event.leadId,
+      userId: event.userId,
+      metadataJson: event.metadata ? JSON.stringify(event.metadata) : null,
+    })
+    .run()
+    .catch((error) => console.error("analytics tracking failed", error));
 }

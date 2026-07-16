@@ -14,8 +14,8 @@ export const metadata: Metadata = {
   description: "Example Revenue Leak Reports for five fictional local businesses.",
 };
 
-export default function DemoPage() {
-  const scans = db
+export default async function DemoPage() {
+  const scans = await db
     .select({
       shareToken: schema.scans.shareToken,
       revenueLeakScore: schema.scans.revenueLeakScore,
@@ -33,7 +33,7 @@ export default function DemoPage() {
     )
     .all();
 
-  const businesses = db
+  const businesses = await db
     .select()
     .from(schema.businesses)
     .where(inArray(schema.businesses.id, scans.map((s) => s.businessId)))

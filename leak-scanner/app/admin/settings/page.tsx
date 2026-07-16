@@ -6,8 +6,8 @@ import { Badge } from "@/components/ui/badge";
 
 export const metadata: Metadata = { title: "Admin settings" };
 
-export default function AdminSettingsPage() {
-  const emailEvents = db
+export default async function AdminSettingsPage() {
+  const emailEvents = await db
     .select()
     .from(schema.emailEvents)
     .orderBy(desc(schema.emailEvents.createdAt))

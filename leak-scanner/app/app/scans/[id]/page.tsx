@@ -27,7 +27,7 @@ export default async function ScanDetailPage({
 }) {
   const { id } = await params;
   const { organization } = await requireUserWithOrg();
-  const scan = scanForOrg(organization.id, id);
+  const scan = await scanForOrg(organization.id, id);
   if (!scan) notFound();
 
   return (

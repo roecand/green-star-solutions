@@ -60,19 +60,19 @@ export async function POST(request: Request) {
 
   // Plan limit enforcement. Anonymous scans: 1 free scan per email.
   const user = await getSessionUser();
-  const organization = user ? getUserOrganization(user.id) : null;
+  const organization = user ? await getUserOrganization(user.id) : null;
 
   if (organization) {
     const since = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
-    const orgBusinessIds = db
+    const orgBusinessRows = await db
       .select({ id: schema.businesses.id })
       .from(schema.businesses)
       .where(eq(schema.businesses.organizationId, organization.id))
-      .all()
-      .map((b) => b.id);
+      .all();
+    const orgBusinessIds = orgBusinessRows.map((b) => b.id);
     let recentScans = 0;
     for (const businessId of orgBusinessIds) {
-      const row = db
+      const row = await db
         .select({ n: count() })
         .from(schema.scans)
         .where(and(eq(schema.scans.businessId, businessId), gte(schema.scans.createdAt, since)))
@@ -93,7 +93,7 @@ export async function POST(request: Request) {
       );
     }
   } else if (input.email) {
-    const priorLead = db
+    const priorLead = await db
       .select({ id: schema.leads.id })
       .from(schema.leads)
       .where(eq(schema.leads.email, input.email))
@@ -110,7 +110,7 @@ export async function POST(request: Request) {
     }
   }
 
-  const { scan } = createScanRecords({
+  const { scan } = await createScanRecords({
     businessName: input.businessName,
     websiteUrl,
     industry: input.industry,

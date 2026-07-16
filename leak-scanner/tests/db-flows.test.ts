@@ -28,6 +28,7 @@ beforeAll(async () => {
   const dbModule = await import("@/lib/db");
   db = dbModule.db;
   schema = dbModule.schema;
+  await dbModule.dbReady(); // ensure migrations are applied before any query
   ({ createScanRecords } = await import("@/lib/scanner/pipeline"));
   ({ registerUser } = await import("@/lib/auth/register"));
   webhooks = await import("@/lib/billing/webhook-handlers");
@@ -35,8 +36,8 @@ beforeAll(async () => {
 });
 
 describe("scan and lead creation", () => {
-  it("creates business, scan, and lead rows with a share token", () => {
-    const { business, scan, lead } = createScanRecords({
+  it("creates business, scan, and lead rows with a share token", async () => {
+    const { business, scan, lead } = await createScanRecords({
       businessName: "Test Plumbing",
       websiteUrl: "https://testplumbing.example.com/",
       industry: "Plumbing",
@@ -53,7 +54,7 @@ describe("scan and lead creation", () => {
     expect(lead.lifecycleStatus).toBe("new");
     expect(lead.email).toBe("owner@testplumbing.example.com");
 
-    const competitors = db.select().from(schema.competitors).all();
+    const competitors = await db.select().from(schema.competitors).all();
     expect(competitors.some((c) => c.businessId === business.id)).toBe(true);
   });
 });
@@ -61,18 +62,18 @@ describe("scan and lead creation", () => {
 describe("registerUser", () => {
   it("creates a user with an organization and claims anonymous scans by email", async () => {
     const email = "claimer@example.com";
-    createScanRecords({
+    await createScanRecords({
       businessName: "Claim Me Detailing",
       websiteUrl: "https://claimme.example.com/",
       industry: "Auto Repair",
       email,
     });
 
-    const user = registerUser({ email, password: "supersecret1", name: "Claimer" });
+    const user = await registerUser({ email, password: "supersecret1", name: "Claimer" });
     expect(user.role).toBe("user");
 
     const { eq } = await import("drizzle-orm");
-    const org = db
+    const org = await db
       .select()
       .from(schema.organizations)
       .where(eq(schema.organizations.ownerUserId, user.id))
@@ -80,7 +81,7 @@ describe("registerUser", () => {
     expect(org).toBeTruthy();
     expect(org!.plan).toBe("free");
 
-    const claimed = db
+    const claimed = await db
       .select()
       .from(schema.businesses)
       .where(eq(schema.businesses.email, email))
@@ -88,28 +89,37 @@ describe("registerUser", () => {
     expect(claimed!.organizationId).toBe(org!.id);
   });
 
-  it("rejects duplicate emails", () => {
-    registerUser({ email: "dupe@example.com", password: "supersecret1" });
-    expect(() => registerUser({ email: "DUPE@example.com", password: "supersecret1" })).toThrow();
+  it("rejects duplicate emails", async () => {
+    await registerUser({ email: "dupe@example.com", password: "supersecret1" });
+    await expect(
+      registerUser({ email: "DUPE@example.com", password: "supersecret1" })
+    ).rejects.toThrow();
   });
 });
 
 describe("stripe webhook handlers", () => {
-  function makeOrg() {
-    const user = registerUser({
+  async function makeOrg() {
+    const user = await registerUser({
       email: `billing-${Math.random().toString(36).slice(2)}@example.com`,
       password: "supersecret1",
     });
-    return db
+    const orgs = await db.select().from(schema.organizations).all();
+    return orgs.find((o) => o.ownerUserId === user.id)!;
+  }
+
+  async function orgById(id: string) {
+    const { eq } = await import("drizzle-orm");
+    const org = await db
       .select()
       .from(schema.organizations)
-      .all()
-      .find((o) => o.ownerUserId === user.id)!;
+      .where(eq(schema.organizations.id, id))
+      .get();
+    return org!;
   }
 
   it("checkout.session.completed upgrades the org", async () => {
-    const org = makeOrg();
-    const handled = webhooks.handleCheckoutCompleted({
+    const org = await makeOrg();
+    const handled = await webhooks.handleCheckoutCompleted({
       organizationId: org.id,
       plan: "growth",
       customerId: "cus_123",
@@ -117,71 +127,50 @@ describe("stripe webhook handlers", () => {
     });
     expect(handled).toBe(true);
 
-    const { eq } = await import("drizzle-orm");
-    const updated = db
-      .select()
-      .from(schema.organizations)
-      .where(eq(schema.organizations.id, org.id))
-      .get()!;
+    const updated = await orgById(org.id);
     expect(updated.plan).toBe("growth");
     expect(updated.stripeCustomerId).toBe("cus_123");
     expect(updated.stripeSubscriptionId).toBe("sub_123");
   });
 
-  it("ignores events with unknown org or invalid plan", () => {
-    expect(webhooks.handleCheckoutCompleted({ organizationId: "nope", plan: "growth" })).toBe(false);
-    const org = makeOrg();
-    expect(webhooks.handleCheckoutCompleted({ organizationId: org.id, plan: "platinum" })).toBe(false);
+  it("ignores events with unknown org or invalid plan", async () => {
+    expect(await webhooks.handleCheckoutCompleted({ organizationId: "nope", plan: "growth" })).toBe(false);
+    const org = await makeOrg();
+    expect(await webhooks.handleCheckoutCompleted({ organizationId: org.id, plan: "platinum" })).toBe(false);
   });
 
   it("subscription cancellation downgrades to free", async () => {
-    const org = makeOrg();
-    webhooks.handleCheckoutCompleted({
+    const org = await makeOrg();
+    await webhooks.handleCheckoutCompleted({
       organizationId: org.id,
       plan: "pro",
       customerId: "cus_x",
       subscriptionId: "sub_x",
     });
-    const handled = webhooks.handleSubscriptionDeleted({ organizationId: org.id });
+    const handled = await webhooks.handleSubscriptionDeleted({ organizationId: org.id });
     expect(handled).toBe(true);
 
-    const { eq } = await import("drizzle-orm");
-    const updated = db
-      .select()
-      .from(schema.organizations)
-      .where(eq(schema.organizations.id, org.id))
-      .get()!;
+    const updated = await orgById(org.id);
     expect(updated.plan).toBe("free");
     expect(updated.stripeSubscriptionId).toBeNull();
   });
 
   it("subscription status updates adjust the plan appropriately", async () => {
-    const org = makeOrg();
-    webhooks.handleSubscriptionUpdated({
+    const org = await makeOrg();
+    await webhooks.handleSubscriptionUpdated({
       organizationId: org.id,
       plan: "starter",
       status: "active",
       currentPeriodEnd: Math.floor(Date.now() / 1000) + 86400,
     });
-    const { eq } = await import("drizzle-orm");
-    let updated = db
-      .select()
-      .from(schema.organizations)
-      .where(eq(schema.organizations.id, org.id))
-      .get()!;
-    expect(updated.plan).toBe("starter");
+    expect((await orgById(org.id)).plan).toBe("starter");
 
-    webhooks.handleSubscriptionUpdated({
+    await webhooks.handleSubscriptionUpdated({
       organizationId: org.id,
       plan: "starter",
       status: "canceled",
     });
-    updated = db
-      .select()
-      .from(schema.organizations)
-      .where(eq(schema.organizations.id, org.id))
-      .get()!;
-    expect(updated.plan).toBe("free");
+    expect((await orgById(org.id)).plan).toBe("free");
   });
 });
 

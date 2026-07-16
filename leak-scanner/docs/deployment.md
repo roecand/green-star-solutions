@@ -1,65 +1,90 @@
 # Deployment
 
-The app is a standard Next.js server app with a SQLite file database, so it
-needs a host with **persistent disk**. Recommended paths, simplest first:
+The scanner is a Next.js **server** app (API routes + a database), so it can't
+run on the same static Netlify deploy as the Greenstar marketing site. The
+setup below is **100% free**: Render's free web service + Turso's free database,
+served at a subdomain of green-starsolutions.com.
 
-## Option A (recommended): single VPS / Fly.io / Railway / Render
+## The free stack
 
-1. Provision Node 20+ with a persistent volume.
-2. `npm ci && npm run build`
-3. Set env vars (see below). Point `DATABASE_PATH` at the persistent volume,
-   e.g. `/data/greenstar.db`.
-4. `npm run start` behind a reverse proxy with HTTPS.
-5. First boot auto-applies migrations. Run `npm run db:seed` once to create
-   the admin user (set `ADMIN_EMAIL` + `SEED_ADMIN_PASSWORD` first!).
-6. Add the Stripe webhook endpoint: `https://yourdomain.com/api/stripe/webhook`
-   with events `checkout.session.completed`, `customer.subscription.updated`,
-   `customer.subscription.deleted`. Put the signing secret in
-   `STRIPE_WEBHOOK_SECRET`.
-7. Back up the SQLite file (e.g. Litestream or a nightly volume snapshot).
+| Piece | Free tier | Notes |
+|---|---|---|
+| **Render** (web service) | free plan | spins down after ~15 min idle, cold-starts in ~1 min; 750 instance-hours/mo |
+| **Turso** (database) | free plan | hosted SQLite; 5 GB, 500M row reads/mo — far beyond MVP needs. Data persists across Render spin-downs (Render's free tier has no disk) |
+| **Subdomain** | free | `scan.green-starsolutions.com` — just a DNS record, no new domain to buy |
 
-Fly.io sketch: `fly launch` → add a volume → mount at `/data` →
-`DATABASE_PATH=/data/greenstar.db` → `fly deploy`.
+The database driver auto-switches: with `TURSO_DATABASE_URL` set it uses Turso;
+without it, a local SQLite file (`lib/db/index.ts`). Same schema either way.
 
-## Option B: Vercel (requires the Postgres port)
+## One-time setup
 
-Vercel has no persistent disk, so SQLite won't work there. Port the data
-layer first (see docs/data-model.md "Porting to Postgres/Supabase" — swap
-Drizzle's sqlite-core for pg-core + a Postgres driver against Neon/Supabase),
-then deploy normally. This is the planned scale path, not an MVP blocker.
+### 1. Create the Turso database (free)
+```bash
+# install the CLI: https://docs.turso.tech/cli/installation
+turso auth signup
+turso db create greenstar
+turso db show greenstar --url            # -> TURSO_DATABASE_URL (libsql://...)
+turso db tokens create greenstar         # -> TURSO_AUTH_TOKEN
+```
 
-## Production environment variables
+### 2. Seed the production database once
+Migrations apply automatically on first boot, but run the seed locally against
+Turso to create the admin user + demo reports:
+```bash
+cd leak-scanner
+TURSO_DATABASE_URL=libsql://... TURSO_AUTH_TOKEN=... \
+  ADMIN_EMAIL=you@greenstarsolutions.com SEED_ADMIN_PASSWORD='a-strong-password' \
+  npm run db:seed
+```
 
-Required:
-- `NEXT_PUBLIC_APP_URL=https://yourdomain.com` (emails + share links)
-- `ADMIN_EMAIL=robert@greenstarsolutions.com`
-- `DATABASE_PATH=/data/greenstar.db` (on the persistent volume)
+### 3. Deploy on Render
+This repo has a [`render.yaml`](../../render.yaml) blueprint at its root.
+- Render dashboard → **New → Blueprint** → connect `roecand/green-star-solutions`.
+- Render reads `render.yaml`, creates the `greenstar-leak-scanner` service
+  (rootDir `leak-scanner`, build `npm ci && npm run build`, start `npm run start`).
+- After the first deploy, set the secret env vars in the dashboard (they're
+  marked `sync:false`): `TURSO_DATABASE_URL`, `TURSO_AUTH_TOKEN`,
+  `NEXT_PUBLIC_APP_URL`, `ADMIN_EMAIL`, and any optional
+  Anthropic/Resend/Stripe/booking keys.
+- Set `NEXT_PUBLIC_APP_URL` to the Render URL first (e.g.
+  `https://greenstar-leak-scanner.onrender.com`), redeploy, confirm it works.
 
-Strongly recommended:
-- `ANTHROPIC_API_KEY` + `AI_MODEL=claude-sonnet-5` — AI report copy
-- `RESEND_API_KEY` + `EMAIL_FROM="Greenstar Scanner <scanner@yourdomain.com>"`
-  (verify the domain in Resend) + `ADMIN_NOTIFICATION_EMAIL`
-- `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`,
-  `STRIPE_PRICE_STARTER`, `STRIPE_PRICE_GROWTH`, `STRIPE_PRICE_PRO`
-  (create three monthly prices in Stripe: $19 / $49 / $99)
-- `NEXT_PUBLIC_BOOKING_URL` — Calendly (or similar) link for strategy calls
+### 4. Point the subdomain (free)
+- In Render: service → **Settings → Custom Domains** → add
+  `scan.green-starsolutions.com`. Render shows a CNAME target.
+- In your DNS provider (wherever green-starsolutions.com is managed): add a
+  **CNAME** record `scan` → the Render target. TLS is issued automatically.
+- Update `NEXT_PUBLIC_APP_URL=https://scan.green-starsolutions.com` and redeploy.
+- Optional: link it from the agency site nav ("Free Scan").
 
-Optional: `SEED_ADMIN_PASSWORD` (before running seed in production).
+### 5. Stripe webhook (only if using live billing)
+Add endpoint `https://scan.green-starsolutions.com/api/stripe/webhook` with
+events `checkout.session.completed`, `customer.subscription.updated`,
+`customer.subscription.deleted`; put the signing secret in
+`STRIPE_WEBHOOK_SECRET`. Without Stripe keys, billing runs in mock mode.
 
-## Go-live sequence
+## The one free-tier tradeoff
 
-1. Deploy with Stripe in **test mode**; run through checkout with 4242 card.
-2. Run `npm run db:seed` for demo reports (powers `/demo`).
-3. Send a test scan against your own site; confirm report email arrives.
-4. Flip Stripe to live keys; re-verify webhook.
-5. Work through docs/launch-checklist.md.
+Render's free service sleeps after ~15 minutes of no traffic, so the first
+visitor after a quiet spell waits ~1 minute for a cold start. Fine for early
+outreach-driven traffic. Two ways to remove it later:
+- A free uptime pinger (e.g. a cron that hits `/` every 10 min) keeps it warm.
+- Render's paid Starter (~$7/mo) never sleeps — the upgrade path when volume
+  justifies it.
 
-## Operational notes
+## Alternative: Vercel
 
-- Scans run in-process; a burst of scans shares the Node event loop. At
-  sustained volume, move `runScanPipeline` behind a queue (BullMQ + Redis)
-  — the pipeline is already a single self-contained function.
-- The rate limiter is in-memory (per instance). Fine for one instance;
-  use Redis if you scale horizontally.
-- Logs: email sends, scan failures, and webhook errors all `console.error`
-  with context — pipe stdout to your log drain.
+Vercel also has no persistent disk, but with Turso set via the same
+`TURSO_DATABASE_URL` / `TURSO_AUTH_TOKEN` env vars it works too — import the
+repo, set the project root to `leak-scanner`, add the env vars. Render is
+documented as the primary path because its free tier doesn't require a
+serverless-function cold-start tuning pass.
+
+## Notes
+
+- Migrations run automatically on boot (`dbReady()` in `lib/db/index.ts`),
+  idempotent, so deploys need no separate migrate step.
+- Scans run in-process; a burst shares the Node event loop. At sustained
+  volume move `runScanPipeline` behind a queue — it's already one function.
+- The in-memory rate limiter is per-instance; the free tier is single-instance,
+  so it works as-is.

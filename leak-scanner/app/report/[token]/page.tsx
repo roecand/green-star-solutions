@@ -32,19 +32,19 @@ export default async function ReportPage({
   params: Promise<{ token: string }>;
 }) {
   const { token } = await params;
-  const scan = db
+  const scan = await db
     .select()
     .from(schema.scans)
     .where(eq(schema.scans.shareToken, token))
     .get();
   if (!scan) notFound();
 
-  const business = db
+  const business = await db
     .select()
     .from(schema.businesses)
     .where(eq(schema.businesses.id, scan.businessId))
     .get();
-  const lead = db
+  const lead = await db
     .select()
     .from(schema.leads)
     .where(eq(schema.leads.scanId, scan.id))
@@ -52,7 +52,7 @@ export default async function ReportPage({
 
   // Mark the lead as having viewed the report (first view only).
   if (lead && lead.lifecycleStatus === "new") {
-    db.update(schema.leads)
+    await db.update(schema.leads)
       .set({ lifecycleStatus: "viewed_report" })
       .where(eq(schema.leads.id, lead.id))
       .run();
@@ -60,7 +60,7 @@ export default async function ReportPage({
   trackEvent({ eventType: "report_view", scanId: scan.id, leadId: lead?.id });
 
   const organization = business?.organizationId
-    ? db
+    ? await db
         .select()
         .from(schema.organizations)
         .where(eq(schema.organizations.id, business.organizationId))

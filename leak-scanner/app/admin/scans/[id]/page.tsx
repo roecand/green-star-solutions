@@ -17,10 +17,10 @@ export default async function AdminScanDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const scan = db.select().from(schema.scans).where(eq(schema.scans.id, id)).get();
+  const scan = await db.select().from(schema.scans).where(eq(schema.scans.id, id)).get();
   if (!scan) notFound();
 
-  const lead = db.select().from(schema.leads).where(eq(schema.leads.scanId, scan.id)).get();
+  const lead = await db.select().from(schema.leads).where(eq(schema.leads.scanId, scan.id)).get();
   let findings: Finding[] = [];
   try {
     findings = scan.deterministicFindingsJson ? JSON.parse(scan.deterministicFindingsJson) : [];

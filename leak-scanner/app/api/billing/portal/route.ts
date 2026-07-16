@@ -6,7 +6,7 @@ import { appUrl } from "@/lib/email/send";
 export async function POST() {
   const user = await getSessionUser();
   if (!user) return NextResponse.json({ error: "Not logged in." }, { status: 401 });
-  const organization = getUserOrganization(user.id);
+  const organization = await getUserOrganization(user.id);
   if (!organization) return NextResponse.json({ error: "No organization." }, { status: 400 });
 
   if (!isStripeConfigured() || !organization.stripeCustomerId) {

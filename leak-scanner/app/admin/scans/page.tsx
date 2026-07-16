@@ -7,8 +7,8 @@ import { formatDate, scoreColorClass } from "@/lib/utils";
 
 export const metadata: Metadata = { title: "All scans" };
 
-export default function AdminScansPage() {
-  const scans = db.select().from(schema.scans).orderBy(desc(schema.scans.createdAt)).all();
+export default async function AdminScansPage() {
+  const scans = await db.select().from(schema.scans).orderBy(desc(schema.scans.createdAt)).all();
 
   return (
     <div>

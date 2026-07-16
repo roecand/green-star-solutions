@@ -18,7 +18,7 @@ export async function POST(request: Request) {
   }
 
   const email = parsed.data.email.trim().toLowerCase();
-  const user = db
+  const user = await db
     .select()
     .from(schema.users)
     .where(eq(schema.users.email, email))

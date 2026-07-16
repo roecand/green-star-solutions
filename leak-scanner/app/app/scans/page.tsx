@@ -10,7 +10,7 @@ export const metadata: Metadata = { title: "Scan history" };
 
 export default async function ScansPage() {
   const { organization } = await requireUserWithOrg();
-  const scans = scansForOrg(organization.id);
+  const scans = await scansForOrg(organization.id);
 
   return (
     <div>

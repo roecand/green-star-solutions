@@ -13,7 +13,7 @@ export async function requireUserWithOrg(): Promise<{
   organization: Organization;
 }> {
   const user = await requireUser();
-  const organization = getUserOrganization(user.id);
+  const organization = await getUserOrganization(user.id);
   if (!organization) redirect("/login");
   return { user, organization };
 }

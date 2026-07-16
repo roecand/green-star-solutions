@@ -21,7 +21,7 @@ export default async function BillingPage({
   const plan = PLANS[organization.plan];
   const stripeLive = isStripeConfigured();
 
-  const history = db
+  const history = await db
     .select()
     .from(schema.subscriptions)
     .where(eq(schema.subscriptions.organizationId, organization.id))

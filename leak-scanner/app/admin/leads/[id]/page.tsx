@@ -18,18 +18,18 @@ export default async function AdminLeadDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const lead = db.select().from(schema.leads).where(eq(schema.leads.id, id)).get();
+  const lead = await db.select().from(schema.leads).where(eq(schema.leads.id, id)).get();
   if (!lead) notFound();
 
-  const scan = db.select().from(schema.scans).where(eq(schema.scans.id, lead.scanId)).get();
+  const scan = await db.select().from(schema.scans).where(eq(schema.scans.id, lead.scanId)).get();
   const recommendations = scan
-    ? db
+    ? await db
         .select()
         .from(schema.recommendations)
         .where(eq(schema.recommendations.scanId, scan.id))
         .all()
     : [];
-  const notes = db
+  const notes = await db
     .select()
     .from(schema.adminNotes)
     .where(eq(schema.adminNotes.leadId, lead.id))

@@ -41,7 +41,8 @@ export async function sendEmail(message: EmailMessage): Promise<void> {
   }
 
   try {
-    db.insert(schema.emailEvents)
+    await db
+      .insert(schema.emailEvents)
       .values({
         eventType: message.eventType,
         scanId: message.scanId,

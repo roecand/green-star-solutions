@@ -38,8 +38,8 @@ export interface CreateScanInput {
 }
 
 /** Creates business + scan + lead rows and returns identifiers. */
-export function createScanRecords(input: CreateScanInput) {
-  const business = db
+export async function createScanRecords(input: CreateScanInput) {
+  const business = await db
     .insert(schema.businesses)
     .values({
       organizationId: input.organizationId ?? null,
@@ -56,12 +56,13 @@ export function createScanRecords(input: CreateScanInput) {
     .get();
 
   for (const url of input.competitorUrls ?? []) {
-    db.insert(schema.competitors)
+    await db
+      .insert(schema.competitors)
       .values({ businessId: business.id, competitorUrl: url })
       .run();
   }
 
-  const scan = db
+  const scan = await db
     .insert(schema.scans)
     .values({
       businessId: business.id,
@@ -75,7 +76,7 @@ export function createScanRecords(input: CreateScanInput) {
     .returning()
     .get();
 
-  const lead = db
+  const lead = await db
     .insert(schema.leads)
     .values({
       scanId: scan.id,
@@ -95,8 +96,9 @@ export function createScanRecords(input: CreateScanInput) {
   return { business, scan, lead };
 }
 
-function setStage(scanId: string, stage: string) {
-  db.update(schema.scans)
+async function setStage(scanId: string, stage: string): Promise<void> {
+  await db
+    .update(schema.scans)
     .set({ progressStage: stage, status: "running" })
     .where(eq(schema.scans.id, scanId))
     .run();
@@ -108,9 +110,13 @@ function setStage(scanId: string, stage: string) {
  * optional AI call). All failures are captured on the scan row.
  */
 export async function runScanPipeline(scanId: string): Promise<void> {
-  const scan = db.select().from(schema.scans).where(eq(schema.scans.id, scanId)).get();
+  const scan = await db
+    .select()
+    .from(schema.scans)
+    .where(eq(schema.scans.id, scanId))
+    .get();
   if (!scan) throw new Error(`scan ${scanId} not found`);
-  const business = db
+  const business = await db
     .select()
     .from(schema.businesses)
     .where(eq(schema.businesses.id, scan.businessId))
@@ -126,13 +132,15 @@ export async function runScanPipeline(scanId: string): Promise<void> {
   };
 
   try {
-    setStage(scanId, SCAN_STAGES[0]);
-    const site = await extractSite(scan.websiteUrl, (stage) => setStage(scanId, stage));
+    await setStage(scanId, SCAN_STAGES[0]);
+    const site = await extractSite(scan.websiteUrl, (stage) => {
+      void setStage(scanId, stage);
+    });
 
-    setStage(scanId, SCAN_STAGES[1]);
+    await setStage(scanId, SCAN_STAGES[1]);
     const scoring = runScoringEngine(site, ctx);
 
-    setStage(scanId, SCAN_STAGES[5]);
+    await setStage(scanId, SCAN_STAGES[5]);
     const recommendations = buildRecommendations(scoring.findings);
 
     const { report, source } = await generateReportWithFallback({
@@ -144,7 +152,8 @@ export async function runScanPipeline(scanId: string): Promise<void> {
       fetchErrors: site.fetchErrors,
     });
 
-    db.update(schema.scans)
+    await db
+      .update(schema.scans)
       .set({
         // Sub-page fetch failures are recorded in metadata but the scan still
         // completes on homepage signals alone.
@@ -177,7 +186,8 @@ export async function runScanPipeline(scanId: string): Promise<void> {
       .run();
 
     for (const rec of recommendations) {
-      db.insert(schema.recommendations)
+      await db
+        .insert(schema.recommendations)
         .values({
           scanId,
           category: rec.category,
@@ -191,7 +201,7 @@ export async function runScanPipeline(scanId: string): Promise<void> {
         .run();
     }
 
-    const lead = db
+    const lead = await db
       .select()
       .from(schema.leads)
       .where(eq(schema.leads.scanId, scanId))
@@ -207,7 +217,8 @@ export async function runScanPipeline(scanId: string): Promise<void> {
         websiteReachable: true,
         recommendations,
       });
-      db.update(schema.leads)
+      await db
+        .update(schema.leads)
         .set({ score: scoring.revenueLeakScore, hotScore })
         .where(eq(schema.leads.id, lead.id))
         .run();
@@ -255,7 +266,8 @@ export async function runScanPipeline(scanId: string): Promise<void> {
         ? error.message
         : "The scan hit an unexpected error. Please try again.";
     console.error(`scan ${scanId} failed`, error);
-    db.update(schema.scans)
+    await db
+      .update(schema.scans)
       .set({ status: "failed", progressStage: null, errorMessage: message })
       .where(eq(schema.scans.id, scanId))
       .run();

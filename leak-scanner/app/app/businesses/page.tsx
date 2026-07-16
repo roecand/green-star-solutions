@@ -9,7 +9,7 @@ export const metadata: Metadata = { title: "Businesses" };
 
 export default async function BusinessesPage() {
   const { organization } = await requireUserWithOrg();
-  const businesses = businessesForOrg(organization.id);
+  const businesses = await businessesForOrg(organization.id);
   const plan = PLANS[organization.plan];
 
   return (

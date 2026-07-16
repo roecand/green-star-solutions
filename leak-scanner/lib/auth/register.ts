@@ -13,13 +13,13 @@ export class EmailTakenError extends Error {
  * Creates a user plus their organization. The first admin is bootstrapped by
  * setting ADMIN_EMAIL; any signup with that email gets the admin role.
  */
-export function registerUser(input: {
+export async function registerUser(input: {
   email: string;
   password: string;
   name?: string;
-}): User {
+}): Promise<User> {
   const email = input.email.trim().toLowerCase();
-  const existing = db
+  const existing = await db
     .select({ id: schema.users.id })
     .from(schema.users)
     .where(eq(schema.users.email, email))
@@ -30,7 +30,7 @@ export function registerUser(input: {
     !!process.env.ADMIN_EMAIL &&
     email === process.env.ADMIN_EMAIL.trim().toLowerCase();
 
-  const user = db
+  const user = await db
     .insert(schema.users)
     .values({
       email,
@@ -41,7 +41,7 @@ export function registerUser(input: {
     .returning()
     .get();
 
-  const organization = db
+  const organization = await db
     .insert(schema.organizations)
     .values({
       ownerUserId: user.id,
@@ -53,12 +53,14 @@ export function registerUser(input: {
 
   // Claim any anonymous scans that were run with this email, so the report
   // history is waiting when a visitor signs up after a free scan.
-  db.update(schema.businesses)
+  await db
+    .update(schema.businesses)
     .set({ organizationId: organization.id })
     .where(and(eq(schema.businesses.email, email), isNull(schema.businesses.organizationId)))
     .run();
 
-  db.insert(schema.auditEvents)
+  await db
+    .insert(schema.auditEvents)
     .values({
       actorUserId: user.id,
       eventType: "user_registered",

@@ -7,7 +7,7 @@ import type { Business, Scan } from "@/lib/db/schema";
  * organization filter can't be forgotten at call sites.
  */
 
-export function businessesForOrg(organizationId: string): Business[] {
+export async function businessesForOrg(organizationId: string): Promise<Business[]> {
   return db
     .select()
     .from(schema.businesses)
@@ -16,11 +16,13 @@ export function businessesForOrg(organizationId: string): Business[] {
     .all();
 }
 
-export function scansForOrg(organizationId: string): Array<Scan & { businessName: string }> {
-  const businesses = businessesForOrg(organizationId);
+export async function scansForOrg(
+  organizationId: string
+): Promise<Array<Scan & { businessName: string }>> {
+  const businesses = await businessesForOrg(organizationId);
   if (businesses.length === 0) return [];
   const nameById = new Map(businesses.map((b) => [b.id, b.businessName]));
-  const scans = db
+  const scans = await db
     .select()
     .from(schema.scans)
     .where(inArray(schema.scans.businessId, businesses.map((b) => b.id)))
@@ -32,15 +34,18 @@ export function scansForOrg(organizationId: string): Array<Scan & { businessName
   }));
 }
 
-export function scanForOrg(
+export async function scanForOrg(
   organizationId: string,
   scanId: string
-): (Scan & { businessName: string }) | null {
-  return scansForOrg(organizationId).find((s) => s.id === scanId) ?? null;
+): Promise<(Scan & { businessName: string }) | null> {
+  return (await scansForOrg(organizationId)).find((s) => s.id === scanId) ?? null;
 }
 
-export function businessForOrg(organizationId: string, businessId: string): Business | null {
-  const business = db
+export async function businessForOrg(
+  organizationId: string,
+  businessId: string
+): Promise<Business | null> {
+  const business = await db
     .select()
     .from(schema.businesses)
     .where(eq(schema.businesses.id, businessId))

@@ -9,22 +9,23 @@ const VALID_PLANS = new Set(["starter", "growth", "pro"]);
  * can be unit-tested with plain event objects.
  */
 
-export function handleCheckoutCompleted(event: {
+export async function handleCheckoutCompleted(event: {
   organizationId?: string;
   plan?: string;
   customerId?: string | null;
   subscriptionId?: string | null;
-}): boolean {
+}): Promise<boolean> {
   const { organizationId, plan } = event;
   if (!organizationId || !plan || !VALID_PLANS.has(plan)) return false;
-  const org = db
+  const org = await db
     .select()
     .from(schema.organizations)
     .where(eq(schema.organizations.id, organizationId))
     .get();
   if (!org) return false;
 
-  db.update(schema.organizations)
+  await db
+    .update(schema.organizations)
     .set({
       plan: plan as Plan,
       stripeCustomerId: event.customerId ?? org.stripeCustomerId,
@@ -32,10 +33,12 @@ export function handleCheckoutCompleted(event: {
     })
     .where(eq(schema.organizations.id, organizationId))
     .run();
-  db.insert(schema.subscriptions)
+  await db
+    .insert(schema.subscriptions)
     .values({ organizationId, plan: plan as Plan, status: "active" })
     .run();
-  db.insert(schema.auditEvents)
+  await db
+    .insert(schema.auditEvents)
     .values({
       organizationId,
       eventType: "subscription_started",
@@ -47,15 +50,15 @@ export function handleCheckoutCompleted(event: {
   return true;
 }
 
-export function handleSubscriptionUpdated(event: {
+export async function handleSubscriptionUpdated(event: {
   organizationId?: string;
   plan?: string;
   status: string;
   currentPeriodEnd?: number | null;
-}): boolean {
+}): Promise<boolean> {
   const { organizationId } = event;
   if (!organizationId) return false;
-  const org = db
+  const org = await db
     .select()
     .from(schema.organizations)
     .where(eq(schema.organizations.id, organizationId))
@@ -64,18 +67,21 @@ export function handleSubscriptionUpdated(event: {
 
   const active = event.status === "active" || event.status === "trialing";
   if (active && event.plan && VALID_PLANS.has(event.plan)) {
-    db.update(schema.organizations)
+    await db
+      .update(schema.organizations)
       .set({ plan: event.plan as Plan })
       .where(eq(schema.organizations.id, organizationId))
       .run();
   }
   if (!active && ["canceled", "unpaid", "incomplete_expired"].includes(event.status)) {
-    db.update(schema.organizations)
+    await db
+      .update(schema.organizations)
       .set({ plan: "free", stripeSubscriptionId: null })
       .where(eq(schema.organizations.id, organizationId))
       .run();
   }
-  db.insert(schema.subscriptions)
+  await db
+    .insert(schema.subscriptions)
     .values({
       organizationId,
       plan: (VALID_PLANS.has(event.plan ?? "") ? event.plan : org.plan) as Plan,
@@ -86,24 +92,29 @@ export function handleSubscriptionUpdated(event: {
   return true;
 }
 
-export function handleSubscriptionDeleted(event: { organizationId?: string }): boolean {
+export async function handleSubscriptionDeleted(event: {
+  organizationId?: string;
+}): Promise<boolean> {
   const { organizationId } = event;
   if (!organizationId) return false;
-  const org = db
+  const org = await db
     .select()
     .from(schema.organizations)
     .where(eq(schema.organizations.id, organizationId))
     .get();
   if (!org) return false;
 
-  db.update(schema.organizations)
+  await db
+    .update(schema.organizations)
     .set({ plan: "free", stripeSubscriptionId: null })
     .where(eq(schema.organizations.id, organizationId))
     .run();
-  db.insert(schema.subscriptions)
+  await db
+    .insert(schema.subscriptions)
     .values({ organizationId, plan: "free", status: "canceled" })
     .run();
-  db.insert(schema.auditEvents)
+  await db
+    .insert(schema.auditEvents)
     .values({
       organizationId,
       eventType: "subscription_canceled",

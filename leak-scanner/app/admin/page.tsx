@@ -8,9 +8,9 @@ import { formatDate, scoreColorClass } from "@/lib/utils";
 
 export const metadata: Metadata = { title: "Admin overview" };
 
-export default function AdminOverviewPage() {
-  const leads = db.select().from(schema.leads).orderBy(desc(schema.leads.createdAt)).all();
-  const scans = db.select().from(schema.scans).orderBy(desc(schema.scans.createdAt)).all();
+export default async function AdminOverviewPage() {
+  const leads = await db.select().from(schema.leads).orderBy(desc(schema.leads.createdAt)).all();
+  const scans = await db.select().from(schema.scans).orderBy(desc(schema.scans.createdAt)).all();
 
   const completedScans = scans.filter((s) => s.status === "completed");
   const avgScore =

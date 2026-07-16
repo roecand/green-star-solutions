@@ -81,9 +81,10 @@ Scoring is fully documented in [docs/scoring.md](docs/scoring.md).
 
 ## Stack
 
-Next.js 16 (App Router) · TypeScript · Tailwind v4 · SQLite + Drizzle ORM ·
-cookie-session auth (scrypt) · Stripe · Resend · Anthropic (swappable via
-`AIReportProvider`) · Zod · Vitest · Playwright.
+Next.js 16 (App Router) · TypeScript · Tailwind v4 · libSQL/Drizzle ORM
+(local SQLite file in dev, hosted Turso in prod) · cookie-session auth (scrypt) ·
+Stripe · Resend · Anthropic (swappable via `AIReportProvider`) · Zod · Vitest ·
+Playwright. Deploys free on Render + Turso — see [docs/deployment.md](docs/deployment.md).
 
 Deviations from the original spec preference (Supabase → SQLite+Drizzle,
 shadcn CLI → hand-rolled shadcn-style components, PostHog → internal events

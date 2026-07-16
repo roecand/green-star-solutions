@@ -25,7 +25,7 @@ export default async function AdminLeadsPage({
   searchParams: Promise<{ status?: string }>;
 }) {
   const { status } = await searchParams;
-  let leads = db.select().from(schema.leads).orderBy(desc(schema.leads.createdAt)).all();
+  let leads = await db.select().from(schema.leads).orderBy(desc(schema.leads.createdAt)).all();
   if (status === "hot") {
     leads = leads
       .filter((l) => l.hotScore >= HOT_LEAD_THRESHOLD)

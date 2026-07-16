@@ -25,12 +25,12 @@ export async function PATCH(
     return NextResponse.json({ error: "Invalid update." }, { status: 400 });
   }
 
-  const lead = db.select().from(schema.leads).where(eq(schema.leads.id, id)).get();
+  const lead = await db.select().from(schema.leads).where(eq(schema.leads.id, id)).get();
   if (!lead) return NextResponse.json({ error: "Lead not found." }, { status: 404 });
 
   const { lifecycleStatus, isOutreachTarget, note } = parsed.data;
   if (lifecycleStatus !== undefined || isOutreachTarget !== undefined) {
-    db.update(schema.leads)
+    await db.update(schema.leads)
       .set({
         ...(lifecycleStatus !== undefined ? { lifecycleStatus } : {}),
         ...(isOutreachTarget !== undefined ? { isOutreachTarget } : {}),
@@ -39,10 +39,10 @@ export async function PATCH(
       .run();
   }
   if (note) {
-    db.insert(schema.adminNotes).values({ leadId: id, note }).run();
+    await db.insert(schema.adminNotes).values({ leadId: id, note }).run();
   }
 
-  db.insert(schema.auditEvents)
+  await db.insert(schema.auditEvents)
     .values({
       actorUserId: admin.id,
       eventType: "lead_updated",
