@@ -94,6 +94,15 @@ export async function POST(
       });
     }
 
+    if (isHelpRequest) {
+      // Canonical funnel event: the money step (traffic → scan → report → this).
+      trackEvent({
+        eventType: "fix_plan_clicked",
+        scanId: scan.id,
+        leadId: lead.id,
+        metadata: { action, industry: lead.industry },
+      });
+    }
     trackEvent({
       eventType: isHelpRequest ? "help_request" : action === "email_report" ? "email_report_request" : "cta_click",
       scanId: scan.id,

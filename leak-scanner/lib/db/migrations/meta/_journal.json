@@ -8,6 +8,13 @@
       "when": 1783956193854,
       "tag": "0000_init",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1784244005206,
+      "tag": "0001_lead_funnel_fields",
+      "breakpoints": true
     }
   ]
 }

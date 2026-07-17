@@ -16,10 +16,12 @@ import { computeHotScore } from "@/lib/leads/hot-score";
 import { DEMO_BUSINESSES } from "./demo-fixtures";
 import type { ExtractedSite } from "@/lib/scanner/types";
 
+const DEFAULT_ADMIN_PASSWORD = "greenstar-admin";
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? "admin@greenstar.local";
-const ADMIN_PASSWORD = process.env.SEED_ADMIN_PASSWORD ?? "greenstar-admin";
+const ADMIN_PASSWORD = process.env.SEED_ADMIN_PASSWORD ?? DEFAULT_ADMIN_PASSWORD;
+const IS_PRODUCTION = process.env.NODE_ENV === "production";
 
-async function ensureAdmin(): Promise<string> {
+async function ensureAdmin(): Promise<string | null> {
   const existing = await db
     .select()
     .from(schema.users)
@@ -30,6 +32,16 @@ async function ensureAdmin(): Promise<string> {
       await db.update(schema.users).set({ role: "admin" }).where(eq(schema.users.id, existing.id)).run();
     }
     return existing.id;
+  }
+
+  // Never create a known-default admin credential in production. Either set
+  // SEED_ADMIN_PASSWORD, or just sign up with ADMIN_EMAIL (that account is
+  // auto-promoted to admin by lib/auth/register.ts).
+  if (IS_PRODUCTION && ADMIN_PASSWORD === DEFAULT_ADMIN_PASSWORD) {
+    console.warn(
+      `Skipping admin creation in production: set SEED_ADMIN_PASSWORD, or sign up at /signup with ${ADMIN_EMAIL} to get the admin role.`
+    );
+    return null;
   }
   const user = await db
     .insert(schema.users)

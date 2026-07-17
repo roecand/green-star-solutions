@@ -12,6 +12,7 @@ import { buttonClasses } from "@/components/ui/button";
 import { aiReportSchema, type AIReport } from "@/lib/ai/report-schema";
 import { CATEGORY_LABELS, CATEGORY_SCORE_KEYS } from "@/lib/scoring/engine";
 import { PLANS } from "@/lib/billing/plans";
+import { billingEnabled, bookingUrl } from "@/lib/flags";
 import { trackEvent } from "@/lib/analytics/track";
 import { formatDate } from "@/lib/utils";
 import type { FindingCategory } from "@/lib/scanner/types";
@@ -122,7 +123,9 @@ export default async function ReportPage({
     followUpReadinessScore: scan.followUpReadinessScore ?? 0,
   };
   const leakScore = scan.revenueLeakScore ?? 0;
-  const isFreePlan = plan.id === "free";
+  // Report gating only applies when the paid SaaS is switched on. As a free
+  // lead-gen funnel, every visitor gets the complete report.
+  const isFreePlan = billingEnabled() && plan.id === "free";
   const visibleLeaks = isFreePlan ? report.top_revenue_leaks.slice(0, 3) : report.top_revenue_leaks;
   const hiddenLeakCount = report.top_revenue_leaks.length - visibleLeaks.length;
 
@@ -148,6 +151,14 @@ export default async function ReportPage({
             <p className="mt-4 text-lg font-medium">{report.score_verdict}</p>
             <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
               {report.executive_summary}
+            </p>
+            <p className="mt-4 rounded-lg bg-muted p-3 text-xs leading-relaxed text-muted-foreground">
+              This report is based on <strong>publicly visible signals</strong> from
+              your website. Your Revenue Leak Score reflects <strong>potential
+              revenue-capture risk</strong> — not verified financial loss. Internal
+              systems we can&apos;t see from outside (your CRM, phone handling, or
+              follow-up process) are treated as &ldquo;not publicly verifiable,&rdquo;
+              never counted against you.
             </p>
           </div>
         </section>
@@ -286,11 +297,7 @@ export default async function ReportPage({
         </p>
 
         <div className="mt-8">
-          <CtaPanel
-            token={token}
-            bookingUrl={process.env.NEXT_PUBLIC_BOOKING_URL || null}
-            showPdf={plan.pdfExport}
-          />
+          <CtaPanel token={token} bookingUrl={bookingUrl()} />
         </div>
 
         <p className="mt-6 text-center text-xs text-muted-foreground">

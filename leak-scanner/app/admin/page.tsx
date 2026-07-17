@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { desc } from "drizzle-orm";
+import { desc, count } from "drizzle-orm";
 import { db, schema } from "@/lib/db";
 import { Badge } from "@/components/ui/badge";
 import { HOT_LEAD_THRESHOLD } from "@/lib/leads/hot-score";
@@ -11,6 +11,20 @@ export const metadata: Metadata = { title: "Admin overview" };
 export default async function AdminOverviewPage() {
   const leads = await db.select().from(schema.leads).orderBy(desc(schema.leads.createdAt)).all();
   const scans = await db.select().from(schema.scans).orderBy(desc(schema.scans.createdAt)).all();
+
+  // Funnel counts from the analytics events table (never destabilizes the app —
+  // read-only aggregate, empty-safe).
+  const funnelRows = await db
+    .select({ type: schema.analyticsEvents.eventType, n: count() })
+    .from(schema.analyticsEvents)
+    .groupBy(schema.analyticsEvents.eventType)
+    .all();
+  const funnelCount = (type: string) => funnelRows.find((r) => r.type === type)?.n ?? 0;
+  const scanStarted = funnelCount("scan_started");
+  const scanCompleted = funnelCount("scan_completed");
+  const fixPlanClicked = funnelCount("fix_plan_clicked");
+  const clickRate =
+    scanCompleted > 0 ? Math.round((fixPlanClicked / scanCompleted) * 100) : 0;
 
   const completedScans = scans.filter((s) => s.status === "completed");
   const avgScore =
@@ -58,6 +72,26 @@ export default async function AdminOverviewPage() {
           </div>
         ))}
       </div>
+
+      {/* Funnel: traffic → scan → report → fix-plan booking */}
+      <section className="rounded-xl border border-border bg-card p-5">
+        <h2 className="font-semibold">Funnel</h2>
+        <div className="mt-4 grid gap-4 sm:grid-cols-4">
+          {(
+            [
+              ["Scans started", scanStarted],
+              ["Scans completed", scanCompleted],
+              ["Fix plans clicked", fixPlanClicked],
+              ["Click → fix plan", `${clickRate}%`],
+            ] as const
+          ).map(([label, value]) => (
+            <div key={label}>
+              <p className="text-sm text-muted-foreground">{label}</p>
+              <p className="mt-1 text-2xl font-bold">{value}</p>
+            </div>
+          ))}
+        </div>
+      </section>
 
       <section className="rounded-xl border border-border bg-card">
         <div className="flex items-center justify-between border-b border-border p-4">

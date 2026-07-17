@@ -146,6 +146,13 @@ export const leads = sqliteTable("leads", {
   source: text("source", { enum: ["self_serve", "outreach", "demo"] })
     .notNull()
     .default("self_serve"),
+  // Marketing attribution (utm_source / ?src=) captured at scan time, if any.
+  utmSource: text("utm_source"),
+  // Denormalized report highlights so the lead row is self-contained for
+  // outreach + future CRM/webhook sync without re-joining scans.
+  weakestCategory: text("weakest_category"),
+  topProblemsJson: text("top_problems_json"),
+  reportUrl: text("report_url"),
   isOutreachTarget: integer("is_outreach_target", { mode: "boolean" })
     .notNull()
     .default(false),

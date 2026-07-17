@@ -1,6 +1,8 @@
 import Link from "next/link";
+import { billingEnabled } from "@/lib/flags";
 
 export function SiteFooter() {
+  const showBilling = billingEnabled();
   return (
     <footer className="border-t border-border bg-charcoal text-white print-hidden">
       <div className="mx-auto grid max-w-6xl gap-8 px-4 py-12 md:grid-cols-3">
@@ -16,7 +18,9 @@ export function SiteFooter() {
           <ul className="space-y-2 text-white/70">
             <li><Link href="/scanner" className="hover:text-white">Run a free scan</Link></li>
             <li><Link href="/demo" className="hover:text-white">Demo report</Link></li>
-            <li><Link href="/pricing" className="hover:text-white">Pricing</Link></li>
+            {showBilling && (
+              <li><Link href="/pricing" className="hover:text-white">Pricing</Link></li>
+            )}
             <li><Link href="/services" className="hover:text-white">Greenstar services</Link></li>
           </ul>
         </div>

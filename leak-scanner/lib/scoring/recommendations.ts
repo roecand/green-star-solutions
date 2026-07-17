@@ -340,9 +340,9 @@ const REC_TEMPLATES: Record<string, RecTemplate> = {
   },
   followup_form: {
     severity: "critical",
-    title: "No lead capture form",
+    title: "No lead capture form visible",
     explanation:
-      "There's no way for a visitor to leave their contact info. Every after-hours visitor is a lead you never knew about.",
+      "We couldn't find a contact or quote form on your public pages, so a visitor who doesn't want to call has no obvious way to leave their details there. (You may capture leads by other means we can't see from outside.)",
     recommendedFix: "Add a short lead form that captures name, phone, and email.",
     greenstarService: "crm_follow_up_automation",
   },
@@ -385,18 +385,18 @@ const REC_TEMPLATES: Record<string, RecTemplate> = {
   },
   followup_crm_indicators: {
     severity: "medium",
-    title: "No follow-up system detected",
+    title: "No public follow-up signals",
     explanation:
-      "We found no indicators of a CRM or automation platform, which usually means leads live in a personal inbox and slip through.",
-    recommendedFix: "Connect forms and calls to a simple CRM with automatic instant replies.",
+      "From the outside we couldn't detect public signals of instant lead follow-up (auto-reply forms, a connected scheduler, marketing-platform integration). This doesn't mean you lack an internal system — it only means a visitor sees no evidence of fast follow-up, which is itself reassuring to add.",
+    recommendedFix: "Surface your responsiveness publicly and connect forms/calls to instant replies.",
     greenstarService: "crm_follow_up_automation",
   },
   followup_language: {
     severity: "low",
-    title: "No missed-call recovery",
+    title: "No missed-call recovery mentioned",
     explanation:
-      "Many calls to small businesses go unanswered; nothing on your site suggests a system to recover missed calls.",
-    recommendedFix: "Add missed-call text-back so every caller gets an instant reply.",
+      "Your public pages don't mention text-back or a way to reach you if a call is missed. Whatever you do internally, saying it plainly reassures visitors who'd otherwise move on.",
+    recommendedFix: "Add missed-call text-back and mention it, so every caller gets an instant reply.",
     greenstarService: "crm_follow_up_automation",
   },
   followup_next_step: {

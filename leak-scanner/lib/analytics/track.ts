@@ -2,8 +2,10 @@ import { db, schema } from "@/lib/db";
 
 export type AnalyticsEventType =
   | "landing_visit"
-  | "scanner_start"
-  | "scanner_complete"
+  // Canonical funnel events (traffic → scan → report → fix-plan booking).
+  | "scan_started"
+  | "scan_completed"
+  | "fix_plan_clicked"
   | "report_view"
   | "cta_click"
   | "signup"

@@ -1,9 +1,11 @@
 import Link from "next/link";
 import { getSessionUser } from "@/lib/auth/session";
 import { buttonClasses } from "@/components/ui/button";
+import { billingEnabled } from "@/lib/flags";
 
 export async function SiteHeader() {
   const user = await getSessionUser();
+  const showBilling = billingEnabled();
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur print-hidden">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
@@ -19,9 +21,11 @@ export async function SiteHeader() {
           <Link href="/demo" className="hover:text-foreground">
             Demo report
           </Link>
-          <Link href="/pricing" className="hover:text-foreground">
-            Pricing
-          </Link>
+          {showBilling && (
+            <Link href="/pricing" className="hover:text-foreground">
+              Pricing
+            </Link>
+          )}
           <Link href="/services" className="hover:text-foreground">
             Services
           </Link>

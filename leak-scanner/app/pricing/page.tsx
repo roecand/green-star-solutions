@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { UpgradeButton } from "@/components/upgrade-button";
 import { buttonClasses } from "@/components/ui/button";
 import { PLANS, PLAN_ORDER } from "@/lib/billing/plans";
 import { isStripeConfigured } from "@/lib/billing/stripe";
+import { billingEnabled } from "@/lib/flags";
 
 export const metadata: Metadata = {
   title: "Pricing",
@@ -13,6 +15,8 @@ export const metadata: Metadata = {
 };
 
 export default function PricingPage() {
+  // Paid SaaS is hidden while the scanner runs as a free lead-gen funnel.
+  if (!billingEnabled()) redirect("/scanner");
   const stripeLive = isStripeConfigured();
 
   return (

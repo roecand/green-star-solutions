@@ -4,7 +4,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { buttonClasses } from "@/components/ui/button";
 import { ScoreRing } from "@/components/report/score-ring";
 import { PLANS, PLAN_ORDER } from "@/lib/billing/plans";
-import { trackEvent } from "@/lib/analytics/track";
+import { billingEnabled } from "@/lib/flags";
 
 const CHECKS = [
   {
@@ -58,7 +58,9 @@ const FAQS = [
 ];
 
 export default function LandingPage() {
-  trackEvent({ eventType: "landing_visit", path: "/" });
+  // Landing stays statically served (no per-render DB writes). Funnel tracking
+  // happens on the dynamic scan/report/CTA routes.
+  const showBilling = billingEnabled();
 
   return (
     <>
@@ -207,7 +209,24 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* Pricing */}
+        {/* Pricing (paid SaaS) — shown only when billing is enabled */}
+        {!showBilling ? (
+          <section className="mx-auto max-w-3xl px-4 py-20 text-center">
+            <span className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-accent/50 px-3 py-1 text-xs font-medium text-primary-strong">
+              100% free
+            </span>
+            <h2 className="mt-5 text-3xl font-bold">Your scan and report are free</h2>
+            <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
+              No account, no credit card, no catch. You get the full report and
+              a prioritized action plan. If you&apos;d like Green Star to
+              implement the fixes, you can request a personalized fix plan right
+              from the report.
+            </p>
+            <Link href="/scanner" className={`${buttonClasses("primary", "lg")} mt-8`}>
+              Run Your Free Scan
+            </Link>
+          </section>
+        ) : (
         <section className="mx-auto max-w-6xl px-4 py-20">
           <h2 className="text-center text-3xl font-bold">Simple pricing</h2>
           <p className="mx-auto mt-3 max-w-xl text-center text-muted-foreground">
@@ -257,6 +276,7 @@ export default function LandingPage() {
             })}
           </div>
         </section>
+        )}
 
         {/* FAQ */}
         <section className="border-t border-border bg-muted/50 py-20">

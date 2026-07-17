@@ -14,6 +14,10 @@ export const metadata: Metadata = {
   description: "Example Revenue Leak Reports for five fictional local businesses.",
 };
 
+// Reads the DB, so render at request time — the DB volume isn't mounted during
+// the production build (Railway).
+export const dynamic = "force-dynamic";
+
 export default async function DemoPage() {
   const scans = await db
     .select({

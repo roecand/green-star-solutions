@@ -2,8 +2,14 @@ import { randomBytes } from "node:crypto";
 import { eq } from "drizzle-orm";
 import { db, schema } from "@/lib/db";
 import { extractSite } from "./extractor";
-import { runScoringEngine, verdictForScore } from "@/lib/scoring/engine";
+import {
+  CATEGORY_LABELS,
+  CATEGORY_SCORE_KEYS,
+  runScoringEngine,
+  verdictForScore,
+} from "@/lib/scoring/engine";
 import { buildRecommendations } from "@/lib/scoring/recommendations";
+import type { FindingCategory, ScoringResult } from "@/lib/scanner/types";
 import { generateReportWithFallback } from "@/lib/ai/provider";
 import { computeHotScore } from "@/lib/leads/hot-score";
 import { sendEmail, appUrl } from "@/lib/email/send";
@@ -35,6 +41,7 @@ export interface CreateScanInput {
   competitorUrls?: string[];
   organizationId?: string | null;
   source?: "self_serve" | "outreach" | "demo";
+  utmSource?: string | null;
 }
 
 /** Creates business + scan + lead rows and returns identifiers. */
@@ -89,11 +96,75 @@ export async function createScanRecords(input: CreateScanInput) {
       city: input.city ?? null,
       state: input.state ?? null,
       source: input.source ?? "self_serve",
+      utmSource: input.utmSource ?? null,
     })
     .returning()
     .get();
 
   return { business, scan, lead };
+}
+
+const REPORT_CATEGORIES: FindingCategory[] = [
+  "conversion",
+  "local",
+  "ai_visibility",
+  "trust",
+  "follow_up",
+];
+
+/** The lowest-scoring category — the headline weakness for outreach. */
+export function weakestCategory(scoring: ScoringResult): {
+  category: FindingCategory;
+  label: string;
+  score: number;
+} {
+  let weakest = REPORT_CATEGORIES[0];
+  let weakestScore = scoring[CATEGORY_SCORE_KEYS[weakest]];
+  for (const category of REPORT_CATEGORIES) {
+    const score = scoring[CATEGORY_SCORE_KEYS[category]];
+    if (score < weakestScore) {
+      weakest = category;
+      weakestScore = score;
+    }
+  }
+  return { category: weakest, label: CATEGORY_LABELS[weakest], score: weakestScore };
+}
+
+interface LeadWebhookPayload {
+  businessName: string;
+  contactName: string | null;
+  email: string | null;
+  websiteUrl: string;
+  industry: string;
+  city: string | null;
+  state: string | null;
+  score: number;
+  weakestCategory: string;
+  topProblems: string[];
+  reportUrl: string;
+  source: string | null;
+}
+
+/**
+ * Optional outbound webhook (e.g. GoHighLevel) fired when a scan completes.
+ * No-op unless LEAD_WEBHOOK_URL is set. Never throws — lead capture must not
+ * depend on a third-party endpoint being up.
+ */
+async function postLeadWebhook(payload: LeadWebhookPayload): Promise<void> {
+  const url = process.env.LEAD_WEBHOOK_URL?.trim();
+  if (!url) return;
+  try {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 8000);
+    await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ...payload, submittedAt: new Date().toISOString() }),
+      signal: controller.signal,
+    }).finally(() => clearTimeout(timer));
+  } catch (error) {
+    console.error("lead webhook failed", error);
+  }
 }
 
 async function setStage(scanId: string, stage: string): Promise<void> {
@@ -217,13 +288,37 @@ export async function runScanPipeline(scanId: string): Promise<void> {
         websiteReachable: true,
         recommendations,
       });
+      const weakest = weakestCategory(scoring);
+      const topProblems = recommendations.slice(0, 3).map((r) => r.title);
+      const reportUrl = appUrl(`/report/${scan.shareToken}`);
+
       await db
         .update(schema.leads)
-        .set({ score: scoring.revenueLeakScore, hotScore })
+        .set({
+          score: scoring.revenueLeakScore,
+          hotScore,
+          weakestCategory: weakest.label,
+          topProblemsJson: JSON.stringify(topProblems),
+          reportUrl,
+        })
         .where(eq(schema.leads.id, lead.id))
         .run();
 
-      const reportUrl = appUrl(`/report/${scan.shareToken}`);
+      // Optional GoHighLevel-style webhook. Fire-and-forget; never blocks.
+      void postLeadWebhook({
+        businessName: lead.businessName,
+        contactName: lead.contactName,
+        email: lead.email,
+        websiteUrl: lead.websiteUrl,
+        industry: lead.industry,
+        city: lead.city,
+        state: lead.state,
+        score: scoring.revenueLeakScore,
+        weakestCategory: weakest.label,
+        topProblems,
+        reportUrl,
+        source: lead.utmSource ?? lead.source,
+      });
       if (lead.email && lead.source !== "outreach") {
         await sendEmail({
           to: lead.email,
@@ -245,11 +340,17 @@ export async function runScanPipeline(scanId: string): Promise<void> {
           subject: `New lead: ${business.businessName} (${scoring.revenueLeakScore}/100)`,
           html: adminNewLeadEmail({
             businessName: business.businessName,
+            contactName: lead.contactName,
             email: lead.email,
+            websiteUrl: lead.websiteUrl,
             industry: lead.industry,
             city: lead.city,
+            state: lead.state,
             score: scoring.revenueLeakScore,
             hotScore,
+            weakestCategory: weakest.label,
+            topProblems,
+            reportUrl,
             adminUrl: appUrl(`/admin/leads/${lead.id}`),
           }),
           eventType: "admin_new_lead",
@@ -259,7 +360,11 @@ export async function runScanPipeline(scanId: string): Promise<void> {
       }
     }
 
-    trackEvent({ eventType: "scanner_complete", scanId });
+    trackEvent({
+      eventType: "scan_completed",
+      scanId,
+      metadata: { industry: business.industry, score: scoring.revenueLeakScore },
+    });
   } catch (error) {
     const message =
       error instanceof UnsafeUrlError || error instanceof FetchFailedError

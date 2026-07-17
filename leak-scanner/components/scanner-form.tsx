@@ -29,14 +29,6 @@ const INDUSTRIES = [
   "Other",
 ];
 
-const GOALS = [
-  { value: "more_calls", label: "More phone calls" },
-  { value: "more_bookings", label: "More bookings / appointments" },
-  { value: "more_form_leads", label: "More form leads / quotes" },
-  { value: "more_reviews", label: "More reviews" },
-  { value: "more_visibility", label: "More local visibility" },
-] as const;
-
 const SCAN_STAGES = [
   "Reading website",
   "Checking conversion signals",
@@ -56,44 +48,45 @@ const STAGE_COPY: Record<string, string> = {
 };
 
 interface FormState {
-  businessName: string;
   websiteUrl: string;
+  businessName: string;
   industry: string;
   city: string;
   state: string;
-  primaryGoal: string;
-  email: string;
   contactName: string;
-  competitor1: string;
-  competitor2: string;
-  competitor3: string;
+  email: string;
 }
 
-const TOTAL_STEPS = 5;
+const TOTAL_STEPS = 3;
+const EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
 
 export function ScannerForm() {
   const router = useRouter();
   const [step, setStep] = useState(0);
   const [form, setForm] = useState<FormState>({
-    businessName: "",
     websiteUrl: "",
+    businessName: "",
     industry: "",
     city: "",
     state: "",
-    primaryGoal: "more_calls",
-    email: "",
     contactName: "",
-    competitor1: "",
-    competitor2: "",
-    competitor3: "",
+    email: "",
   });
   const [error, setError] = useState<string | null>(null);
-  const [upgradeHint, setUpgradeHint] = useState(false);
   const [scanning, setScanning] = useState(false);
   const [stage, setStage] = useState<string>(SCAN_STAGES[0]);
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const sourceRef = useRef<string | null>(null);
 
   useEffect(() => {
+    // Capture marketing attribution once on mount (utm_source or ?src=).
+    try {
+      const params = new URLSearchParams(window.location.search);
+      sourceRef.current =
+        params.get("utm_source") || params.get("src") || params.get("source") || null;
+    } catch {
+      sourceRef.current = null;
+    }
     return () => {
       if (pollRef.current) clearInterval(pollRef.current);
     };
@@ -104,12 +97,13 @@ export function ScannerForm() {
 
   function validateStep(): string | null {
     if (step === 0) {
-      if (!form.businessName.trim()) return "What's your business called?";
       if (!form.websiteUrl.trim()) return "We need your website address to scan it.";
+      if (!form.businessName.trim()) return "What's your business called?";
     }
     if (step === 1 && !form.industry) return "Pick the closest industry so we score you fairly.";
-    if (step === 3) {
-      if (!form.email.trim() || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(form.email))
+    if (step === 2) {
+      if (!form.contactName.trim()) return "Your name lets us personalize your fix plan.";
+      if (!EMAIL_RE.test(form.email.trim()))
         return "Enter the email where we should send your report.";
     }
     return null;
@@ -131,14 +125,15 @@ export function ScannerForm() {
   }
 
   async function submit() {
+    const problem = validateStep();
+    if (problem) {
+      setError(problem);
+      return;
+    }
     setError(null);
-    setUpgradeHint(false);
     setScanning(true);
     setStage(SCAN_STAGES[0]);
     try {
-      const competitorUrls = [form.competitor1, form.competitor2, form.competitor3]
-        .map((c) => c.trim())
-        .filter(Boolean);
       const res = await fetch("/api/scans", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -148,17 +143,15 @@ export function ScannerForm() {
           industry: form.industry,
           city: form.city.trim() || undefined,
           state: form.state.trim() || undefined,
+          contactName: form.contactName.trim(),
           email: form.email.trim(),
-          contactName: form.contactName.trim() || undefined,
-          primaryGoal: form.primaryGoal,
-          competitorUrls: competitorUrls.length ? competitorUrls : undefined,
+          source: sourceRef.current || undefined,
         }),
       });
       const data = await res.json();
       if (!res.ok) {
         setScanning(false);
         setError(data.error ?? "Something went wrong starting the scan.");
-        setUpgradeHint(!!data.upgrade);
         return;
       }
 
@@ -240,15 +233,15 @@ export function ScannerForm() {
           <div className="animate-fade-up space-y-4">
             <div>
               <h2 className="text-lg font-semibold">Let&apos;s find your leaks</h2>
-              <p className="text-sm text-muted-foreground">Start with the basics — this takes about a minute.</p>
-            </div>
-            <div className="flex flex-col gap-1.5">
-              <Label htmlFor="businessName">Business name</Label>
-              <Input id="businessName" value={form.businessName} onChange={set("businessName")} placeholder="Desert Air HVAC" autoFocus />
+              <p className="text-sm text-muted-foreground">Start with your website — this takes about a minute.</p>
             </div>
             <div className="flex flex-col gap-1.5">
               <Label htmlFor="websiteUrl">Website</Label>
-              <Input id="websiteUrl" value={form.websiteUrl} onChange={set("websiteUrl")} placeholder="yourbusiness.com" inputMode="url" />
+              <Input id="websiteUrl" value={form.websiteUrl} onChange={set("websiteUrl")} placeholder="yourbusiness.com" inputMode="url" autoFocus />
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <Label htmlFor="businessName">Business name</Label>
+              <Input id="businessName" value={form.businessName} onChange={set("businessName")} placeholder="Desert Air HVAC" />
             </div>
           </div>
         )}
@@ -284,44 +277,13 @@ export function ScannerForm() {
         {step === 2 && (
           <div className="animate-fade-up space-y-4">
             <div>
-              <h2 className="text-lg font-semibold">What matters most right now?</h2>
-              <p className="text-sm text-muted-foreground">We&apos;ll prioritize your fix roadmap around this.</p>
-            </div>
-            <div className="space-y-2">
-              {GOALS.map((g) => (
-                <label
-                  key={g.value}
-                  className={
-                    form.primaryGoal === g.value
-                      ? "flex cursor-pointer items-center gap-3 rounded-lg border-2 border-primary bg-accent/40 p-3 text-sm font-medium"
-                      : "flex cursor-pointer items-center gap-3 rounded-lg border border-border p-3 text-sm hover:bg-muted"
-                  }
-                >
-                  <input
-                    type="radio"
-                    name="primaryGoal"
-                    value={g.value}
-                    checked={form.primaryGoal === g.value}
-                    onChange={set("primaryGoal")}
-                    className="accent-[var(--primary)]"
-                  />
-                  {g.label}
-                </label>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {step === 3 && (
-          <div className="animate-fade-up space-y-4">
-            <div>
               <h2 className="text-lg font-semibold">Where should we send your report?</h2>
               <p className="text-sm text-muted-foreground">
                 You&apos;ll see the report immediately — the email is your permanent link to it.
               </p>
             </div>
             <div className="flex flex-col gap-1.5">
-              <Label htmlFor="contactName">Your name (optional)</Label>
+              <Label htmlFor="contactName">Your name</Label>
               <Input id="contactName" value={form.contactName} onChange={set("contactName")} placeholder="Robert" />
             </div>
             <div className="flex flex-col gap-1.5">
@@ -331,33 +293,8 @@ export function ScannerForm() {
           </div>
         )}
 
-        {step === 4 && (
-          <div className="animate-fade-up space-y-4">
-            <div>
-              <h2 className="text-lg font-semibold">Any competitors we should know about?</h2>
-              <p className="text-sm text-muted-foreground">
-                Optional. Paid plans compare your signals side-by-side with theirs.
-              </p>
-            </div>
-            {(["competitor1", "competitor2", "competitor3"] as const).map((key, i) => (
-              <div key={key} className="flex flex-col gap-1.5">
-                <Label htmlFor={key}>Competitor website {i + 1}</Label>
-                <Input id={key} value={form[key]} onChange={set(key)} placeholder="competitor.com" inputMode="url" />
-              </div>
-            ))}
-          </div>
-        )}
-
         {error && (
-          <div className="mt-4 rounded-lg bg-red-50 p-3 text-sm text-danger">
-            {error}
-            {upgradeHint && (
-              <>
-                {" "}
-                <a href="/pricing" className="font-medium underline">See plans</a>
-              </>
-            )}
-          </div>
+          <div className="mt-4 rounded-lg bg-red-50 p-3 text-sm text-danger">{error}</div>
         )}
 
         <div className="mt-6 flex items-center justify-between">

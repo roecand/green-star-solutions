@@ -7,11 +7,9 @@ import { Input } from "@/components/ui/input";
 export function CtaPanel({
   token,
   bookingUrl,
-  showPdf = false,
 }: {
   token: string;
   bookingUrl: string | null;
-  showPdf?: boolean;
 }) {
   const [emailOpen, setEmailOpen] = useState(false);
   const [email, setEmail] = useState("");
@@ -43,56 +41,46 @@ export function CtaPanel({
 
   return (
     <section className="print-hidden rounded-2xl bg-charcoal p-8 text-white">
-      <h2 className="text-2xl font-bold">Want Greenstar to fix these leaks for you?</h2>
+      <h2 className="text-2xl font-bold">Want Green Star to fix these leaks for you?</h2>
       <p className="mt-2 max-w-2xl text-white/80">
-        We can turn this report into a working growth system: website,
-        automation, reviews, follow-up, and AI-ready content.
+        Green Star Solutions turns this report into a working growth system —
+        website, follow-up, reviews, local visibility, and AI-ready content.
+        Get a personalized plan for your business, free.
       </p>
-      <div className="mt-6 flex flex-wrap gap-3">
+      <div className="mt-6 flex flex-wrap items-center gap-3">
         <Button
           size="lg"
           disabled={busy}
           onClick={async () => {
-            const ok = await act("book_call");
+            // Records the lead's intent + notifies Green Star, then opens the
+            // scheduler if one is configured.
+            const ok = await act("request_fix_plan");
             if (ok) {
-              if (bookingUrl) window.open(bookingUrl, "_blank");
-              else setMessage("Request received — we'll reach out to schedule your call.");
+              if (bookingUrl) window.open(bookingUrl, "_blank", "noopener");
+              else
+                setMessage(
+                  "Got it — Green Star will reach out with your personalized fix plan shortly."
+                );
             }
           }}
         >
-          Book Strategy Call
+          Get My Personalized Fix Plan
         </Button>
-        <Button
-          size="lg"
-          variant="outline"
-          className="border-white/30 bg-transparent text-white hover:bg-white/10"
-          disabled={busy}
-          onClick={async () => {
-            const ok = await act("request_fix_plan");
-            if (ok) setMessage("Got it — Greenstar will send you a custom fix plan shortly.");
-          }}
-        >
-          Request Fix Plan
-        </Button>
-        <Button
-          size="lg"
-          variant="outline"
-          className="border-white/30 bg-transparent text-white hover:bg-white/10"
+        <button
+          type="button"
           disabled={busy}
           onClick={() => setEmailOpen((v) => !v)}
+          className="text-sm text-white/70 underline-offset-4 hover:text-white hover:underline"
         >
-          Email Me This Report
-        </Button>
-        {showPdf && (
-          <Button
-            size="lg"
-            variant="outline"
-            className="border-white/30 bg-transparent text-white hover:bg-white/10"
-            onClick={() => window.print()}
-          >
-            Download / Print PDF
-          </Button>
-        )}
+          Email me this report
+        </button>
+        <button
+          type="button"
+          onClick={() => window.print()}
+          className="text-sm text-white/70 underline-offset-4 hover:text-white hover:underline"
+        >
+          Print / save PDF
+        </button>
       </div>
       {emailOpen && (
         <form

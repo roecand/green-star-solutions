@@ -34,22 +34,45 @@ export function reportReadyEmail(input: {
 
 export function adminNewLeadEmail(input: {
   businessName: string;
+  contactName?: string | null;
   email: string | null;
+  websiteUrl?: string;
   industry: string;
   city: string | null;
+  state?: string | null;
   score: number | null;
   hotScore: number;
+  weakestCategory?: string | null;
+  topProblems?: string[];
+  reportUrl?: string;
   adminUrl: string;
 }): string {
+  const location =
+    [input.city, input.state]
+      .filter((v): v is string => Boolean(v))
+      .map(escapeHtml)
+      .join(", ") || "—";
+  const problems = (input.topProblems ?? []).filter(Boolean);
+  const problemList = problems.length
+    ? `<p style="font-size:14px;margin:16px 0 4px;font-weight:bold;">Top problems</p>
+       <ol style="font-size:14px;line-height:1.7;margin:0;padding-left:20px;">
+         ${problems.map((p) => `<li>${escapeHtml(p)}</li>`).join("")}
+       </ol>`
+    : "";
   return wrapper(`
     <h1 style="font-size:20px;margin:0 0 12px;">New scanner lead: ${escapeHtml(input.businessName)}</h1>
-    <ul style="font-size:14px;line-height:1.8;">
+    <ul style="font-size:14px;line-height:1.8;margin:0;padding-left:20px;">
+      <li>Contact: ${escapeHtml(input.contactName ?? "—")}</li>
       <li>Email: ${escapeHtml(input.email ?? "not provided")}</li>
+      ${input.websiteUrl ? `<li>Website: ${escapeHtml(input.websiteUrl)}</li>` : ""}
       <li>Industry: ${escapeHtml(input.industry)}</li>
-      <li>City: ${escapeHtml(input.city ?? "—")}</li>
-      <li>Revenue Leak Score: ${input.score ?? "pending"}</li>
+      <li>Location: ${location}</li>
+      <li>Revenue Leak Score: ${input.score ?? "pending"}/100</li>
+      <li>Weakest area: ${escapeHtml(input.weakestCategory ?? "—")}</li>
       <li>Hot lead score: ${input.hotScore}/100</li>
     </ul>
+    ${problemList}
+    ${input.reportUrl ? button(input.reportUrl, "View the lead's report") : ""}
     ${button(input.adminUrl, "Open in admin")}
   `);
 }
