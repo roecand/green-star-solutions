@@ -14,7 +14,7 @@ file. If `TURSO_DATABASE_URL` is unset it uses the file at `DATABASE_PATH`.)
 |---|---|
 | Service root directory | `leak-scanner` |
 | Builder | Nixpacks (`railway.json`) |
-| Build command | `npm ci && npm run build` |
+| Install / build | Nixpacks runs `npm ci` (install phase) then `npm run build` (build phase) — the build command must NOT re-run `npm ci` or it collides with Nixpacks' `node_modules/.cache` mount (EBUSY) |
 | Start command | `npx next start -H 0.0.0.0 -p ${PORT:-3000}` |
 | Health check | `GET /` |
 | Database file | `DATABASE_PATH` on a mounted volume, e.g. `/data/greenstar.db` |
