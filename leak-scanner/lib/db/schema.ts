@@ -51,7 +51,8 @@ export const businesses = sqliteTable("businesses", {
   // Null for anonymous public scans; set when a user claims/creates the business.
   organizationId: text("organization_id").references(() => organizations.id),
   businessName: text("business_name").notNull(),
-  websiteUrl: text("website_url").notNull(),
+  // Null = no website (a scannable signal in its own right).
+  websiteUrl: text("website_url"),
   industry: text("industry").notNull(),
   city: text("city"),
   state: text("state"),
@@ -73,10 +74,19 @@ export const scans = sqliteTable("scans", {
     .default("pending"),
   // Unguessable token for the public shareable report URL.
   shareToken: text("share_token").notNull().unique(),
-  websiteUrl: text("website_url").notNull(),
+  // Null = the business told us they have no website (scored as a leak).
+  websiteUrl: text("website_url"),
   industry: text("industry").notNull(),
   city: text("city"),
   state: text("state"),
+  // Ladder funnel: everyone starts quick; answering the deep questions on the
+  // report upgrades the scan to comprehensive.
+  depth: text("depth", { enum: ["quick", "comprehensive"] })
+    .notNull()
+    .default("quick"),
+  // Self-reported deep-audit answers (IntakeAnswers). Never affects scores —
+  // generates labeled "based on what you told us" insights.
+  intakeJson: text("intake_json"),
   progressStage: text("progress_stage"),
   rawHtmlSnapshot: text("raw_html_snapshot"),
   extractedText: text("extracted_text"),
@@ -135,7 +145,7 @@ export const leads = sqliteTable("leads", {
   contactName: text("contact_name"),
   email: text("email"),
   phone: text("phone"),
-  websiteUrl: text("website_url").notNull(),
+  websiteUrl: text("website_url"),
   industry: text("industry").notNull(),
   city: text("city"),
   state: text("state"),

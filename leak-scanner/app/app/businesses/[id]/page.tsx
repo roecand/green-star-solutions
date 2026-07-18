@@ -34,7 +34,7 @@ export default async function BusinessDetailPage({
         <h1 className="text-2xl font-bold">{business.businessName}</h1>
         <p className="text-sm text-muted-foreground">
           {business.industry} · {[business.city, business.state].filter(Boolean).join(", ") || "—"} ·{" "}
-          {business.websiteUrl.replace(/^https?:\/\//, "")}
+          {business.websiteUrl ? business.websiteUrl.replace(/^https?:\/\//, "") : "no website"}
         </p>
       </div>
 

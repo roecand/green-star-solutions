@@ -44,7 +44,7 @@ export default async function BusinessesPage() {
                 {b.industry} · {[b.city, b.state].filter(Boolean).join(", ") || "—"}
               </p>
               <p className="mt-2 text-sm text-muted-foreground">
-                {b.websiteUrl.replace(/^https?:\/\//, "")}
+                {b.websiteUrl ? b.websiteUrl.replace(/^https?:\/\//, "") : "no website"}
               </p>
             </Link>
           ))}

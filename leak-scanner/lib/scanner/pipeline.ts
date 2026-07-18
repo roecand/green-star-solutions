@@ -9,6 +9,11 @@ import {
   verdictForScore,
 } from "@/lib/scoring/engine";
 import { buildRecommendations } from "@/lib/scoring/recommendations";
+import {
+  buildNoWebsiteRecommendations,
+  buildNoWebsiteReport,
+  buildNoWebsiteScoring,
+} from "@/lib/scoring/no-website";
 import type { FindingCategory, ScoringResult } from "@/lib/scanner/types";
 import { generateReportWithFallback } from "@/lib/ai/provider";
 import { computeHotScore } from "@/lib/leads/hot-score";
@@ -30,7 +35,8 @@ export const SCAN_STAGES = [
 
 export interface CreateScanInput {
   businessName: string;
-  websiteUrl: string;
+  /** Null = the business has no website (scored as a leak, not an error). */
+  websiteUrl: string | null;
   industry: string;
   city?: string;
   state?: string;
@@ -134,7 +140,7 @@ interface LeadWebhookPayload {
   businessName: string;
   contactName: string | null;
   email: string | null;
-  websiteUrl: string;
+  websiteUrl: string | null;
   industry: string;
   city: string | null;
   state: string | null;
@@ -203,25 +209,61 @@ export async function runScanPipeline(scanId: string): Promise<void> {
   };
 
   try {
-    await setStage(scanId, SCAN_STAGES[0]);
-    const site = await extractSite(scan.websiteUrl, (stage) => {
-      void setStage(scanId, stage);
-    });
+    let scoring: ScoringResult;
+    let recommendations: ReturnType<typeof buildRecommendations>;
+    let report: import("@/lib/ai/report-schema").AIReport;
+    let source: "ai" | "fallback";
+    let extractedText: string | null = null;
+    let extractedMetadataJson: string;
 
-    await setStage(scanId, SCAN_STAGES[1]);
-    const scoring = runScoringEngine(site, ctx);
+    if (!scan.websiteUrl) {
+      // No-website path: nothing to fetch. Honest zero scores, curated
+      // opportunity-framed report — the missing site IS the critical leak.
+      await setStage(scanId, SCAN_STAGES[5]);
+      scoring = buildNoWebsiteScoring();
+      recommendations = buildNoWebsiteRecommendations();
+      report = buildNoWebsiteReport(ctx);
+      source = "fallback";
+      extractedMetadataJson = JSON.stringify({
+        noWebsite: true,
+        fetchedAt: new Date().toISOString(),
+        pages: [],
+        fetchErrors: [],
+      });
+    } else {
+      await setStage(scanId, SCAN_STAGES[0]);
+      const site = await extractSite(scan.websiteUrl, (stage) => {
+        void setStage(scanId, stage);
+      });
 
-    await setStage(scanId, SCAN_STAGES[5]);
-    const recommendations = buildRecommendations(scoring.findings);
+      await setStage(scanId, SCAN_STAGES[1]);
+      scoring = runScoringEngine(site, ctx);
 
-    const { report, source } = await generateReportWithFallback({
-      business: { ...ctx, websiteUrl: scan.websiteUrl },
-      scores: scoring,
-      findings: scoring.findings,
-      recommendations,
-      siteExcerpt: site.combinedText.slice(0, 6000),
-      fetchErrors: site.fetchErrors,
-    });
+      await setStage(scanId, SCAN_STAGES[5]);
+      recommendations = buildRecommendations(scoring.findings);
+
+      ({ report, source } = await generateReportWithFallback({
+        business: { ...ctx, websiteUrl: scan.websiteUrl },
+        scores: scoring,
+        findings: scoring.findings,
+        recommendations,
+        siteExcerpt: site.combinedText.slice(0, 6000),
+        fetchErrors: site.fetchErrors,
+      }));
+
+      extractedText = site.combinedText.slice(0, 100_000);
+      extractedMetadataJson = JSON.stringify({
+        finalUrl: site.finalUrl,
+        fetchedAt: site.fetchedAt,
+        pages: site.pages.map((p) => ({
+          url: p.url,
+          kind: p.kind,
+          title: p.title,
+          wordCount: p.wordCount,
+        })),
+        fetchErrors: site.fetchErrors,
+      });
+    }
 
     await db
       .update(schema.scans)
@@ -230,18 +272,8 @@ export async function runScanPipeline(scanId: string): Promise<void> {
         // completes on homepage signals alone.
         status: "completed",
         progressStage: null,
-        extractedText: site.combinedText.slice(0, 100_000),
-        extractedMetadataJson: JSON.stringify({
-          finalUrl: site.finalUrl,
-          fetchedAt: site.fetchedAt,
-          pages: site.pages.map((p) => ({
-            url: p.url,
-            kind: p.kind,
-            title: p.title,
-            wordCount: p.wordCount,
-          })),
-          fetchErrors: site.fetchErrors,
-        }),
+        extractedText,
+        extractedMetadataJson,
         deterministicFindingsJson: JSON.stringify(scoring.findings),
         aiReportJson: JSON.stringify(report),
         aiSource: source,
@@ -285,7 +317,7 @@ export async function runScanPipeline(scanId: string): Promise<void> {
         requestedHelp: false,
         viewedReport: false,
         industry: lead.industry,
-        websiteReachable: true,
+        websiteReachable: !!scan.websiteUrl,
         recommendations,
       });
       const weakest = weakestCategory(scoring);

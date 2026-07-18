@@ -7,9 +7,13 @@ import { Input } from "@/components/ui/input";
 export function CtaPanel({
   token,
   bookingUrl,
+  heading = "Want Green Star to fix these leaks for you?",
+  body = "Green Star Solutions turns this report into a working growth system — website, follow-up, reviews, local visibility, and AI-ready content. Get a personalized plan for your business, free.",
 }: {
   token: string;
   bookingUrl: string | null;
+  heading?: string;
+  body?: string;
 }) {
   const [emailOpen, setEmailOpen] = useState(false);
   const [email, setEmail] = useState("");
@@ -41,12 +45,8 @@ export function CtaPanel({
 
   return (
     <section className="print-hidden rounded-2xl bg-charcoal p-8 text-white">
-      <h2 className="text-2xl font-bold">Want Green Star to fix these leaks for you?</h2>
-      <p className="mt-2 max-w-2xl text-white/80">
-        Green Star Solutions turns this report into a working growth system —
-        website, follow-up, reviews, local visibility, and AI-ready content.
-        Get a personalized plan for your business, free.
-      </p>
+      <h2 className="text-2xl font-bold">{heading}</h2>
+      <p className="mt-2 max-w-2xl text-white/80">{body}</p>
       <div className="mt-6 flex flex-wrap items-center gap-3">
         <Button
           size="lg"

@@ -22,6 +22,7 @@ export default async function AdminOverviewPage() {
   const funnelCount = (type: string) => funnelRows.find((r) => r.type === type)?.n ?? 0;
   const scanStarted = funnelCount("scan_started");
   const scanCompleted = funnelCount("scan_completed");
+  const scanDeepened = funnelCount("scan_deepened");
   const fixPlanClicked = funnelCount("fix_plan_clicked");
   const clickRate =
     scanCompleted > 0 ? Math.round((fixPlanClicked / scanCompleted) * 100) : 0;
@@ -73,14 +74,15 @@ export default async function AdminOverviewPage() {
         ))}
       </div>
 
-      {/* Funnel: traffic → scan → report → fix-plan booking */}
+      {/* Funnel: traffic → scan → report → deep audit → fix-plan booking */}
       <section className="rounded-xl border border-border bg-card p-5">
         <h2 className="font-semibold">Funnel</h2>
-        <div className="mt-4 grid gap-4 sm:grid-cols-4">
+        <div className="mt-4 grid gap-4 sm:grid-cols-5">
           {(
             [
               ["Scans started", scanStarted],
               ["Scans completed", scanCompleted],
+              ["Deep audits", scanDeepened],
               ["Fix plans clicked", fixPlanClicked],
               ["Click → fix plan", `${clickRate}%`],
             ] as const
@@ -158,7 +160,7 @@ export default async function AdminOverviewPage() {
             {lowestScoring.map((scan) => (
               <li key={scan.id} className="flex justify-between">
                 <Link href={`/admin/scans/${scan.id}`} className="truncate hover:text-primary-strong">
-                  {scan.websiteUrl.replace(/^https?:\/\//, "")}
+                  {scan.websiteUrl ? scan.websiteUrl.replace(/^https?:\/\//, "") : `${scan.industry} (no website)`}
                 </Link>
                 <span className={`font-medium ${scoreColorClass(scan.revenueLeakScore ?? 0)}`}>
                   {scan.revenueLeakScore}
@@ -176,7 +178,7 @@ export default async function AdminOverviewPage() {
         <ul>
           {scans.slice(0, 8).map((scan) => (
             <li key={scan.id} className="flex items-center gap-4 border-b border-border p-4 text-sm last:border-0">
-              <span className="flex-1 truncate">{scan.websiteUrl.replace(/^https?:\/\//, "")}</span>
+              <span className="flex-1 truncate">{scan.websiteUrl ? scan.websiteUrl.replace(/^https?:\/\//, "") : `${scan.industry} (no website)`}</span>
               <span className="text-muted-foreground">{formatDate(scan.createdAt)}</span>
               <Badge tone={scan.status === "completed" ? "success" : scan.status === "failed" ? "danger" : "warning"}>
                 {scan.status}

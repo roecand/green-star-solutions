@@ -34,7 +34,7 @@ export default async function AdminScansPage() {
             <tbody>
               {scans.map((scan) => (
                 <tr key={scan.id} className="border-b border-border last:border-0 hover:bg-muted/50">
-                  <td className="p-4 font-medium">{scan.websiteUrl.replace(/^https?:\/\//, "")}</td>
+                  <td className="p-4 font-medium">{scan.websiteUrl ? scan.websiteUrl.replace(/^https?:\/\//, "") : "no website"}</td>
                   <td className="p-4 text-muted-foreground">{scan.industry}</td>
                   <td className="p-4 text-muted-foreground">{scan.city ?? "—"}</td>
                   <td className="p-4">

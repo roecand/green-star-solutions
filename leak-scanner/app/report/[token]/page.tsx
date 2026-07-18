@@ -7,6 +7,8 @@ import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { ScoreRing } from "@/components/report/score-ring";
 import { CtaPanel } from "@/components/report/cta-panel";
+import { DeepenForm } from "@/components/report/deepen-form";
+import { intakeSchema, buildIntakeInsights } from "@/lib/scoring/intake";
 import { Badge, severityTone } from "@/components/ui/badge";
 import { buttonClasses } from "@/components/ui/button";
 import { aiReportSchema, type AIReport } from "@/lib/ai/report-schema";
@@ -123,11 +125,23 @@ export default async function ReportPage({
     followUpReadinessScore: scan.followUpReadinessScore ?? 0,
   };
   const leakScore = scan.revenueLeakScore ?? 0;
-  // Report gating only applies when the paid SaaS is switched on. As a free
-  // lead-gen funnel, every visitor gets the complete report.
+  // Legacy paid-SaaS gating, only relevant if billing is ever re-enabled.
   const isFreePlan = billingEnabled() && plan.id === "free";
-  const visibleLeaks = isFreePlan ? report.top_revenue_leaks.slice(0, 3) : report.top_revenue_leaks;
+
+  // Ladder funnel: quick scans show the surface (score, categories, top 3
+  // leaks); answering the deep questions upgrades to the comprehensive audit
+  // (full leak list, roadmap, service matches, personalized insights).
+  const isQuick = scan.depth !== "comprehensive";
+  let intakeInsights: ReturnType<typeof buildIntakeInsights> = [];
+  if (!isQuick && scan.intakeJson) {
+    const parsedIntake = intakeSchema.safeParse(JSON.parse(scan.intakeJson));
+    if (parsedIntake.success) intakeInsights = buildIntakeInsights(parsedIntake.data);
+  }
+
+  const visibleLeaks =
+    isQuick || isFreePlan ? report.top_revenue_leaks.slice(0, 3) : report.top_revenue_leaks;
   const hiddenLeakCount = report.top_revenue_leaks.length - visibleLeaks.length;
+  const noWebsite = !scan.websiteUrl;
 
   return (
     <>
@@ -144,7 +158,8 @@ export default async function ReportPage({
               {business?.businessName ?? "Your business"}
             </h1>
             <p className="mt-1 text-sm text-muted-foreground">
-              {scan.websiteUrl.replace(/^https?:\/\//, "")} · Scanned {formatDate(scan.completedAt)}
+              {scan.websiteUrl ? scan.websiteUrl.replace(/^https?:\/\//, "") : "No website yet"} ·
+              Scanned {formatDate(scan.completedAt)}
               {[scan.city, scan.state].filter(Boolean).length > 0 &&
                 ` · ${[scan.city, scan.state].filter(Boolean).join(", ")}`}
             </p>
@@ -153,12 +168,25 @@ export default async function ReportPage({
               {report.executive_summary}
             </p>
             <p className="mt-4 rounded-lg bg-muted p-3 text-xs leading-relaxed text-muted-foreground">
-              This report is based on <strong>publicly visible signals</strong> from
-              your website. Your Revenue Leak Score reflects <strong>potential
-              revenue-capture risk</strong> — not verified financial loss. Internal
-              systems we can&apos;t see from outside (your CRM, phone handling, or
-              follow-up process) are treated as &ldquo;not publicly verifiable,&rdquo;
-              never counted against you.
+              {noWebsite ? (
+                <>
+                  This report is based on <strong>publicly visible signals</strong>.
+                  Because there&apos;s no website to scan, your score reflects the
+                  <strong> untapped opportunity</strong> of being invisible online —
+                  not a judgment of your business. Internal systems we can&apos;t see
+                  from outside are treated as &ldquo;not publicly verifiable,&rdquo;
+                  never counted against you.
+                </>
+              ) : (
+                <>
+                  This report is based on <strong>publicly visible signals</strong> from
+                  your website. Your Revenue Leak Score reflects <strong>potential
+                  revenue-capture risk</strong> — not verified financial loss. Internal
+                  systems we can&apos;t see from outside (your CRM, phone handling, or
+                  follow-up process) are treated as &ldquo;not publicly verifiable,&rdquo;
+                  never counted against you.
+                </>
+              )}
             </p>
           </div>
         </section>
@@ -218,7 +246,18 @@ export default async function ReportPage({
                 </div>
               </div>
             ))}
-            {hiddenLeakCount > 0 && (
+            {hiddenLeakCount > 0 && isQuick && (
+              <div className="print-hidden rounded-xl border border-dashed border-primary/40 bg-accent/30 p-5 text-center">
+                <p className="font-medium">
+                  +{hiddenLeakCount} more leak{hiddenLeakCount === 1 ? "" : "s"} found
+                </p>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  Your full audit below unlocks every leak, your prioritized fix
+                  roadmap, and insights personalized to your answers — free.
+                </p>
+              </div>
+            )}
+            {hiddenLeakCount > 0 && !isQuick && (
               <div className="print-hidden rounded-xl border border-dashed border-primary/40 bg-accent/30 p-5 text-center">
                 <p className="font-medium">
                   +{hiddenLeakCount} more leak{hiddenLeakCount === 1 ? "" : "s"} found
@@ -234,7 +273,43 @@ export default async function ReportPage({
           </div>
         </section>
 
-        {/* Priority roadmap */}
+        {/* Quick tier: the step-up to the comprehensive audit */}
+        {isQuick && (
+          <div className="mt-10">
+            <DeepenForm token={token} />
+          </div>
+        )}
+
+        {/* Comprehensive tier: personalized insights from their answers */}
+        {!isQuick && intakeInsights.length > 0 && (
+          <section className="mt-10">
+            <h2 className="text-xl font-bold">Based on what you told us</h2>
+            <p className="mt-1 text-sm text-muted-foreground">
+              These insights come from your own answers — they personalize your
+              plan and are separate from your publicly-observed score.
+            </p>
+            <div className="mt-4 grid gap-4 md:grid-cols-2">
+              {intakeInsights.map((insight) => (
+                <div key={insight.title} className="rounded-xl border border-border bg-card p-5">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <h3 className="font-semibold">{insight.title}</h3>
+                    <Badge tone="muted">you said: {insight.youToldUs}</Badge>
+                  </div>
+                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                    {insight.insight}
+                  </p>
+                  <p className="mt-3 border-t border-border pt-3 text-sm">
+                    <span className="font-medium text-primary-strong">Move: </span>
+                    {insight.recommendation}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* Priority roadmap — comprehensive tier only */}
+        {!isQuick && (
         <section className="mt-10">
           <h2 className="text-xl font-bold">Priority fix roadmap</h2>
           <div className="mt-4 grid gap-4 md:grid-cols-3">
@@ -275,12 +350,14 @@ export default async function ReportPage({
             })}
           </div>
         </section>
+        )}
 
-        {/* Greenstar service match */}
+        {/* Green Star service match — comprehensive tier only */}
+        {!isQuick && (
         <section className="mt-10">
-          <h2 className="text-xl font-bold">How Greenstar fixes this</h2>
+          <h2 className="text-xl font-bold">How Green Star fixes this</h2>
           <p className="mt-1 text-sm text-muted-foreground">
-            Every leak above maps to a specific Greenstar service.
+            Every leak above maps to a specific Green Star service.
           </p>
           <div className="mt-4 grid gap-4 md:grid-cols-2">
             {report.greenstar_service_matches.map((match) => (
@@ -291,18 +368,31 @@ export default async function ReportPage({
             ))}
           </div>
         </section>
+        )}
 
-        <p className="mt-10 text-sm leading-relaxed text-muted-foreground">
-          {report.report_conclusion}
-        </p>
+        {!isQuick && (
+          <p className="mt-10 text-sm leading-relaxed text-muted-foreground">
+            {report.report_conclusion}
+          </p>
+        )}
 
         <div className="mt-8">
-          <CtaPanel token={token} bookingUrl={bookingUrl()} />
+          {isQuick ? (
+            <CtaPanel token={token} bookingUrl={bookingUrl()} />
+          ) : (
+            <CtaPanel
+              token={token}
+              bookingUrl={bookingUrl()}
+              heading="Let's walk through your fix plan together"
+              body="You now have the full picture. The fastest next step: a free 20-minute walkthrough where Green Star turns this audit into a prioritized plan for your business — what to fix, in what order, and why it matters to your numbers."
+            />
+          )}
         </div>
 
         <p className="mt-6 text-center text-xs text-muted-foreground">
-          Scores are produced by deterministic checks of your website&apos;s public
-          content.{" "}
+          {noWebsite
+            ? "Scores reflect the absence of a public web presence to check."
+            : "Scores are produced by deterministic checks of your website's public content."}{" "}
           {scan.aiSource === "ai"
             ? "Explanations were written with AI assistance from those findings only."
             : "Explanations are generated from those findings."}{" "}

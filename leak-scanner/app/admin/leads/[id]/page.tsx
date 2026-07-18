@@ -8,6 +8,7 @@ import { ScoreRing } from "@/components/report/score-ring";
 import { LeadActions } from "@/components/admin/lead-actions";
 import { appUrl } from "@/lib/email/send";
 import { serviceName } from "@/lib/services/catalog";
+import { INTAKE_QUESTIONS, intakeAnswerLabel, intakeSchema } from "@/lib/scoring/intake";
 import { formatDate } from "@/lib/utils";
 
 export const metadata: Metadata = { title: "Lead" };
@@ -36,12 +37,25 @@ export default async function AdminLeadDetailPage({
     .orderBy(desc(schema.adminNotes.createdAt))
     .all();
 
+  // Self-reported deep-audit answers — gold for sales-call prep.
+  let intakeAnswers: ReturnType<typeof intakeSchema.parse> | null = null;
+  if (scan?.intakeJson) {
+    const parsedIntake = intakeSchema.safeParse(JSON.parse(scan.intakeJson));
+    if (parsedIntake.success) intakeAnswers = parsedIntake.data;
+  }
+
   const firstName = lead.contactName?.split(" ")[0];
-  const outreachEmailOpener = `Hey${firstName ? ` ${firstName}` : ""},
+  const outreachEmailOpener = lead.websiteUrl
+    ? `Hey${firstName ? ` ${firstName}` : ""},
 
 I ran ${lead.websiteUrl.replace(/^https?:\/\//, "")} through our Revenue Leak Scanner and found a few things that may be costing you calls${lead.score != null ? ` — it scored ${lead.score}/100` : ""}. Want me to send over the report? It's free and takes 2 minutes to read.
 
-— Robert, Greenstar Solutions`;
+— Robert, Green Star Solutions`
+    : `Hey${firstName ? ` ${firstName}` : ""},
+
+I ran ${lead.businessName} through our Revenue Leak Scanner — since you don't have a website yet, the report maps out exactly what that's costing you locally and what fixing it looks like. Want me to send it over? It's free and takes 2 minutes to read.
+
+— Robert, Green Star Solutions`;
 
   return (
     <div className="grid gap-8 lg:grid-cols-[3fr_2fr]">
@@ -76,9 +90,13 @@ I ran ${lead.websiteUrl.replace(/^https?:\/\//, "")} through our Revenue Leak Sc
             <div className="flex justify-between">
               <dt className="text-muted-foreground">Website</dt>
               <dd>
-                <a href={lead.websiteUrl} target="_blank" rel="noreferrer" className="text-primary-strong hover:underline">
-                  {lead.websiteUrl.replace(/^https?:\/\//, "")}
-                </a>
+                {lead.websiteUrl ? (
+                  <a href={lead.websiteUrl} target="_blank" rel="noreferrer" className="text-primary-strong hover:underline">
+                    {lead.websiteUrl.replace(/^https?:\/\//, "")}
+                  </a>
+                ) : (
+                  <Badge tone="warning">no website — build opportunity</Badge>
+                )}
               </dd>
             </div>
           </dl>
@@ -87,7 +105,12 @@ I ran ${lead.websiteUrl.replace(/^https?:\/\//, "")} through our Revenue Leak Sc
         {scan && (
           <section className="rounded-xl border border-border bg-card p-5">
             <div className="flex items-center justify-between">
-              <h2 className="font-semibold">Scan result</h2>
+              <h2 className="font-semibold">
+                Scan result{" "}
+                <Badge tone={scan.depth === "comprehensive" ? "success" : "muted"}>
+                  {scan.depth === "comprehensive" ? "deep audit" : "quick scan"}
+                </Badge>
+              </h2>
               {scan.status === "completed" && (
                 <Link href={`/report/${scan.shareToken}`} className="text-sm text-primary-strong hover:underline">
                   Open report
@@ -123,9 +146,28 @@ I ran ${lead.websiteUrl.replace(/^https?:\/\//, "")} through our Revenue Leak Sc
           </section>
         )}
 
+        {intakeAnswers && (
+          <section className="rounded-xl border border-primary/30 bg-accent/10 p-5">
+            <h2 className="font-semibold">🎯 Their deep-audit answers</h2>
+            <p className="mt-1 text-xs text-muted-foreground">
+              Self-reported — use these to prep the fix-plan call.
+            </p>
+            <dl className="mt-3 space-y-2 text-sm">
+              {INTAKE_QUESTIONS.map((q) => (
+                <div key={q.id} className="flex justify-between gap-4">
+                  <dt className="text-muted-foreground">{q.question}</dt>
+                  <dd className="text-right font-medium">
+                    {intakeAnswerLabel(q.id, intakeAnswers[q.id])}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </section>
+        )}
+
         {recommendations.length > 0 && (
           <section className="rounded-xl border border-border bg-card p-5">
-            <h2 className="font-semibold">Top issues → Greenstar services</h2>
+            <h2 className="font-semibold">Top issues → Green Star services</h2>
             <ul className="mt-3 space-y-2">
               {recommendations.slice(0, 6).map((rec) => (
                 <li key={rec.id} className="flex items-center gap-3 text-sm">

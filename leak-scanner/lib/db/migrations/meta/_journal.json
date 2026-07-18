@@ -15,6 +15,13 @@
       "when": 1784244005206,
       "tag": "0001_lead_funnel_fields",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1784403092941,
+      "tag": "0002_two_tier_scan",
+      "breakpoints": true
     }
   ]
 }

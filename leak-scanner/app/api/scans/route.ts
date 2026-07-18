@@ -12,7 +12,10 @@ import { trackEvent } from "@/lib/analytics/track";
 
 const createScanSchema = z.object({
   businessName: z.string().min(1).max(160),
-  websiteUrl: z.string().min(3).max(500),
+  // hasWebsite=false → no-website scan (scored as a leak). When true, a URL
+  // is required.
+  hasWebsite: z.boolean().default(true),
+  websiteUrl: z.string().min(3).max(500).optional(),
   industry: z.string().min(2).max(80),
   city: z.string().max(80).optional(),
   state: z.string().max(60).optional(),
@@ -59,10 +62,18 @@ export async function POST(request: Request) {
     }
   }
 
-  let websiteUrl: string;
+  let websiteUrl: string | null = null;
   const competitorUrls: string[] = [];
   try {
-    websiteUrl = normalizeUrl(input.websiteUrl);
+    if (input.hasWebsite) {
+      if (!input.websiteUrl?.trim()) {
+        return NextResponse.json(
+          { error: "Enter your website address, or choose “I don't have a website yet.”" },
+          { status: 400 }
+        );
+      }
+      websiteUrl = normalizeUrl(input.websiteUrl);
+    }
     for (const raw of input.competitorUrls ?? []) {
       if (raw.trim()) competitorUrls.push(normalizeUrl(raw));
     }
@@ -128,7 +139,11 @@ export async function POST(request: Request) {
     eventType: "scan_started",
     scanId: scan.id,
     userId: user?.id,
-    metadata: { industry: input.industry, source: input.source ?? null },
+    metadata: {
+      industry: input.industry,
+      source: input.source ?? null,
+      hasWebsite: !!websiteUrl,
+    },
   });
 
   // Run the pipeline without blocking the response; the client polls status.

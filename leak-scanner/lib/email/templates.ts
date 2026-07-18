@@ -36,7 +36,7 @@ export function adminNewLeadEmail(input: {
   businessName: string;
   contactName?: string | null;
   email: string | null;
-  websiteUrl?: string;
+  websiteUrl?: string | null;
   industry: string;
   city: string | null;
   state?: string | null;

@@ -48,6 +48,7 @@ const STAGE_COPY: Record<string, string> = {
 };
 
 interface FormState {
+  hasWebsite: "yes" | "no";
   websiteUrl: string;
   businessName: string;
   industry: string;
@@ -64,6 +65,7 @@ export function ScannerForm() {
   const router = useRouter();
   const [step, setStep] = useState(0);
   const [form, setForm] = useState<FormState>({
+    hasWebsite: "yes",
     websiteUrl: "",
     businessName: "",
     industry: "",
@@ -97,7 +99,8 @@ export function ScannerForm() {
 
   function validateStep(): string | null {
     if (step === 0) {
-      if (!form.websiteUrl.trim()) return "We need your website address to scan it.";
+      if (form.hasWebsite === "yes" && !form.websiteUrl.trim())
+        return "Enter your website address, or choose “I don't have a website yet.”";
       if (!form.businessName.trim()) return "What's your business called?";
     }
     if (step === 1 && !form.industry) return "Pick the closest industry so we score you fairly.";
@@ -139,7 +142,8 @@ export function ScannerForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           businessName: form.businessName.trim(),
-          websiteUrl: form.websiteUrl.trim(),
+          hasWebsite: form.hasWebsite === "yes",
+          websiteUrl: form.hasWebsite === "yes" ? form.websiteUrl.trim() : undefined,
           industry: form.industry,
           city: form.city.trim() || undefined,
           state: form.state.trim() || undefined,
@@ -176,6 +180,23 @@ export function ScannerForm() {
       setScanning(false);
       setError("Network error. Please try again.");
     }
+  }
+
+  if (scanning && form.hasWebsite === "no") {
+    return (
+      <Card className="w-full max-w-xl">
+        <CardContent className="p-8 text-center">
+          <h2 className="text-lg font-semibold">Building your report…</h2>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Mapping the opportunity for {form.businessName || "your business"} —
+            this only takes a few seconds.
+          </p>
+          <div className="mx-auto mt-6 h-1.5 w-48 overflow-hidden rounded-full bg-muted">
+            <div className="h-1.5 w-1/2 animate-pulse rounded-full bg-primary" />
+          </div>
+        </CardContent>
+      </Card>
+    );
   }
 
   if (scanning) {
@@ -233,12 +254,50 @@ export function ScannerForm() {
           <div className="animate-fade-up space-y-4">
             <div>
               <h2 className="text-lg font-semibold">Let&apos;s find your leaks</h2>
-              <p className="text-sm text-muted-foreground">Start with your website — this takes about a minute.</p>
+              <p className="text-sm text-muted-foreground">Start with your online presence — this takes about a minute.</p>
             </div>
             <div className="flex flex-col gap-1.5">
-              <Label htmlFor="websiteUrl">Website</Label>
-              <Input id="websiteUrl" value={form.websiteUrl} onChange={set("websiteUrl")} placeholder="yourbusiness.com" inputMode="url" autoFocus />
+              <span className="text-sm font-medium">Do you have a website?</span>
+              <div className="grid grid-cols-2 gap-2" role="radiogroup" aria-label="Do you have a website?">
+                <button
+                  type="button"
+                  role="radio"
+                  aria-checked={form.hasWebsite === "yes"}
+                  onClick={() => setForm((f) => ({ ...f, hasWebsite: "yes" }))}
+                  className={
+                    form.hasWebsite === "yes"
+                      ? "rounded-lg border-2 border-primary bg-accent/40 p-3 text-sm font-medium"
+                      : "rounded-lg border border-border p-3 text-sm hover:bg-muted"
+                  }
+                >
+                  Yes, scan my site
+                </button>
+                <button
+                  type="button"
+                  role="radio"
+                  aria-checked={form.hasWebsite === "no"}
+                  onClick={() => setForm((f) => ({ ...f, hasWebsite: "no" }))}
+                  className={
+                    form.hasWebsite === "no"
+                      ? "rounded-lg border-2 border-primary bg-accent/40 p-3 text-sm font-medium"
+                      : "rounded-lg border border-border p-3 text-sm hover:bg-muted"
+                  }
+                >
+                  I don&apos;t have a website yet
+                </button>
+              </div>
             </div>
+            {form.hasWebsite === "yes" ? (
+              <div className="flex flex-col gap-1.5">
+                <Label htmlFor="websiteUrl">Website</Label>
+                <Input id="websiteUrl" value={form.websiteUrl} onChange={set("websiteUrl")} placeholder="yourbusiness.com" inputMode="url" autoFocus />
+              </div>
+            ) : (
+              <p className="rounded-lg bg-muted p-3 text-sm text-muted-foreground">
+                No problem — we&apos;ll show you exactly what having no website is
+                costing you, and what claiming that opportunity looks like.
+              </p>
+            )}
             <div className="flex flex-col gap-1.5">
               <Label htmlFor="businessName">Business name</Label>
               <Input id="businessName" value={form.businessName} onChange={set("businessName")} placeholder="Desert Air HVAC" />
