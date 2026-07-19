@@ -1,16 +1,43 @@
 import { z } from "zod";
 
 /**
- * Deep-audit intake: six multiple-choice questions asked when a lead upgrades
- * their quick scan to the comprehensive audit.
+ * Self-reported inputs.
+ *
+ * Two layers:
+ * - customerValue — captured in the QUICK scan (single tap). Powers the
+ *   hedged opportunity-cost framing in the report hero.
+ * - The 5 deep-audit questions — asked in the step-up modal. Unlock the
+ *   comprehensive audit and its "based on what you told us" insights.
  *
  * Rules:
  * - Answers NEVER change the deterministic score (self-reported ≠ observed).
- * - Every answer produces a visible, labeled "based on what you told us"
- *   insight in the report — each question earns its place.
- * - No invented statistics or revenue claims. The customer-value framing uses
- *   the lead's own stated number and says so.
+ * - Every answer produces a visible, labeled insight — each question earns
+ *   its place.
+ * - No invented statistics or revenue claims. All money framing uses the
+ *   lead's own stated number, is worded as an illustration ("if just…",
+ *   "for scale"), and says whose numbers they are.
  */
+
+export const customerValueSchema = z.enum([
+  "under_100",
+  "v100_500",
+  "v500_2000",
+  "over_2000",
+  "not_sure",
+]);
+export type CustomerValue = z.infer<typeof customerValueSchema>;
+
+export const CUSTOMER_VALUE_QUESTION = {
+  id: "customerValue" as const,
+  question: "Roughly what is one new customer worth to you?",
+  options: [
+    { value: "under_100", label: "Under $100" },
+    { value: "v100_500", label: "$100 – $500" },
+    { value: "v500_2000", label: "$500 – $2,000" },
+    { value: "over_2000", label: "Over $2,000" },
+    { value: "not_sure", label: "Not sure" },
+  ],
+};
 
 export const intakeSchema = z.object({
   mainGoal: z.enum(["more_calls", "more_bookings", "bigger_jobs", "more_reviews", "expand_area"]),
@@ -18,7 +45,6 @@ export const intakeSchema = z.object({
   missedCalls: z.enum(["voicemail", "call_back_later", "text_back_auto", "not_sure"]),
   responseSpeed: z.enum(["within_hour", "same_day", "next_day", "varies"]),
   reviewHabit: z.enum(["system", "sometimes", "never"]),
-  customerValue: z.enum(["under_100", "v100_500", "v500_2000", "over_2000", "not_sure"]),
 });
 
 export type IntakeAnswers = z.infer<typeof intakeSchema>;
@@ -59,7 +85,7 @@ export const INTAKE_QUESTIONS: IntakeQuestion[] = [
   },
   {
     id: "missedCalls",
-    question: "When a call comes in and you can't answer, what happens?",
+    question: "A call comes in while you're on a job. What happens?",
     options: [
       { value: "voicemail", label: "It goes to voicemail" },
       { value: "call_back_later", label: "I call back when I'm free" },
@@ -86,25 +112,54 @@ export const INTAKE_QUESTIONS: IntakeQuestion[] = [
       { value: "never", label: "Not really" },
     ],
   },
-  {
-    id: "customerValue",
-    question: "Roughly what is one new customer worth to you?",
-    options: [
-      { value: "under_100", label: "Under $100" },
-      { value: "v100_500", label: "$100 – $500" },
-      { value: "v500_2000", label: "$500 – $2,000" },
-      { value: "over_2000", label: "Over $2,000" },
-      { value: "not_sure", label: "Not sure" },
-    ],
-  },
 ];
 
-export const INTAKE_OPTION_LABELS: Record<string, string> = Object.fromEntries(
-  INTAKE_QUESTIONS.flatMap((q) => q.options.map((o) => [`${q.id}.${o.value}`, o.label]))
-);
+const ALL_OPTION_LABELS: Record<string, string> = Object.fromEntries([
+  ...INTAKE_QUESTIONS.flatMap((q) => q.options.map((o) => [`${q.id}.${o.value}`, o.label])),
+  ...CUSTOMER_VALUE_QUESTION.options.map((o) => [`customerValue.${o.value}`, o.label]),
+]);
 
-export function intakeAnswerLabel(questionId: keyof IntakeAnswers, value: string): string {
-  return INTAKE_OPTION_LABELS[`${questionId}.${value}`] ?? value;
+export function intakeAnswerLabel(
+  questionId: keyof IntakeAnswers | "customerValue",
+  value: string
+): string {
+  return ALL_OPTION_LABELS[`${questionId}.${value}`] ?? value;
+}
+
+/**
+ * The hedged opportunity-cost line for the report hero. Illustration, not a
+ * measurement: "if just two customers a month" at THEIR stated value, with
+ * explicit attribution ("your numbers, not ours"). Returns null when we have
+ * no usable number — the hero simply omits the line.
+ */
+export function opportunityLine(
+  customerValue: CustomerValue | null | undefined,
+  options: { noWebsite: boolean }
+): string | null {
+  if (!customerValue) return null;
+  const missPhrase = options.noWebsite
+    ? "can't find you because you're not online"
+    : "slip past you";
+
+  const ranges: Record<Exclude<CustomerValue, "not_sure">, [string, string]> = {
+    under_100: ["up to $100", "up to $2,400"],
+    v100_500: ["$100–$500", "$2,400–$12,000"],
+    v500_2000: ["$500–$2,000", "$12,000–$48,000"],
+    over_2000: ["$2,000 or more", "$48,000 or more"],
+  };
+
+  if (customerValue === "not_sure") {
+    return (
+      "You told us you're not sure what a customer is worth — that number is the key to this whole report. " +
+      "Rough math is enough: average job × repeat business. Once you have it, every leak below becomes a dollar figure instead of a maybe."
+    );
+  }
+
+  const [each, yearly] = ranges[customerValue];
+  return (
+    `For scale: if just two customers a month ${missPhrase}, at the ${each} you told us a customer is worth, ` +
+    `that's roughly ${yearly} a year at stake. Your numbers, not ours — and every fix below is aimed at closing that gap.`
+  );
 }
 
 export interface IntakeInsight {
@@ -116,9 +171,14 @@ export interface IntakeInsight {
 
 /**
  * Deterministic answer → insight copy. Grounded in the lead's own words,
- * general business principles only — no fabricated numbers.
+ * general business principles only — no fabricated numbers. customerValue is
+ * captured in the quick scan, so it arrives separately (and may be absent on
+ * older scans).
  */
-export function buildIntakeInsights(answers: IntakeAnswers): IntakeInsight[] {
+export function buildIntakeInsights(
+  answers: IntakeAnswers,
+  customerValue?: CustomerValue | null
+): IntakeInsight[] {
   const insights: IntakeInsight[] = [];
 
   // 1. Main goal — frames the whole engagement.
@@ -260,36 +320,38 @@ export function buildIntakeInsights(answers: IntakeAnswers): IntakeInsight[] {
     recommendation: revRec,
   });
 
-  // 6. Customer value — stakes framing using THEIR number, clearly labeled.
-  const valueCopy: Record<IntakeAnswers["customerValue"], [string, string]> = {
-    under_100: [
-      "At under $100 per customer, volume is everything — which makes low-friction capture (easy contact, instant response) matter more than anything else in this report.",
-      "Optimize for volume: the fewer steps between interest and action, the better your economics.",
-    ],
-    v100_500: [
-      "By your own numbers, each missed inquiry is a $100–$500 decision. Even one recovered lead a week pays for most of the fixes in this report many times over within a year.",
-      "Treat lead capture and response speed as investments with a measurable payback, because at your ticket size, they are.",
-    ],
-    v500_2000: [
-      "By your own numbers, every lost lead costs $500–$2,000. At that ticket size, a single leak recovering one customer a month is worth thousands a year — this report stops being cosmetic and starts being financial.",
-      "Prioritize ruthlessly by payback: follow-up and conversion fixes first, because each recovered lead is real money.",
-    ],
-    over_2000: [
-      "At $2,000+ per customer, you're in territory where one recovered lead can pay for an entire growth system. High-ticket buyers also do the most research — trust and proof do the heavy lifting.",
-      "Invest in the trust layer (reviews, credentials, proof) and airtight follow-up — at your ticket size, both are profit centers.",
-    ],
-    not_sure: [
-      "Knowing your customer value is the key that unlocks every other growth decision — it tells you what a lead is worth, what a leak costs, and what a fix should pay.",
-      "Rough math is enough: average job value × jobs per customer. Even an estimate turns this report into a payback calculation.",
-    ],
-  };
-  const [valInsight, valRec] = valueCopy[answers.customerValue];
-  insights.push({
-    title: "What a customer is worth",
-    youToldUs: intakeAnswerLabel("customerValue", answers.customerValue),
-    insight: valInsight,
-    recommendation: valRec,
-  });
+  // 6. Customer value — captured at quick-scan time; include when we have it.
+  if (customerValue) {
+    const valueCopy: Record<CustomerValue, [string, string]> = {
+      under_100: [
+        "At under $100 per customer, volume is everything — which makes low-friction capture (easy contact, instant response) matter more than anything else in this report.",
+        "Optimize for volume: the fewer steps between interest and action, the better your economics.",
+      ],
+      v100_500: [
+        "By your own numbers, each missed inquiry is a $100–$500 decision. Even one recovered lead a week pays for most of the fixes in this report many times over within a year.",
+        "Treat lead capture and response speed as investments with a measurable payback, because at your ticket size, they are.",
+      ],
+      v500_2000: [
+        "By your own numbers, every lost lead costs $500–$2,000. At that ticket size, a single leak recovering one customer a month is worth thousands a year — this report stops being cosmetic and starts being financial.",
+        "Prioritize ruthlessly by payback: follow-up and conversion fixes first, because each recovered lead is real money.",
+      ],
+      over_2000: [
+        "At $2,000+ per customer, you're in territory where one recovered lead can pay for an entire growth system. High-ticket buyers also do the most research — trust and proof do the heavy lifting.",
+        "Invest in the trust layer (reviews, credentials, proof) and airtight follow-up — at your ticket size, both are profit centers.",
+      ],
+      not_sure: [
+        "Knowing your customer value is the key that unlocks every other growth decision — it tells you what a lead is worth, what a leak costs, and what a fix should pay.",
+        "Rough math is enough: average job value × jobs per customer. Even an estimate turns this report into a payback calculation.",
+      ],
+    };
+    const [valInsight, valRec] = valueCopy[customerValue];
+    insights.push({
+      title: "What a customer is worth",
+      youToldUs: intakeAnswerLabel("customerValue", customerValue),
+      insight: valInsight,
+      recommendation: valRec,
+    });
+  }
 
   return insights;
 }

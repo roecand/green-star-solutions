@@ -8,6 +8,7 @@ import { rateLimit, clientIpFrom } from "@/lib/rate-limit";
 import { getSessionUser, getUserOrganization } from "@/lib/auth/session";
 import { scanLimitFor } from "@/lib/billing/plans";
 import { billingEnabled } from "@/lib/flags";
+import { customerValueSchema } from "@/lib/scoring/intake";
 import { trackEvent } from "@/lib/analytics/track";
 
 const createScanSchema = z.object({
@@ -22,6 +23,7 @@ const createScanSchema = z.object({
   email: z.string().email().max(254).optional().or(z.literal("")),
   contactName: z.string().max(120).optional(),
   phone: z.string().max(40).optional(),
+  customerValue: customerValueSchema.optional(),
   source: z.string().max(120).optional(),
   primaryGoal: z
     .enum(["more_calls", "more_bookings", "more_form_leads", "more_reviews", "more_visibility"])
@@ -130,6 +132,7 @@ export async function POST(request: Request) {
     contactName: input.contactName,
     phone: input.phone,
     primaryGoal: input.primaryGoal,
+    customerValue: input.customerValue ?? null,
     competitorUrls,
     organizationId: organization?.id ?? null,
     utmSource: input.source ?? null,

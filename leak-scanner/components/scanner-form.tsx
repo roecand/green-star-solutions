@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input, Label, Select } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
+import { CUSTOMER_VALUE_QUESTION } from "@/lib/scoring/intake";
 
 const INDUSTRIES = [
   "HVAC",
@@ -54,6 +55,7 @@ interface FormState {
   industry: string;
   city: string;
   state: string;
+  customerValue: string;
   contactName: string;
   email: string;
 }
@@ -71,6 +73,7 @@ export function ScannerForm() {
     industry: "",
     city: "",
     state: "",
+    customerValue: "",
     contactName: "",
     email: "",
   });
@@ -103,7 +106,11 @@ export function ScannerForm() {
         return "Enter your website address, or choose “I don't have a website yet.”";
       if (!form.businessName.trim()) return "What's your business called?";
     }
-    if (step === 1 && !form.industry) return "Pick the closest industry so we score you fairly.";
+    if (step === 1) {
+      if (!form.industry) return "Pick the closest industry so we score you fairly.";
+      if (!form.customerValue)
+        return "Pick a rough customer value — it turns your report into dollars. ('Not sure' is fine.)";
+    }
     if (step === 2) {
       if (!form.contactName.trim()) return "Your name lets us personalize your fix plan.";
       if (!EMAIL_RE.test(form.email.trim()))
@@ -147,6 +154,7 @@ export function ScannerForm() {
           industry: form.industry,
           city: form.city.trim() || undefined,
           state: form.state.trim() || undefined,
+          customerValue: form.customerValue || undefined,
           contactName: form.contactName.trim(),
           email: form.email.trim(),
           source: sourceRef.current || undefined,
@@ -328,6 +336,37 @@ export function ScannerForm() {
               <div className="flex flex-col gap-1.5">
                 <Label htmlFor="state">State / region</Label>
                 <Input id="state" value={form.state} onChange={set("state")} placeholder="NV" />
+              </div>
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <span className="text-sm font-medium">{CUSTOMER_VALUE_QUESTION.question}</span>
+              <p className="text-xs text-muted-foreground">
+                One tap — it turns your report into dollars instead of scores.
+              </p>
+              <div
+                className="mt-1 flex flex-wrap gap-2"
+                role="radiogroup"
+                aria-label={CUSTOMER_VALUE_QUESTION.question}
+              >
+                {CUSTOMER_VALUE_QUESTION.options.map((o) => {
+                  const selected = form.customerValue === o.value;
+                  return (
+                    <button
+                      key={o.value}
+                      type="button"
+                      role="radio"
+                      aria-checked={selected}
+                      onClick={() => setForm((f) => ({ ...f, customerValue: o.value }))}
+                      className={
+                        selected
+                          ? "rounded-full border-2 border-primary bg-primary/10 px-3 py-1.5 text-sm font-medium text-primary-strong"
+                          : "rounded-full border border-border bg-card px-3 py-1.5 text-sm hover:bg-muted"
+                      }
+                    >
+                      {o.label}
+                    </button>
+                  );
+                })}
               </div>
             </div>
           </div>

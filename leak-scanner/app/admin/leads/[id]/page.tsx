@@ -8,7 +8,12 @@ import { ScoreRing } from "@/components/report/score-ring";
 import { LeadActions } from "@/components/admin/lead-actions";
 import { appUrl } from "@/lib/email/send";
 import { serviceName } from "@/lib/services/catalog";
-import { INTAKE_QUESTIONS, intakeAnswerLabel, intakeSchema } from "@/lib/scoring/intake";
+import {
+  CUSTOMER_VALUE_QUESTION,
+  INTAKE_QUESTIONS,
+  intakeAnswerLabel,
+  intakeSchema,
+} from "@/lib/scoring/intake";
 import { formatDate } from "@/lib/utils";
 
 export const metadata: Metadata = { title: "Lead" };
@@ -153,6 +158,14 @@ I ran ${lead.businessName} through our Revenue Leak Scanner — since you don't 
               Self-reported — use these to prep the fix-plan call.
             </p>
             <dl className="mt-3 space-y-2 text-sm">
+              {scan?.customerValue && (
+                <div className="flex justify-between gap-4">
+                  <dt className="text-muted-foreground">{CUSTOMER_VALUE_QUESTION.question}</dt>
+                  <dd className="text-right font-medium">
+                    {intakeAnswerLabel("customerValue", scan.customerValue)}
+                  </dd>
+                </div>
+              )}
               {INTAKE_QUESTIONS.map((q) => (
                 <div key={q.id} className="flex justify-between gap-4">
                   <dt className="text-muted-foreground">{q.question}</dt>

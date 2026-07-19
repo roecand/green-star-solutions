@@ -8,7 +8,13 @@ import { SiteFooter } from "@/components/site-footer";
 import { ScoreRing } from "@/components/report/score-ring";
 import { CtaPanel } from "@/components/report/cta-panel";
 import { DeepenForm } from "@/components/report/deepen-form";
-import { intakeSchema, buildIntakeInsights } from "@/lib/scoring/intake";
+import { LeakGauge } from "@/components/report/leak-gauge";
+import {
+  intakeSchema,
+  buildIntakeInsights,
+  customerValueSchema,
+  opportunityLine,
+} from "@/lib/scoring/intake";
 import { Badge, severityTone } from "@/components/ui/badge";
 import { buttonClasses } from "@/components/ui/button";
 import { aiReportSchema, type AIReport } from "@/lib/ai/report-schema";
@@ -132,16 +138,30 @@ export default async function ReportPage({
   // leaks); answering the deep questions upgrades to the comprehensive audit
   // (full leak list, roadmap, service matches, personalized insights).
   const isQuick = scan.depth !== "comprehensive";
+  const noWebsite = !scan.websiteUrl;
+
+  // Customer value: captured in the quick scan; older deep audits stored it
+  // inside intakeJson, so fall back to that for pre-migration scans.
+  const rawIntake: Record<string, unknown> | null = scan.intakeJson
+    ? (JSON.parse(scan.intakeJson) as Record<string, unknown>)
+    : null;
+  const customerValueParse = customerValueSchema.safeParse(
+    scan.customerValue ?? rawIntake?.customerValue
+  );
+  const customerValue = customerValueParse.success ? customerValueParse.data : null;
+  const moneyLine = opportunityLine(customerValue, { noWebsite });
+
   let intakeInsights: ReturnType<typeof buildIntakeInsights> = [];
-  if (!isQuick && scan.intakeJson) {
-    const parsedIntake = intakeSchema.safeParse(JSON.parse(scan.intakeJson));
-    if (parsedIntake.success) intakeInsights = buildIntakeInsights(parsedIntake.data);
+  if (!isQuick && rawIntake) {
+    const parsedIntake = intakeSchema.safeParse(rawIntake);
+    if (parsedIntake.success) {
+      intakeInsights = buildIntakeInsights(parsedIntake.data, customerValue);
+    }
   }
 
   const visibleLeaks =
     isQuick || isFreePlan ? report.top_revenue_leaks.slice(0, 3) : report.top_revenue_leaks;
   const hiddenLeakCount = report.top_revenue_leaks.length - visibleLeaks.length;
-  const noWebsite = !scan.websiteUrl;
 
   return (
     <>
@@ -149,7 +169,7 @@ export default async function ReportPage({
       <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-10">
         {/* Header */}
         <section className="flex flex-col items-center gap-8 rounded-2xl border border-border bg-card p-8 md:flex-row md:items-start">
-          <ScoreRing score={leakScore} size={160} label="Revenue Leak Score" />
+          <LeakGauge score={leakScore} />
           <div className="flex-1 text-center md:text-left">
             <p className="text-sm font-medium uppercase tracking-wider text-primary-strong">
               Revenue Leak Report
@@ -164,6 +184,12 @@ export default async function ReportPage({
                 ` · ${[scan.city, scan.state].filter(Boolean).join(", ")}`}
             </p>
             <p className="mt-4 text-lg font-medium">{report.score_verdict}</p>
+            {moneyLine && (
+              <p className="mt-4 rounded-xl border-2 border-warning/40 bg-amber-50 p-4 text-sm font-medium leading-relaxed">
+                💸{" "}
+                {moneyLine}
+              </p>
+            )}
             <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
               {report.executive_summary}
             </p>
@@ -172,7 +198,7 @@ export default async function ReportPage({
                 <>
                   This report is based on <strong>publicly visible signals</strong>.
                   Because there&apos;s no website to scan, your score reflects the
-                  <strong> untapped opportunity</strong> of being invisible online —
+                  <strong> untapped opportunity </strong> of being invisible online —
                   not a judgment of your business. Internal systems we can&apos;t see
                   from outside are treated as &ldquo;not publicly verifiable,&rdquo;
                   never counted against you.
@@ -191,7 +217,34 @@ export default async function ReportPage({
           </div>
         </section>
 
-        {/* Category score cards */}
+        {/* No-website: one fact, stated once — not five identical zero-cards.
+            The category grid is replaced by a single what-this-means panel. */}
+        {noWebsite ? (
+          <section className="mt-8 rounded-2xl border border-border bg-card p-6 sm:p-8">
+            <h2 className="text-xl font-bold">What being offline is costing you</h2>
+            <p className="mt-1 text-sm text-muted-foreground">
+              One root cause, five downstream effects — every one of them fixable
+              with the same move.
+            </p>
+            <div className="mt-5 grid gap-3 sm:grid-cols-2">
+              {report.category_summaries.map((summary) => (
+                <div key={summary.category} className="flex gap-3 rounded-xl bg-muted/60 p-4">
+                  <span className="text-lg" aria-hidden>
+                    💧
+                  </span>
+                  <div>
+                    <h3 className="text-sm font-semibold">
+                      {CATEGORY_LABELS[summary.category]}
+                    </h3>
+                    <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
+                      {summary.summary}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        ) : (
         <section className="mt-8">
           <h2 className="text-xl font-bold">Where the leaks are</h2>
           <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -224,6 +277,7 @@ export default async function ReportPage({
             })}
           </div>
         </section>
+        )}
 
         {/* Top revenue leaks */}
         <section className="mt-10">

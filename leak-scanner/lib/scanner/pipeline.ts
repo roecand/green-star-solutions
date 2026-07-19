@@ -44,6 +44,7 @@ export interface CreateScanInput {
   contactName?: string;
   phone?: string;
   primaryGoal?: string;
+  customerValue?: "under_100" | "v100_500" | "v500_2000" | "over_2000" | "not_sure" | null;
   competitorUrls?: string[];
   organizationId?: string | null;
   source?: "self_serve" | "outreach" | "demo";
@@ -85,6 +86,7 @@ export async function createScanRecords(input: CreateScanInput) {
       industry: input.industry,
       city: input.city ?? null,
       state: input.state ?? null,
+      customerValue: input.customerValue ?? null,
     })
     .returning()
     .get();

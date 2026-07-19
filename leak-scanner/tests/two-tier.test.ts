@@ -17,6 +17,7 @@ import {
   buildIntakeInsights,
   intakeAnswerLabel,
   intakeSchema,
+  opportunityLine,
   type IntakeAnswers,
 } from "@/lib/scoring/intake";
 import { GREENSTAR_SERVICES } from "@/lib/services/catalog";
@@ -78,7 +79,6 @@ describe("intake engine", () => {
     missedCalls: "voicemail",
     responseSpeed: "same_day",
     reviewHabit: "sometimes",
-    customerValue: "v500_2000",
   };
 
   it("accepts valid answers and rejects invalid ones", () => {
@@ -87,13 +87,19 @@ describe("intake engine", () => {
     expect(() => intakeSchema.parse({})).toThrow();
   });
 
-  it("every possible answer combination produces six complete insights", () => {
+  it("tolerates legacy six-question payloads (customerValue stripped)", () => {
+    const legacy = { ...validAnswers, customerValue: "v500_2000" };
+    const parsed = intakeSchema.parse(legacy);
+    expect("customerValue" in parsed).toBe(false);
+  });
+
+  it("every possible answer combination produces five complete insights", () => {
     // Vary each question across all of its options (others held at valid).
     for (const q of INTAKE_QUESTIONS) {
       for (const option of q.options) {
         const answers = intakeSchema.parse({ ...validAnswers, [q.id]: option.value });
         const insights = buildIntakeInsights(answers);
-        expect(insights).toHaveLength(6);
+        expect(insights).toHaveLength(5);
         for (const insight of insights) {
           expect(insight.title.length, `${q.id}=${option.value}`).toBeGreaterThan(0);
           expect(insight.youToldUs.length, `${q.id}=${option.value}`).toBeGreaterThan(0);
@@ -104,6 +110,15 @@ describe("intake engine", () => {
     }
   });
 
+  it("customer value adds a sixth insight when provided", () => {
+    for (const option of ["under_100", "v100_500", "v500_2000", "over_2000", "not_sure"] as const) {
+      const insights = buildIntakeInsights(validAnswers, option);
+      expect(insights).toHaveLength(6);
+      const value = insights.find((i) => i.title === "What a customer is worth")!;
+      expect(value.youToldUs).toBe(intakeAnswerLabel("customerValue", option));
+    }
+  });
+
   it("insights quote the lead's own answer labels", () => {
     const insights = buildIntakeInsights(validAnswers);
     expect(insights[0].youToldUs).toBe(intakeAnswerLabel("mainGoal", "more_calls"));
@@ -111,9 +126,28 @@ describe("intake engine", () => {
   });
 
   it("customer-value framing uses their number, no invented revenue claims", () => {
-    const insights = buildIntakeInsights(validAnswers);
+    const insights = buildIntakeInsights(validAnswers, "v500_2000");
     const value = insights.find((i) => i.title === "What a customer is worth")!;
     expect(value.insight).toContain("your own numbers");
+  });
+
+  it("opportunityLine is hedged, uses their number, and handles all cases", () => {
+    expect(opportunityLine(null, { noWebsite: false })).toBeNull();
+    expect(opportunityLine(undefined, { noWebsite: true })).toBeNull();
+
+    const line = opportunityLine("v500_2000", { noWebsite: false })!;
+    expect(line).toContain("if just two customers a month");
+    expect(line).toContain("$500–$2,000");
+    expect(line).toContain("$12,000–$48,000");
+    expect(line).toContain("Your numbers, not ours");
+
+    const noSite = opportunityLine("over_2000", { noWebsite: true })!;
+    expect(noSite).toContain("can't find you");
+    expect(noSite).toContain("$48,000 or more");
+
+    const notSure = opportunityLine("not_sure", { noWebsite: false })!;
+    expect(notSure).toContain("not sure");
+    expect(notSure).not.toMatch(/\$\d/);
   });
 });
 

@@ -87,6 +87,12 @@ export const scans = sqliteTable("scans", {
   // Self-reported deep-audit answers (IntakeAnswers). Never affects scores —
   // generates labeled "based on what you told us" insights.
   intakeJson: text("intake_json"),
+  // Rough per-customer value, captured in the quick scan (single tap). Powers
+  // the hedged opportunity-cost framing in the report hero — their number,
+  // clearly labeled as self-reported.
+  customerValue: text("customer_value", {
+    enum: ["under_100", "v100_500", "v500_2000", "over_2000", "not_sure"],
+  }),
   progressStage: text("progress_stage"),
   rawHtmlSnapshot: text("raw_html_snapshot"),
   extractedText: text("extracted_text"),
