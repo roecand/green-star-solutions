@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import StarMark from "./StarMark";
+import { SCANNER_URL } from "@/lib/config";
 
 // Path-prefixed anchors so the nav works from /portfolio pages too.
 const links = [
@@ -45,6 +46,14 @@ export default function Nav() {
               {l.label}
             </a>
           ))}
+          <a
+            href={SCANNER_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="nav__link"
+          >
+            Free Leak Scan
+          </a>
         </nav>
 
         <div className="nav__right">
@@ -71,6 +80,14 @@ export default function Nav() {
                 {l.label}
               </a>
             ))}
+            <a
+              href={SCANNER_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setOpen(false)}
+            >
+              Free Leak Scan
+            </a>
             <a
               href="/#start"
               className="btn"

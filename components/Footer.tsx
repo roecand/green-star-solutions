@@ -1,5 +1,5 @@
 import StarMark from "./StarMark";
-import { CONTACT_EMAIL, LOCATION, PHONE } from "@/lib/config";
+import { CONTACT_EMAIL, LOCATION, PHONE, SCANNER_URL } from "@/lib/config";
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -25,6 +25,9 @@ export default function Footer() {
           <a href="/#how">How it works</a>
           <a href="/portfolio/">Portfolio</a>
           <a href="/#start">Book a call</a>
+          <a href={SCANNER_URL} target="_blank" rel="noopener noreferrer">
+            Free Leak Scan
+          </a>
         </nav>
 
         <div className="footer__contact">

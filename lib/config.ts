@@ -12,3 +12,8 @@ export const CONTACT_EMAIL = "robert@green-starsolutions.com";
 export const PHONE = "(702) 742-9285";
 export const LOCATION = "Las Vegas, Nevada";
 export const FOUNDER = "the founder"; // ← replace with your name in components/About.tsx
+
+// Free Revenue Leak Scanner — separate Next.js app on Railway, wired to this
+// domain via a CNAME (see leak-scanner/docs/deployment.md). Opens in a new
+// tab since it's a different app/session from the marketing site.
+export const SCANNER_URL = "https://scan.green-starsolutions.com";
