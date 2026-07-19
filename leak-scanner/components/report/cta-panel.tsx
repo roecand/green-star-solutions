@@ -107,7 +107,7 @@ export function CtaPanel({
           </Button>
         </form>
       )}
-      {message && <p className="mt-4 text-sm text-emerald-300">{message}</p>}
+      {message && <p className="mt-4 text-sm text-accent">{message}</p>}
     </section>
   );
 }

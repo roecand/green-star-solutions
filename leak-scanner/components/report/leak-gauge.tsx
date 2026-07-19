@@ -8,9 +8,9 @@ import { cn } from "@/lib/utils";
  */
 
 function fluidColor(score: number): { fill: string; soft: string } {
-  if (score >= 80) return { fill: "#16a34a", soft: "#16a34a22" };
-  if (score >= 55) return { fill: "#d97706", soft: "#d9770622" };
-  return { fill: "#dc2626", soft: "#dc262622" };
+  if (score >= 80) return { fill: "#16694a", soft: "#16694a22" };
+  if (score >= 55) return { fill: "#a86a0c", soft: "#a86a0c22" };
+  return { fill: "#b3372c", soft: "#b3372c22" };
 }
 
 export function LeakGauge({

@@ -152,7 +152,7 @@ export default function LandingPage() {
                 ["AI skips you", "Answer engines recommend businesses they can understand. Thin content makes you invisible."],
               ].map(([title, body]) => (
                 <div key={title} className="rounded-xl bg-white/5 p-5">
-                  <h3 className="font-semibold text-emerald-300">{title}</h3>
+                  <h3 className="font-semibold text-accent">{title}</h3>
                   <p className="mt-2 text-sm text-white/70">{body}</p>
                 </div>
               ))}
