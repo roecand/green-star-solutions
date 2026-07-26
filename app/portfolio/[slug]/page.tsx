@@ -3,7 +3,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
-import StarMark from "@/components/StarMark";
 import Reveal from "@/components/Reveal";
 import SitePreview from "@/components/SitePreview";
 import { projects, getProject } from "@/lib/projects";
@@ -51,11 +50,11 @@ export default async function ProjectPage({
               ← Back to Portfolio
             </Link>
             <div className="proj__chips">
-              <span className="chip chip--concept mono">✦ Concept Website</span>
-              <span className="chip mono">{project.industry}</span>
-              <span className="chip mono">{project.sector}</span>
+              <span className="chip chip--concept">Concept website</span>
+              <span className="chip">{project.industry}</span>
+              <span className="chip">{project.sector}</span>
             </div>
-            <h1 className="display h-xl proj__title">{project.name}</h1>
+            <h1 className="display t-display proj__title">{project.name}</h1>
             <p className="proj__style serif">{project.styleLabel}</p>
             <p className="lead measure-wide proj__tagline">{project.tagline}</p>
             <div className="proj__actions">
@@ -65,9 +64,9 @@ export default async function ProjectPage({
                 target="_blank"
                 rel="noopener"
               >
-                Open the live concept <span className="arrow">↗</span>
+                Open the live concept
               </a>
-              <span className="proj__actions-note mono">
+              <span className="proj__actions-note">
                 Fictional business — designed to demonstrate range
               </span>
             </div>
@@ -83,7 +82,7 @@ export default async function ProjectPage({
                   <span className="browser__dot" />
                   <span className="browser__dot" />
                   <span className="browser__dot" />
-                  <span className="browser__url mono">
+                  <span className="browser__url">
                     {project.slug}.concept — live preview
                   </span>
                 </div>
@@ -108,10 +107,8 @@ export default async function ProjectPage({
         <section className="section proj__sec">
           <div className="container proj__cols">
             <Reveal className="proj__colhead">
-              <p className="eyebrow eyebrow--ink">
-                <StarMark size={13} /> 01 — Overview
-              </p>
-              <h2 className="display h-md">The brief we gave ourselves</h2>
+              <p className="label">Overview</p>
+              <h2 className="display t-xl">The brief we gave ourselves</h2>
             </Reveal>
             <Reveal className="proj__prose">
               {project.overview.map((para) => (
@@ -127,17 +124,12 @@ export default async function ProjectPage({
         <section className="section proj__sec">
           <div className="container">
             <Reveal className="proj__sechead">
-              <p className="eyebrow eyebrow--ink">
-                <StarMark size={13} /> 02 — Design goals
-              </p>
-              <h2 className="display h-md">Every choice had a job to do</h2>
+              <p className="label">Design goals</p>
+              <h2 className="display t-xl">Every choice had a job to do</h2>
             </Reveal>
             <div className="proj__goals">
-              {project.designGoals.map((g, i) => (
-                <Reveal key={g.title} className="goal" delay={i * 70}>
-                  <span className="goal__no mono">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
+              {project.designGoals.map((g) => (
+                <Reveal key={g.title} className="goal">
                   <h3 className="goal__title">{g.title}</h3>
                   <p className="goal__body">{g.body}</p>
                 </Reveal>
@@ -150,11 +142,8 @@ export default async function ProjectPage({
         <section className="section surface-forest proj__features">
           <div className="container proj__cols">
             <Reveal className="proj__colhead">
-              <p className="eyebrow">
-                <StarMark size={13} className="process__star" /> 03 — Features
-                implemented
-              </p>
-              <h2 className="display h-md">What&rsquo;s actually in the build</h2>
+              <p className="label">Features implemented</p>
+              <h2 className="display t-xl">What&rsquo;s actually in the build</h2>
             </Reveal>
             <Reveal>
               <ul className="featlist">
@@ -170,13 +159,11 @@ export default async function ProjectPage({
         <section className="section proj__sec">
           <div className="container proj__cols">
             <Reveal className="proj__colhead">
-              <p className="eyebrow eyebrow--ink">
-                <StarMark size={13} /> 04 — The business problem
-              </p>
-              <h2 className="display h-md">Why this design makes money</h2>
+              <p className="label">The business problem</p>
+              <h2 className="display t-xl">Why this design makes money</h2>
             </Reveal>
             <Reveal className="proj__prose">
-              <p className="pull proj__pull">{project.problem.lead}</p>
+              <p className="t-xl proj__pull">{project.problem.lead}</p>
               {project.problem.body.map((para) => (
                 <p key={para.slice(0, 32)}>{para}</p>
               ))}
@@ -190,10 +177,8 @@ export default async function ProjectPage({
         <section className="section proj__sec">
           <div className="container">
             <Reveal className="proj__sechead">
-              <p className="eyebrow eyebrow--ink">
-                <StarMark size={13} /> 05 — Design gallery
-              </p>
-              <h2 className="display h-md">The system up close</h2>
+              <p className="label">Design gallery</p>
+              <h2 className="display t-xl">The system up close</h2>
             </Reveal>
             <div className="gallery">
               <Reveal className="gallery__tile gallery__tile--wide">
@@ -204,9 +189,9 @@ export default async function ProjectPage({
                     scale={0.32}
                   />
                 </div>
-                <p className="gallery__cap mono">Desktop · full page</p>
+                <p className="gallery__cap">Desktop · full page</p>
               </Reveal>
-              <Reveal className="gallery__tile" delay={80}>
+              <Reveal className="gallery__tile">
                 <div className="gallery__swatches">
                   {project.palette.map((c) => (
                     <div
@@ -218,26 +203,26 @@ export default async function ProjectPage({
                       }}
                     >
                       <span>{c.name}</span>
-                      <span className="mono">{c.hex}</span>
+                      <span className="swatch__hex">{c.hex}</span>
                     </div>
                   ))}
                 </div>
-                <p className="gallery__cap mono">Palette</p>
+                <p className="gallery__cap">Palette</p>
               </Reveal>
-              <Reveal className="gallery__tile" delay={140}>
+              <Reveal className="gallery__tile">
                 <div className="gallery__type">
                   {project.fonts.map((f) => (
                     <div key={f.role} className="typespec">
-                      <span className="typespec__role mono">
+                      <span className="typespec__role">
                         {f.role} — {f.name}
                       </span>
                       <span className="typespec__sample">{f.sample}</span>
                     </div>
                   ))}
                 </div>
-                <p className="gallery__cap mono">Typography</p>
+                <p className="gallery__cap">Typography</p>
               </Reveal>
-              <Reveal className="gallery__tile gallery__tile--phone" delay={200}>
+              <Reveal className="gallery__tile gallery__tile--phone">
                 <div className="gallery__phone">
                   <SitePreview
                     url={project.url}
@@ -246,7 +231,7 @@ export default async function ProjectPage({
                     scale={0.72}
                   />
                 </div>
-                <p className="gallery__cap mono">Mobile · 375px</p>
+                <p className="gallery__cap">Mobile · 375px</p>
               </Reveal>
             </div>
           </div>
@@ -256,16 +241,14 @@ export default async function ProjectPage({
         <section className="section proj__sec proj__ba">
           <div className="container">
             <Reveal className="proj__sechead">
-              <p className="eyebrow eyebrow--ink">
-                <StarMark size={13} /> 06 — Before &amp; after
-              </p>
-              <h2 className="display h-md">
-                The typical site vs. <span className="serif accent">the concept</span>
+              <p className="label">Before &amp; after</p>
+              <h2 className="display t-xl">
+                The typical site vs. the concept
               </h2>
             </Reveal>
             <div className="ba">
               <Reveal className="ba__panel ba__panel--before">
-                <div className="ba__label mono">Before — the typical {project.industry.toLowerCase()} website</div>
+                <div className="ba__label">Before — the typical {project.industry.toLowerCase()} website</div>
                 <div className="ba__wire" aria-hidden="true">
                   <div className="ba__wire-nav">
                     <span className="ba__wire-logo" />
@@ -286,8 +269,8 @@ export default async function ProjectPage({
                   ))}
                 </ul>
               </Reveal>
-              <Reveal className="ba__panel ba__panel--after" delay={100}>
-                <div className="ba__label ba__label--after mono">After — the concept</div>
+              <Reveal className="ba__panel ba__panel--after">
+                <div className="ba__label ba__label--after">After — the concept</div>
                 <div className="ba__live">
                   <SitePreview
                     url={project.url}
@@ -313,16 +296,14 @@ export default async function ProjectPage({
         <section className="section surface-forest proj__next">
           <div className="container">
             <Reveal className="proj__sechead">
-              <p className="eyebrow">
-                <StarMark size={13} className="process__star" /> Keep exploring
-              </p>
-              <h2 className="display h-md">More concept work</h2>
+              <p className="label">Keep exploring</p>
+              <h2 className="display t-xl">More concept work</h2>
             </Reveal>
             <div className="proj__next-grid">
               {others.map((p) => (
                 <Reveal key={p.slug}>
                   <Link href={`/portfolio/${p.slug}/`} className="nextcard">
-                    <span className="nextcard__industry mono">{p.industry}</span>
+                    <span className="nextcard__industry">{p.industry}</span>
                     <span className="nextcard__name">{p.name}</span>
                     <span className="nextcard__go">View project ↗</span>
                   </Link>

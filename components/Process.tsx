@@ -1,4 +1,3 @@
-import StarMark from "./StarMark";
 import Reveal from "./Reveal";
 
 const steps = [
@@ -29,10 +28,8 @@ export default function Process() {
     <section id="how" className="process section surface-forest">
       <div className="container">
         <Reveal className="process__head">
-          <p className="eyebrow">
-            <StarMark size={14} className="process__star" /> How it works
-          </p>
-          <h2 className="display h-lg">
+          <p className="label">How it works</p>
+          <h2 className="display t-2xl">
             First we change how you look.
             <br />
             Then we make sure it pays.
@@ -40,11 +37,10 @@ export default function Process() {
         </Reveal>
 
         <ol className="process__grid">
-          {steps.map((s, i) => (
-            <Reveal as="li" key={s.no} className="pstep" delay={i * 80}>
-              <span className="pstep__no mono">{s.no}</span>
+          {steps.map((s) => (
+            <Reveal as="li" key={s.no} className="pstep">
               <hr className="rule pstep__rule" />
-              <h3 className="display pstep__title">{s.title}</h3>
+              <h3 className="pstep__title">{s.title}</h3>
               <p className="pstep__body">{s.body}</p>
             </Reveal>
           ))}

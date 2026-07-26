@@ -1,7 +1,6 @@
 import Link from "next/link";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
-import StarMark from "@/components/StarMark";
 
 export default function NotFound() {
   return (
@@ -10,11 +9,9 @@ export default function NotFound() {
       <main>
         <section className="section nf">
           <div className="container nf__inner">
-            <p className="eyebrow eyebrow--ink">
-              <StarMark size={14} /> 404 — page not found
-            </p>
-            <h1 className="display h-xl nf__title">
-              This page took <span className="serif accent">a day off.</span>
+            <p className="label">404 — page not found</p>
+            <h1 className="display t-display nf__title">
+              This page took a day off.
             </h1>
             <p className="lead measure-wide nf__lead">
               The page you&rsquo;re looking for doesn&rsquo;t exist — but the
@@ -24,8 +21,8 @@ export default function NotFound() {
               <Link href="/" className="btn">
                 Back to home
               </Link>
-              <Link href="/portfolio/" className="btn btn--ghost">
-                View the portfolio <span className="arrow">↗</span>
+              <Link href="/portfolio/" className="btn btn--frost">
+                View the portfolio
               </Link>
             </div>
           </div>

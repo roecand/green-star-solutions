@@ -13,15 +13,7 @@ const links = [
 ];
 
 export default function Nav() {
-  const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 16);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -31,7 +23,7 @@ export default function Nav() {
   }, [open]);
 
   return (
-    <header className={`nav ${scrolled ? "nav--scrolled" : ""}`}>
+    <header className="nav">
       <div className="container nav__inner">
         <a href="/" className="nav__brand" aria-label="Green Star Solutions, home">
           <StarMark size={22} />
@@ -57,7 +49,7 @@ export default function Nav() {
         </nav>
 
         <div className="nav__right">
-          <a href="/#start" className="btn nav__cta">
+          <a href="/#start" className="btn btn--frost nav__cta">
             Book a call
           </a>
           <button
@@ -101,18 +93,12 @@ export default function Nav() {
       )}
 
       <style jsx>{`
+        /* Deliberately unboxed: no bar, no blur, no border at any scroll
+           position. The nav sits on the paper like set type. */
         .nav {
           position: sticky;
           top: 0;
           z-index: 60;
-          transition: background 0.3s ease, border-color 0.3s ease,
-            backdrop-filter 0.3s ease;
-          border-bottom: 1px solid transparent;
-        }
-        .nav--scrolled {
-          background: color-mix(in srgb, var(--paper) 82%, transparent);
-          backdrop-filter: saturate(1.2) blur(10px);
-          border-bottom-color: var(--line);
         }
         .nav__inner {
           display: flex;
@@ -124,9 +110,9 @@ export default function Nav() {
           display: inline-flex;
           align-items: center;
           gap: 0.6rem;
-          font-family: var(--font-display), sans-serif;
-          font-weight: 700;
-          font-size: 1.06rem;
+          font-family: var(--font-display), serif;
+          font-weight: 500;
+          font-size: var(--t-l);
           letter-spacing: -0.01em;
         }
         .nav__brand-sub {
@@ -141,11 +127,13 @@ export default function Nav() {
           transform: translateX(-50%);
         }
         .nav__link {
-          font-size: 0.92rem;
+          font-size: var(--t-s);
           font-weight: 500;
-          color: var(--ink-soft);
+          color: var(--ink);
+          opacity: 0.62;
           position: relative;
           padding-bottom: 3px;
+          transition: opacity 0.2s ease;
         }
         .nav__link::after {
           content: "";
@@ -160,7 +148,7 @@ export default function Nav() {
           transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
         .nav__link:hover {
-          color: var(--ink);
+          opacity: 1;
         }
         .nav__link:hover::after {
           transform: scaleX(1);
@@ -171,8 +159,7 @@ export default function Nav() {
           gap: 0.75rem;
         }
         .nav__cta {
-          padding: 0.62em 1.1em;
-          font-size: 0.88rem;
+          padding: 0.62em 1.15em;
         }
         .nav__toggle {
           display: none;
@@ -212,9 +199,9 @@ export default function Nav() {
           flex-direction: column;
           gap: 0.4rem;
           padding: 1.5rem var(--gutter) 2rem;
-          font-family: var(--font-display), sans-serif;
-          font-size: 1.7rem;
-          font-weight: 600;
+          font-family: var(--font-display), serif;
+          font-size: var(--t-xl);
+          font-weight: 500;
           letter-spacing: -0.01em;
         }
         .nav__sheet-inner a:not(.btn) {

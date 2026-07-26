@@ -5,15 +5,18 @@ import { useEffect, useRef, useState } from "react";
 type Props = {
   children: React.ReactNode;
   className?: string;
-  /** stagger delay in ms */
-  delay?: number;
   as?: "div" | "li" | "section" | "article";
 };
 
+/**
+ * Fade + defocus on scroll into view. Everything in a group arrives together —
+ * there is deliberately no stagger prop. A uniform `delay={i * n}` cascade is
+ * one of the strongest machine-built tells, and removing it is most of why
+ * this page stopped reading as generated.
+ */
 export default function Reveal({
   children,
   className = "",
-  delay = 0,
   as = "div",
 }: Props) {
   const ref = useRef<HTMLElement | null>(null);
@@ -39,11 +42,7 @@ export default function Reveal({
 
   const Tag = as as React.ElementType;
   return (
-    <Tag
-      ref={ref}
-      className={`reveal ${shown ? "is-in" : ""} ${className}`}
-      style={delay ? { transitionDelay: `${delay}ms` } : undefined}
-    >
+    <Tag ref={ref} className={`reveal ${shown ? "is-in" : ""} ${className}`}>
       {children}
     </Tag>
   );

@@ -1,4 +1,3 @@
-import StarMark from "./StarMark";
 import Reveal from "./Reveal";
 
 // Two departments, one diagnosis. Perception is the lead offer (the project);
@@ -8,6 +7,8 @@ import Reveal from "./Reveal";
 const departments = [
   {
     no: "01",
+    image: "dept-perception",
+    alt: "A folded forest-green work polo and cap on raw concrete in hard morning light.",
     kicker: "Dept. 01 — Perception · The project",
     title: "Change what a homeowner feels in the first 8 seconds.",
     body: "Brand, website, content direction, socials, and ads — rebuilt so your company reads like the one worth trusting with the $15,000 job. This is the work that raises your prices, not just your traffic.",
@@ -23,6 +24,8 @@ const departments = [
   },
   {
     no: "02",
+    image: "dept-conversion",
+    alt: "A phone lighting up on the passenger seat of a work truck at dusk, desert visible through the window.",
     kicker: "Dept. 02 — Conversion · The retainer",
     title: "Then make sure every new call gets answered and booked.",
     body: "You're about to get more calls — the conversion system makes sure none of them leak. AI follow-up, missed-call text-back, appointment automation, CRM, and reviews: every lead contacted in seconds, every job chased to the close.",
@@ -43,12 +46,10 @@ export default function Services() {
     <section id="services" className="services section">
       <div className="container">
         <Reveal className="services__head">
-          <p className="eyebrow eyebrow--ink">
-            <StarMark size={14} /> The diagnosis
-          </p>
-          <h2 className="display h-lg services__title">
+          <p className="label">The diagnosis</p>
+          <h2 className="display t-2xl services__title">
             You don&rsquo;t have a<br />
-            <span className="serif accent">leads</span> problem.
+            leads problem.
           </h2>
           <p className="lead measure-wide services__intro">
             You have a perception problem and a follow-up problem. We built a
@@ -58,28 +59,38 @@ export default function Services() {
         </Reveal>
 
         <ol className="ladder">
-          {departments.map((d, i) => (
+          {departments.map((d) => (
             <Reveal
               as="li"
               key={d.no}
               className={`rung ${d.primary ? "rung--primary" : ""}`}
-              delay={i * 100}
             >
-              <span className="rung__no">{d.no}</span>
               <div>
                 <p className="rung__kicker">{d.kicker}</p>
-                <h3 className={`display rung__title ${d.primary ? "" : "rung__title--sm"}`}>
-                  {d.title}
-                </h3>
+                <h3 className="rung__title">{d.title}</h3>
                 <p className="rung__body">{d.body}</p>
                 <ul className="rung__tags">
                   {d.tags.map((t) => (
                     <li key={t}>{t}</li>
                   ))}
                 </ul>
-                <p className="rung__price mono">
-                  <StarMark size={12} /> {d.price}
-                </p>
+                <p className="rung__price">{d.price}</p>
+              </div>
+              <div className="plate rung__media">
+                <picture>
+                  <source
+                    srcSet={`/media/${d.image}.webp`}
+                    type="image/webp"
+                  />
+                  <img
+                    src={`/media/${d.image}.jpg`}
+                    alt={d.alt}
+                    width={1100}
+                    height={1375}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </picture>
               </div>
             </Reveal>
           ))}

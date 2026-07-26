@@ -17,6 +17,12 @@
 /.next/
 /out/
 
+# Source PNGs for public/media (~20 MB, straight off ChatGPT). Deliberately
+# out of git: they are build input, not shipped assets, and would bloat a
+# public repo's history permanently. Regenerate the shipped .jpg/.webp with
+# `node scripts/media.mjs`. KEEP A SEPARATE BACKUP — these are not reproducible.
+/media-src/
+
 # production
 /build
 

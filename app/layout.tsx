@@ -1,35 +1,26 @@
 import type { Metadata } from "next";
 import Script from "next/script";
-import { Zilla_Slab, Work_Sans, JetBrains_Mono } from "next/font/google";
+import { Zilla_Slab, Work_Sans } from "next/font/google";
 import "./globals.css";
 
 // Google Analytics 4 — property "Green Star", stream 15185244702.
 const GA_ID = "G-FJJNMXN1TJ";
 
-// Slab-serif headlines — sturdy, confident, editorial. The opposite of a
-// friendly geometric sans, and unmistakably its own identity.
+// Slab-serif headlines — sturdy, confident, editorial. Used only at the two
+// largest sizes now; the italic face went with the serif-italic word swaps.
 const display = Zilla_Slab({
   subsets: ["latin"],
   variable: "--font-display",
-  weight: ["400", "500", "600", "700"],
-  style: ["normal", "italic"],
+  weight: ["500"],
   display: "swap",
 });
 
-// Characterful neo-grotesk body — narrower and sharper than rounded humanist
-// sans, keeps long reading crisp and professional.
+// Characterful neo-grotesk body — carries everything below --t-2xl. One
+// weight: the whole type system is differentiated by size and opacity.
 const body = Work_Sans({
   subsets: ["latin"],
   variable: "--font-body",
-  weight: ["400", "500", "600", "700"],
-  display: "swap",
-});
-
-// Technical mono for labels, indices, and data.
-const mono = JetBrains_Mono({
-  subsets: ["latin"],
-  variable: "--font-mono",
-  weight: ["400", "500", "600"],
+  weight: ["400", "500"],
   display: "swap",
 });
 
@@ -95,9 +86,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${display.variable} ${body.variable} ${mono.variable}`}
-      >
+      <body className={`${display.variable} ${body.variable}`}>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

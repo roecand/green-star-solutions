@@ -5,15 +5,11 @@ export default function Hero() {
     <section id="top" className="hero">
       <div className="container hero__grid">
         <div className="hero__main">
-          <p className="eyebrow hero__eyebrow">
-            <StarMark size={15} /> A perception studio for the trades
-          </p>
+          <p className="label hero__eyebrow">A perception studio for the trades</p>
 
-          <h1 className="display h-xl hero__head hero__head--sentence">
+          <h1 className="display hero__head hero__head--sentence">
             <span className="hero__line">
-              <span>
-                We redesign the <span className="accent serif">feeling</span>
-              </span>
+              <span>We redesign the feeling</span>
             </span>
             <span className="hero__line">
               <span>people get when they</span>
@@ -31,10 +27,10 @@ export default function Hero() {
 
           <div className="hero__cta">
             <a className="btn" href="#start">
-              Book a Free Strategy Call <span className="arrow">↗</span>
+              Book a Free Strategy Call
             </a>
             <a className="tlink hero__see" href="#work">
-              See the transformations <span aria-hidden>↓</span>
+              See the transformations
             </a>
           </div>
         </div>
@@ -56,6 +52,23 @@ export default function Hero() {
             </div>
           </dl>
         </aside>
+      </div>
+
+      {/* Full-bleed establishing shot. The headline sits in ink above it
+          rather than over it — the left of the frame is bright sky and would
+          not hold white text. */}
+      <div className="plate hero__plate">
+        <picture>
+          <source srcSet="/media/hero-plate.webp" type="image/webp" />
+          <img
+            src="/media/hero-plate.jpg"
+            alt="A Green Star Solutions work van on a desert road outside Las Vegas at golden hour."
+            width={2400}
+            height={1028}
+            fetchPriority="high"
+            decoding="async"
+          />
+        </picture>
       </div>
     </section>
   );

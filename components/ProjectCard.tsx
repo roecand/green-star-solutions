@@ -16,18 +16,21 @@ export default function ProjectCard({ project }: { project: Project }) {
           title={`${project.name} preview`}
           scale={0.28}
         />
-        <span className="pcard__concept mono">Concept Website</span>
-        <span className="pcard__peek">View project ↗</span>
+        <span className="pcard__concept">Concept website</span>
+        <span className="pcard__peek">View project</span>
       </Link>
       <div className="pcard__body">
         <div className="pcard__toprow">
-          <span className="pcard__industry mono">{project.industry}</span>
+          <span className="pcard__industry">{project.industry}</span>
           <span className="pcard__style">{project.styleLabel}</span>
         </div>
         <h3 className="pcard__name">{project.name}</h3>
         <p className="pcard__desc">{project.tagline}</p>
-        <Link href={`/portfolio/${project.slug}/`} className="btn btn--ghost pcard__btn">
-          View Project <span className="arrow">↗</span>
+        <Link
+          href={`/portfolio/${project.slug}/`}
+          className="btn btn--frost pcard__btn"
+        >
+          View project
         </Link>
       </div>
     </article>

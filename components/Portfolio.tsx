@@ -1,8 +1,7 @@
 import Link from "next/link";
-import StarMark from "./StarMark";
 import Reveal from "./Reveal";
 import ProjectCard from "./ProjectCard";
-import { projects, getProject } from "@/lib/projects";
+import { getProject } from "@/lib/projects";
 
 // The homepage leads with the two strongest taste proofs (both HVAC — same
 // trade, two opposite voices) plus the editorial-luxury landscape studio.
@@ -20,12 +19,10 @@ export default function Portfolio() {
     <section id="work" className="work section">
       <div className="container">
         <Reveal className="work__head">
-          <p className="eyebrow eyebrow--ink">
-            <StarMark size={14} /> The proof
-          </p>
-          <h2 className="display h-lg work__title">
+          <p className="label">The proof</p>
+          <h2 className="display t-2xl work__title">
             This is what we do to
-            <br />a <span className="serif accent">trade company</span>.
+            <br />a trade company.
           </h2>
           <p className="lead measure-wide work__intro">
             We built these concept brands to show what&rsquo;s possible. The
@@ -33,15 +30,15 @@ export default function Portfolio() {
             different companies. A template can&rsquo;t do that. Click in and
             explore; every one is live.
           </p>
-          <p className="work__note mono">
-            ✦ Concept builds for fictional companies — the design is the
+          <p className="work__note">
+            Concept builds for fictional companies — the design is the
             portfolio.
           </p>
         </Reveal>
 
         <div className="work-grid">
-          {featured.map((p, i) => (
-            <Reveal key={p.slug} delay={i * 90}>
+          {featured.map((p) => (
+            <Reveal key={p.slug}>
               <ProjectCard project={p} />
             </Reveal>
           ))}
@@ -49,7 +46,7 @@ export default function Portfolio() {
 
         <Reveal className="work__cta">
           <Link href="/portfolio/" className="btn">
-            Explore all six concepts <span className="arrow">↗</span>
+            Explore all six concepts
           </Link>
           <a href="#start" className="tlink work__cta-alt">
             or book a free strategy call

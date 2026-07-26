@@ -140,7 +140,7 @@ export default function ProjectForm() {
       <section id="start" className="form section">
         <div className="container">
           <div className="form__success">
-            <StarMark size={48} className="star--spin" />
+            <StarMark size={40} />
             <h2 className="display form__success-head">
               You&rsquo;re on the calendar.
             </h2>
@@ -159,10 +159,10 @@ export default function ProjectForm() {
     <section id="start" className="form section">
       <div className="container">
         <div className="form__head">
-          <p className="eyebrow eyebrow--ink">
-            <StarMark size={14} /> Book a free strategy call
-          </p>
-          <h2 className="display h-lg">Let&rsquo;s map out your transformation.</h2>
+          <p className="label">Book a free strategy call</p>
+          <h2 className="display t-2xl">
+            Let&rsquo;s map out your transformation.
+          </h2>
           <p className="lead measure-wide">
             Four quick questions. On the call we&rsquo;ll show you exactly how
             your company reads to a homeowner today — and where the jobs are
@@ -365,7 +365,7 @@ export default function ProjectForm() {
               )}
               {step < STEPS.length - 1 ? (
                 <button type="button" className="btn" onClick={next}>
-                  Continue <span className="arrow">→</span>
+                  Continue
                 </button>
               ) : (
                 <button
@@ -375,7 +375,6 @@ export default function ProjectForm() {
                   disabled={status === "sending"}
                 >
                   {status === "sending" ? "Sending…" : "Book my call"}
-                  <span className="arrow">↗</span>
                 </button>
               )}
             </div>
@@ -423,25 +422,20 @@ export default function ProjectForm() {
           border-left-color: var(--forest);
         }
         .pdot__no {
-          font-family: var(--font-mono), monospace;
-          font-size: 0.78rem;
+          font-size: var(--t-s);
           font-weight: 500;
-          letter-spacing: 0.02em;
           width: 1.6em;
           display: inline-flex;
           justify-content: center;
         }
         .pdot__label {
-          font-size: 0.95rem;
+          font-size: var(--t-s);
           font-weight: 500;
         }
         .form__panel {
           background: #fff;
-          border: 1px solid var(--line);
-          border-radius: 18px;
+          border-radius: var(--plate-radius);
           padding: clamp(1.5rem, 3.5vw, 2.75rem);
-          box-shadow: 0 1px 0 rgba(22, 32, 27, 0.02),
-            0 24px 60px -40px rgba(22, 32, 27, 0.35);
         }
         .form__sublabel {
           color: var(--ink-soft);
@@ -460,15 +454,16 @@ export default function ProjectForm() {
         }
         .chip {
           font: inherit;
-          font-size: 0.95rem;
+          font-size: var(--t-s);
           font-weight: 500;
           padding: 0.6em 1.05em;
           border-radius: 999px;
-          border: 1px solid var(--line-strong);
-          background: var(--paper);
+          border: 1px solid color-mix(in srgb, var(--ink) 12%, transparent);
+          background: rgba(22, 32, 27, 0.04);
           color: var(--ink-soft);
           cursor: pointer;
-          transition: all 0.2s ease;
+          transition: background 0.2s ease, border-color 0.2s ease,
+            color 0.2s ease;
         }
         .chip:hover {
           border-color: var(--forest);
@@ -502,8 +497,8 @@ export default function ProjectForm() {
           gap: 1.2rem;
         }
         .form__success-head {
-          font-size: clamp(1.8rem, 4vw, 2.8rem);
-          letter-spacing: -0.02em;
+          font-size: var(--t-2xl);
+          letter-spacing: -0.015em;
         }
         @media (max-width: 760px) {
           .form__shell {
@@ -567,16 +562,14 @@ function Fieldset({
           margin-bottom: 1.6rem;
         }
         .fieldset__legend {
-          font-size: clamp(1.4rem, 2.6vw, 1.9rem);
-          letter-spacing: -0.02em;
+          font-size: var(--t-xl);
+          letter-spacing: -0.01em;
         }
         .fieldset__hint {
-          font-family: var(--font-mono), monospace;
-          font-size: 0.74rem;
+          font-size: var(--t-s);
           font-weight: 500;
-          letter-spacing: 0.06em;
-          text-transform: uppercase;
-          color: var(--stone);
+          color: var(--ink);
+          opacity: 0.55;
           white-space: nowrap;
         }
       `}</style>
@@ -610,9 +603,9 @@ function Field({
         }
         .field__label {
           display: block;
-          font-size: 0.82rem;
-          font-weight: 600;
-          letter-spacing: 0.02em;
+          font-size: var(--t-s);
+          font-weight: 500;
+          letter-spacing: 0;
           margin-bottom: 0.45rem;
           color: var(--ink);
         }

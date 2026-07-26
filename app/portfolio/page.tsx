@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
-import StarMark from "@/components/StarMark";
 import Reveal from "@/components/Reveal";
 import ProjectCard from "@/components/ProjectCard";
 import { projects } from "@/lib/projects";
@@ -21,13 +20,11 @@ export default function PortfolioPage() {
         {/* hero */}
         <section className="pfhero">
           <div className="container">
-            <p className="eyebrow eyebrow--ink">
-              <StarMark size={14} /> Portfolio · Concept work
-            </p>
-            <h1 className="display h-xl pfhero__title">
+            <p className="label">Portfolio · Concept work</p>
+            <h1 className="display t-display pfhero__title">
               One agency,
               <br />
-              <span className="serif accent">every voice.</span>
+              every voice.
             </h1>
             <p className="lead measure-wide pfhero__lead">
               A great trades website doesn&rsquo;t look like a template — it looks
@@ -37,7 +34,7 @@ export default function PortfolioPage() {
               live: click in, scroll around, resize it.
             </p>
             <div className="pfhero__disclaimer">
-              <span className="mono">✦ Concept Website</span>
+              <span className="pfhero__disclaimer-tag">Concept website</span>
               <p>
                 Each project below is a <strong>concept for a fictional
                 business</strong>, built by Green Star Solutions to demonstrate
@@ -53,8 +50,8 @@ export default function PortfolioPage() {
         <section className="section pfgrid">
           <div className="container">
             <div className="work-grid work-grid--page">
-              {projects.map((p, i) => (
-                <Reveal key={p.slug} delay={i * 90}>
+              {projects.map((p) => (
+                <Reveal key={p.slug}>
                   <ProjectCard project={p} />
                 </Reveal>
               ))}
@@ -65,16 +62,15 @@ export default function PortfolioPage() {
         {/* closing */}
         <section className="section surface-forest pfclose">
           <div className="container pfclose__inner">
-            <StarMark size={30} className="process__star" />
-            <h2 className="display h-lg pfclose__head">
-              Imagine <span className="serif accent">your business</span> up here.
+            <h2 className="display t-2xl pfclose__head">
+              Imagine your business up here.
             </h2>
             <p className="lead pfclose__sub measure-wide">
               This is the level of design your customers see before they ever
               call you. Let&rsquo;s build the real thing — for your company.
             </p>
             <Link href="/#start" className="btn btn--light">
-              Book a Free Strategy Call <span className="arrow">↗</span>
+              Book a Free Strategy Call
             </Link>
           </div>
         </section>

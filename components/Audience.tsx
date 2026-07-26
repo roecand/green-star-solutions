@@ -42,8 +42,8 @@ export default function Audience() {
             the systems and decisions around it:
           </p>
           <ul className="aud__industries">
-            {industries.map((it, i) => (
-              <Reveal as="li" key={it} delay={i * 50}>
+            {industries.map((it) => (
+              <Reveal as="li" key={it}>
                 <StarMark size={11} className="aud__ind-star" /> {it}
               </Reveal>
             ))}
@@ -59,7 +59,7 @@ export default function Audience() {
               ))}
             </ul>
           </Reveal>
-          <Reveal className="aud__card aud__card--no" delay={90}>
+          <Reveal className="aud__card aud__card--no">
             <h3 className="aud__card-title">It isn’t if</h3>
             <ul>
               {notFit.map((f) => (
