@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import StarMark from "./StarMark";
 import { NETLIFY_FORM_NAME } from "@/lib/config";
 
 const TRADES = [
@@ -140,7 +139,6 @@ export default function ProjectForm() {
       <section id="start" className="form section">
         <div className="container">
           <div className="form__success">
-            <StarMark size={40} />
             <h2 className="display form__success-head">
               You&rsquo;re on the calendar.
             </h2>
@@ -180,7 +178,7 @@ export default function ProjectForm() {
                 }`}
               >
                 <span className="pdot__no">
-                  {i < step ? <StarMark size={12} /> : String(i + 1).padStart(2, "0")}
+                  {i < step ? "✓" : String(i + 1).padStart(2, "0")}
                 </span>
                 <span className="pdot__label">{label}</span>
               </div>
@@ -411,7 +409,7 @@ export default function ProjectForm() {
           color: var(--stone);
           border-left: 2px solid var(--line);
           padding-left: 1rem;
-          transition: color 0.3s ease, border-color 0.3s ease;
+          transition: color 0.3s var(--ease), border-color 0.3s var(--ease);
         }
         .pdot.is-active {
           color: var(--ink);
@@ -433,7 +431,7 @@ export default function ProjectForm() {
           font-weight: 500;
         }
         .form__panel {
-          background: #fff;
+          background: var(--paper-2);
           border-radius: var(--plate-radius);
           padding: clamp(1.5rem, 3.5vw, 2.75rem);
         }
@@ -457,13 +455,13 @@ export default function ProjectForm() {
           font-size: var(--t-s);
           font-weight: 500;
           padding: 0.6em 1.05em;
-          border-radius: 999px;
+          border-radius: var(--radius);
           border: 1px solid color-mix(in srgb, var(--ink) 12%, transparent);
           background: rgba(22, 32, 27, 0.04);
           color: var(--ink-soft);
           cursor: pointer;
-          transition: background 0.2s ease, border-color 0.2s ease,
-            color 0.2s ease;
+          transition: background 0.2s var(--ease), border-color 0.2s var(--ease),
+            color 0.2s var(--ease);
         }
         .chip:hover {
           border-color: var(--forest);
@@ -610,7 +608,8 @@ function Field({
           color: var(--ink);
         }
         .field__req {
-          color: var(--forest);
+          color: var(--ink);
+          opacity: 0.5;
         }
         .field__hint {
           font-weight: 400;

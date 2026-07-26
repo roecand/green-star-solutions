@@ -1,5 +1,3 @@
-import StarMark from "./StarMark";
-
 export default function Hero() {
   return (
     <section id="top" className="hero">
@@ -36,7 +34,6 @@ export default function Hero() {
         </div>
 
         <aside className="hero__meta" aria-label="What we do">
-          <StarMark size={34} className="hero__star" />
           <dl className="hero__meta-list">
             <div>
               <dt>Dept. 01 — Perception</dt>

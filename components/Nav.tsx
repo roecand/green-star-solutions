@@ -136,7 +136,7 @@ export default function Nav() {
           opacity: 0.62;
           position: relative;
           padding-bottom: 3px;
-          transition: opacity 0.2s ease;
+          transition: opacity 0.2s var(--ease);
         }
         .nav__link::after {
           content: "";
@@ -145,10 +145,10 @@ export default function Nav() {
           bottom: 0;
           height: 1px;
           width: 100%;
-          background: var(--forest);
+          background: var(--ink);
           transform: scaleX(0);
           transform-origin: left;
-          transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+          transition: transform 0.3s var(--ease);
         }
         .nav__link:hover {
           opacity: 1;
@@ -172,7 +172,7 @@ export default function Nav() {
           width: 42px;
           height: 42px;
           border: 1px solid var(--line-strong);
-          border-radius: 999px;
+          border-radius: var(--radius);
           background: transparent;
           cursor: pointer;
         }
@@ -182,7 +182,7 @@ export default function Nav() {
           height: 1.6px;
           background: var(--ink);
           margin-inline: auto;
-          transition: transform 0.3s ease, opacity 0.3s ease;
+          transition: transform 0.3s var(--ease), opacity 0.3s var(--ease);
         }
         .nav__toggle span[data-open="true"]:first-child {
           transform: translateY(3.3px) rotate(45deg);
@@ -210,6 +210,20 @@ export default function Nav() {
         .nav__sheet-inner a:not(.btn) {
           padding: 0.5rem 0;
           border-bottom: 1px solid var(--line);
+          transition: padding-left 0.35s var(--ease),
+            border-bottom-color 0.35s var(--ease);
+        }
+        .nav__sheet-inner a:not(.btn):hover {
+          padding-left: 0.5rem;
+          border-bottom-color: var(--ink);
+        }
+        .nav__toggle {
+          transition: border-color 0.25s var(--ease),
+            background 0.25s var(--ease);
+        }
+        .nav__toggle:hover {
+          border-color: var(--ink);
+          background: rgba(22, 32, 27, 0.05);
         }
         @media (max-width: 880px) {
           .nav__links {

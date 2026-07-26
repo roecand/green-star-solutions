@@ -41,7 +41,7 @@ export default function Footer() {
       <div className="container footer__base">
         <span>© {year} Green Star Solutions</span>
         <span className="footer__wink">
-          Built by Green Star <StarMark size={11} /> yes, this site too.
+          Built by Green Star — yes, this site too.
         </span>
       </div>
     </footer>
