@@ -340,7 +340,7 @@ h4 {
 }
 .hero__eyebrow {
   margin-bottom: clamp(1.5rem, 4vw, 2.6rem);
-  animation: settle 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation: settle-muted 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 .hero__head {
   margin: 0;
@@ -400,7 +400,7 @@ h4 {
   font-size: var(--t-s);
   font-weight: 500;
   color: var(--ink);
-  opacity: 0.55;
+  opacity: 0.62;
   margin-bottom: 0.15rem;
 }
 .hero__meta-list dd {
@@ -417,6 +417,21 @@ h4 {
   }
   to {
     opacity: 1;
+    filter: blur(0);
+  }
+}
+
+/* An animation with `both` fill wins over a plain `opacity` declaration, so
+   the muted hero label needs a keyframe that lands on its own opacity —
+   otherwise it finishes at full strength and reads darker than every other
+   section label on the page. */
+@keyframes settle-muted {
+  from {
+    opacity: 0;
+    filter: blur(8px);
+  }
+  to {
+    opacity: 0.62;
     filter: blur(0);
   }
 }
@@ -805,7 +820,7 @@ h4 {
 .rung__tags li {
   font-size: var(--t-s);
   color: var(--ink);
-  opacity: 0.55;
+  opacity: 0.62;
 }
 /* pricing anchor line at the foot of each department */
 .rung__price {
@@ -1363,7 +1378,7 @@ h4 {
 .ind__note {
   margin-top: 2rem;
   color: var(--ink);
-  opacity: 0.55;
+  opacity: 0.62;
   font-size: var(--t-s);
   max-width: 52ch;
 }
@@ -1423,7 +1438,7 @@ h4 {
   margin-top: 1.2rem;
   font-size: var(--t-s);
   color: var(--ink);
-  opacity: 0.55;
+  opacity: 0.62;
   max-width: 52ch;
 }
 .work__cta {
@@ -1526,7 +1541,7 @@ h4 {
 .pcard__style {
   font-size: var(--t-s);
   color: var(--ink);
-  opacity: 0.45;
+  opacity: 0.62;
   text-align: right;
 }
 .pcard__name {
@@ -1882,7 +1897,7 @@ h4 {
   font-size: var(--t-s);
   letter-spacing: 0;
   color: var(--ink);
-  opacity: 0.55;
+  opacity: 0.62;
 }
 .gallery__swatches {
   display: grid;
@@ -1925,7 +1940,7 @@ h4 {
   font-size: var(--t-s);
   letter-spacing: 0;
   color: var(--ink);
-  opacity: 0.55;
+  opacity: 0.62;
 }
 .typespec__sample {
   font-size: 1.02rem;

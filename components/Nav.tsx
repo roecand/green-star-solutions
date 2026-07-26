@@ -93,11 +93,14 @@ export default function Nav() {
       )}
 
       <style jsx>{`
-        /* Deliberately unboxed: no bar, no blur, no border at any scroll
-           position. The nav sits on the paper like set type. */
+        /* Deliberately unboxed: no bar, no blur, no border. That only works
+           because the nav is NOT sticky — it scrolls away with the page.
+           Pinning a transparent bar put ink links over 75% of the page's
+           text and made them vanish entirely over the dark sections. If this
+           ever becomes sticky again it needs a background and dark-surface
+           inversion, or both problems come straight back. */
         .nav {
-          position: sticky;
-          top: 0;
+          position: relative;
           z-index: 60;
         }
         .nav__inner {
