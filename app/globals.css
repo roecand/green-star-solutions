@@ -457,7 +457,7 @@ h4 {
   background: repeating-linear-gradient(
     -45deg,
     transparent 0 11px,
-    rgba(15, 18, 16, 0.045) 11px 12px
+    rgba(20, 32, 26, 0.05) 11px 12px
   );
   pointer-events: none;
 }
@@ -867,7 +867,7 @@ h4 {
 }
 .dept__list li:hover {
   border-color: currentColor;
-  background: rgba(184, 255, 0, 0.12);
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
 }
 .dept__price {
   margin: 2.2rem 0 0;
