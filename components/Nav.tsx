@@ -1,15 +1,18 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import StarMark from "./StarMark";
+import Mark from "./Mark";
 import { SCANNER_URL } from "@/lib/config";
 
-// Path-prefixed anchors so the nav works from /portfolio pages too.
+// Path-prefixed anchors so the nav works from /portfolio pages too. The lint
+// rule that wants <Link> here is a false positive: these are hash targets on
+// a different route.
 const links = [
-  { href: "/#work", label: "The Work" },
+  { href: "/#work", label: "Work" },
   { href: "/#services", label: "Departments" },
-  { href: "/#how", label: "How it works" },
+  { href: "/#how", label: "Method" },
   { href: "/portfolio/", label: "Portfolio" },
+  { href: SCANNER_URL, label: "Free leak scan", external: true },
 ];
 
 export default function Nav() {
@@ -25,32 +28,33 @@ export default function Nav() {
   return (
     <header className="nav">
       <div className="container nav__inner">
-        <a href="/" className="nav__brand" aria-label="Green Star Solutions, home">
-          <StarMark size={22} />
-          <span>
-            Green Star <span className="nav__brand-sub">Solutions</span>
-          </span>
+        <a
+          href="/"
+          className="nav__brand"
+          aria-label="Green Star Solutions, home"
+        >
+          <Mark size={20} />
+          <span>Green Star</span>
         </a>
 
         <nav className="nav__links" aria-label="Primary">
           {links.map((l) => (
-            <a key={l.href} href={l.href} className="nav__link">
+            <a
+              key={l.href}
+              href={l.href}
+              className="nav__link"
+              {...(l.external
+                ? { target: "_blank", rel: "noopener noreferrer" }
+                : {})}
+            >
               {l.label}
             </a>
           ))}
-          <a
-            href={SCANNER_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="nav__link"
-          >
-            Free Leak Scan
-          </a>
         </nav>
 
         <div className="nav__right">
-          <a href="/#start" className="btn btn--frost nav__cta">
-            Book a call
+          <a href="/#start" className="btn nav__cta">
+            Book a free call
           </a>
           <button
             className="nav__toggle"
@@ -68,37 +72,37 @@ export default function Nav() {
         <div className="nav__sheet" onClick={() => setOpen(false)}>
           <div className="nav__sheet-inner" onClick={(e) => e.stopPropagation()}>
             {links.map((l) => (
-              <a key={l.href} href={l.href} onClick={() => setOpen(false)}>
+              <a
+                key={l.href}
+                href={l.href}
+                onClick={() => setOpen(false)}
+                {...(l.external
+                  ? { target: "_blank", rel: "noopener noreferrer" }
+                  : {})}
+              >
                 {l.label}
               </a>
             ))}
             <a
-              href={SCANNER_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => setOpen(false)}
-            >
-              Free Leak Scan
-            </a>
-            <a
               href="/#start"
               className="btn"
               onClick={() => setOpen(false)}
-              style={{ marginTop: "0.5rem" }}
+              style={{ marginTop: "1.2rem" }}
             >
-              Book a call
+              Book a free call
             </a>
           </div>
         </div>
       )}
 
       <style jsx>{`
-        /* Deliberately unboxed: no bar, no blur, no border. That only works
-           because the nav is NOT sticky — it scrolls away with the page.
-           Pinning a transparent bar put ink links over 75% of the page's
-           text and made them vanish entirely over the dark sections. If this
-           ever becomes sticky again it needs a background and dark-surface
-           inversion, or both problems come straight back. */
+        /* Not sticky, and the reason stays with the code: pinning a
+           transparent bar here put ink links over 75% of the page's text and
+           made them measure 1.00:1 over the footer. If this ever becomes
+           sticky again it needs a solid background AND dark-surface
+           inversion, or both problems come straight back. The persistent
+           route to the form is StickyCTA instead, which is a solid chip in a
+           corner and cannot collide with anything. */
         .nav {
           position: relative;
           z-index: 60;
@@ -106,52 +110,51 @@ export default function Nav() {
         .nav__inner {
           display: flex;
           align-items: center;
-          justify-content: space-between;
-          height: 72px;
+          gap: clamp(1.5rem, 4vw, 3rem);
+          height: 76px;
         }
         .nav__brand {
           display: inline-flex;
           align-items: center;
-          gap: 0.6rem;
-          font-family: var(--font-display), serif;
-          font-weight: 500;
-          font-size: var(--t-l);
-          letter-spacing: -0.01em;
+          gap: 0.55rem;
+          font-variation-settings: "wdth" var(--wdth-wide);
+          font-weight: 700;
+          font-size: 1.02rem;
+          letter-spacing: -0.03em;
+          white-space: nowrap;
+          transition: color var(--t-fast) var(--ease);
         }
-        .nav__brand-sub {
+        .nav__brand:hover {
           color: var(--stone);
-          font-weight: 500;
         }
         .nav__links {
           display: flex;
-          gap: 2.1rem;
-          position: absolute;
-          left: 50%;
-          transform: translateX(-50%);
+          gap: clamp(1.1rem, 2.2vw, 2.1rem);
+          margin-left: auto;
         }
         .nav__link {
           font-size: var(--t-s);
           font-weight: 500;
-          color: var(--ink);
-          opacity: 0.62;
+          color: var(--ink-soft);
           position: relative;
           padding-bottom: 3px;
-          transition: opacity 0.2s var(--ease);
+          white-space: nowrap;
+          transition: color var(--t-fast) var(--ease);
         }
         .nav__link::after {
           content: "";
           position: absolute;
           left: 0;
           bottom: 0;
-          height: 1px;
+          height: 2px;
           width: 100%;
-          background: var(--ink);
+          background: var(--accent);
           transform: scaleX(0);
           transform-origin: left;
-          transition: transform 0.3s var(--ease);
+          transition: transform var(--t-mid) var(--ease);
         }
         .nav__link:hover {
-          opacity: 1;
+          color: var(--ink);
         }
         .nav__link:hover::after {
           transform: scaleX(1);
@@ -160,75 +163,73 @@ export default function Nav() {
           display: flex;
           align-items: center;
           gap: 0.75rem;
+          margin-left: auto;
         }
         .nav__cta {
-          padding: 0.62em 1.15em;
+          padding: 0.7em 1.2em;
         }
         .nav__toggle {
           display: none;
           flex-direction: column;
           justify-content: center;
           gap: 5px;
-          width: 42px;
-          height: 42px;
+          width: 44px;
+          height: 44px;
           border: 1px solid var(--line-strong);
           border-radius: var(--radius);
           background: transparent;
           cursor: pointer;
+          transition: border-color var(--t-fast) var(--ease),
+            background var(--t-fast) var(--ease);
+        }
+        .nav__toggle:hover {
+          border-color: var(--ink);
+          background: var(--paper-2);
         }
         .nav__toggle span {
           display: block;
-          width: 16px;
-          height: 1.6px;
+          width: 17px;
+          height: 2px;
           background: var(--ink);
           margin-inline: auto;
-          transition: transform 0.3s var(--ease), opacity 0.3s var(--ease);
+          transition: transform var(--t-mid) var(--ease);
         }
         .nav__toggle span[data-open="true"]:first-child {
-          transform: translateY(3.3px) rotate(45deg);
+          transform: translateY(3.5px) rotate(45deg);
         }
         .nav__toggle span[data-open="true"]:last-child {
-          transform: translateY(-3.3px) rotate(-45deg);
+          transform: translateY(-3.5px) rotate(-45deg);
         }
         .nav__sheet {
           position: fixed;
-          inset: 72px 0 0;
+          inset: 76px 0 0;
           z-index: 55;
-          background: color-mix(in srgb, var(--paper) 96%, transparent);
-          backdrop-filter: blur(6px);
+          background: var(--paper);
         }
         .nav__sheet-inner {
           display: flex;
           flex-direction: column;
-          gap: 0.4rem;
           padding: 1.5rem var(--gutter) 2rem;
-          font-family: var(--font-display), serif;
+          font-variation-settings: "wdth" var(--wdth-wide);
           font-size: var(--t-xl);
-          font-weight: 500;
-          letter-spacing: -0.01em;
+          font-weight: 700;
+          letter-spacing: -0.03em;
         }
         .nav__sheet-inner a:not(.btn) {
-          padding: 0.5rem 0;
+          padding: 0.7rem 0;
           border-bottom: 1px solid var(--line);
-          transition: padding-left 0.35s var(--ease),
-            border-bottom-color 0.35s var(--ease);
+          transition: transform var(--t-mid) var(--ease),
+            border-bottom-color var(--t-mid) var(--ease);
         }
         .nav__sheet-inner a:not(.btn):hover {
-          padding-left: 0.5rem;
+          transform: translateX(0.6rem);
           border-bottom-color: var(--ink);
         }
-        .nav__toggle {
-          transition: border-color 0.25s var(--ease),
-            background 0.25s var(--ease);
+        .nav__sheet-inner .btn {
+          align-self: flex-start;
         }
-        .nav__toggle:hover {
-          border-color: var(--ink);
-          background: rgba(22, 32, 27, 0.05);
-        }
-        @media (max-width: 880px) {
-          .nav__links {
-            display: none;
-          }
+        @media (max-width: 1000px) {
+          .nav__links,
           .nav__cta {
             display: none;
           }

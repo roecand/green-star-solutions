@@ -9,12 +9,12 @@ export default function NotFound() {
       <main>
         <section className="section nf">
           <div className="container nf__inner">
-            <p className="label">404 — page not found</p>
-            <h1 className="display t-display nf__title">
+            <p className="label">404. Page not found</p>
+            <h1 className="wide t-display nf__title">
               This page took a day off.
             </h1>
             <p className="lead measure-wide nf__lead">
-              The page you&rsquo;re looking for doesn&rsquo;t exist — but the
+              The page you&rsquo;re looking for doesn&rsquo;t exist, but the
               work does. Head back home, or go straight to the portfolio.
             </p>
             <div className="nf__actions">

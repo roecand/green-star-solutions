@@ -21,7 +21,7 @@ export async function generateMetadata({
   const project = getProject((await params).slug);
   if (!project) return {};
   return {
-    title: `${project.name} — Concept Website | Green Star Solutions`,
+    title: `${project.name}: Concept Website`,
     description: project.tagline,
   };
 }
@@ -54,8 +54,8 @@ export default async function ProjectPage({
               <span className="chip">{project.industry}</span>
               <span className="chip">{project.sector}</span>
             </div>
-            <h1 className="display t-display proj__title">{project.name}</h1>
-            <p className="proj__style serif">{project.styleLabel}</p>
+            <h1 className="wide t-display proj__title">{project.name}</h1>
+            <p className="proj__style">{project.styleLabel}</p>
             <p className="lead measure-wide proj__tagline">{project.tagline}</p>
             <div className="proj__actions">
               <a
@@ -67,7 +67,7 @@ export default async function ProjectPage({
                 Open the live concept
               </a>
               <span className="proj__actions-note">
-                Fictional business — designed to demonstrate range
+                Fictional business, designed to demonstrate range
               </span>
             </div>
           </div>
@@ -83,7 +83,7 @@ export default async function ProjectPage({
                   <span className="browser__dot" />
                   <span className="browser__dot" />
                   <span className="browser__url">
-                    {project.slug}.concept — live preview
+                    {project.slug}.concept, live preview
                   </span>
                 </div>
                 <SitePreview
@@ -94,7 +94,7 @@ export default async function ProjectPage({
                 />
               </div>
               <p className="proj__stage-note">
-                Live embed of the actual concept site — not a screenshot.{" "}
+                Live embed of the actual concept site, not a screenshot.{" "}
                 <a href={project.url} target="_blank" rel="noopener" className="tlink">
                   Open it full-screen ↗
                 </a>
@@ -108,7 +108,7 @@ export default async function ProjectPage({
           <div className="container proj__cols">
             <Reveal className="proj__colhead">
               <p className="label">Overview</p>
-              <h2 className="display t-xl">The brief we gave ourselves</h2>
+              <h2 className="wide t-xl">The brief we gave ourselves</h2>
             </Reveal>
             <Reveal className="proj__prose">
               {project.overview.map((para) => (
@@ -125,7 +125,7 @@ export default async function ProjectPage({
           <div className="container">
             <Reveal className="proj__sechead">
               <p className="label">Design goals</p>
-              <h2 className="display t-xl">Every choice had a job to do</h2>
+              <h2 className="wide t-xl">Every choice had a job to do</h2>
             </Reveal>
             <div className="proj__goals">
               {project.designGoals.map((g) => (
@@ -139,11 +139,11 @@ export default async function ProjectPage({
         </section>
 
         {/* ---------- features ---------- */}
-        <section className="section surface-forest proj__features">
+        <section className="section on-dark proj__features">
           <div className="container proj__cols">
             <Reveal className="proj__colhead">
               <p className="label">Features implemented</p>
-              <h2 className="display t-xl">What&rsquo;s actually in the build</h2>
+              <h2 className="wide t-xl">What&rsquo;s actually in the build</h2>
             </Reveal>
             <Reveal>
               <ul className="featlist">
@@ -160,7 +160,7 @@ export default async function ProjectPage({
           <div className="container proj__cols">
             <Reveal className="proj__colhead">
               <p className="label">The business problem</p>
-              <h2 className="display t-xl">Why this design makes money</h2>
+              <h2 className="wide t-xl">Why this design makes money</h2>
             </Reveal>
             <Reveal className="proj__prose">
               <p className="t-xl proj__pull">{project.problem.lead}</p>
@@ -178,7 +178,7 @@ export default async function ProjectPage({
           <div className="container">
             <Reveal className="proj__sechead">
               <p className="label">Design gallery</p>
-              <h2 className="display t-xl">The system up close</h2>
+              <h2 className="wide t-xl">The system up close</h2>
             </Reveal>
             <div className="gallery">
               <Reveal className="gallery__tile gallery__tile--wide">
@@ -214,7 +214,7 @@ export default async function ProjectPage({
                   {project.fonts.map((f) => (
                     <div key={f.role} className="typespec">
                       <span className="typespec__role">
-                        {f.role} — {f.name}
+                        {f.role}, {f.name}
                       </span>
                       <span className="typespec__sample">{f.sample}</span>
                     </div>
@@ -242,13 +242,13 @@ export default async function ProjectPage({
           <div className="container">
             <Reveal className="proj__sechead">
               <p className="label">Before &amp; after</p>
-              <h2 className="display t-xl">
+              <h2 className="wide t-xl">
                 The typical site vs. the concept
               </h2>
             </Reveal>
             <div className="ba">
               <Reveal className="ba__panel ba__panel--before">
-                <div className="ba__label">Before — the typical {project.industry.toLowerCase()} website</div>
+                <div className="ba__label">Before: the typical {project.industry.toLowerCase()} website</div>
                 <div className="ba__wire" aria-hidden="true">
                   <div className="ba__wire-nav">
                     <span className="ba__wire-logo" />
@@ -270,7 +270,7 @@ export default async function ProjectPage({
                 </ul>
               </Reveal>
               <Reveal className="ba__panel ba__panel--after">
-                <div className="ba__label ba__label--after">After — the concept</div>
+                <div className="ba__label ba__label--after">After: the concept</div>
                 <div className="ba__live">
                   <SitePreview
                     url={project.url}
@@ -286,18 +286,18 @@ export default async function ProjectPage({
               </Reveal>
             </div>
             <p className="ba__note">
-              &ldquo;Before&rdquo; shown as an illustrative placeholder — on a real engagement
+              &ldquo;Before&rdquo; shown as an illustrative placeholder, on a real engagement
               this is your current website, and the numbers that change with it.
             </p>
           </div>
         </section>
 
         {/* ---------- next projects + back ---------- */}
-        <section className="section surface-forest proj__next">
+        <section className="section on-dark proj__next">
           <div className="container">
             <Reveal className="proj__sechead">
               <p className="label">Keep exploring</p>
-              <h2 className="display t-xl">More concept work</h2>
+              <h2 className="wide t-xl">More concept work</h2>
             </Reveal>
             <div className="proj__next-grid">
               {others.map((p) => (

@@ -1,26 +1,29 @@
 import type { Metadata } from "next";
 import Script from "next/script";
-import { Zilla_Slab, Work_Sans } from "next/font/google";
+import { Archivo } from "next/font/google";
 import "./globals.css";
 
-// Google Analytics 4 — property "Green Star", stream 15185244702.
+// Google Analytics 4 - property "Green Star", stream 15185244702.
 const GA_ID = "G-FJJNMXN1TJ";
 
-// Slab-serif headlines — sturdy, confident, editorial. Used only at the two
-// largest sizes now; the italic face went with the serif-italic word swaps.
-const display = Zilla_Slab({
+/**
+ * ONE typeface, used at two ends of its width axis.
+ *
+ * The old stack was Zilla Slab + Work Sans: two Google fonts, which
+ * DESIGN-STANDARD.md §3 calls out as literally the default answer. A licensed
+ * face is the real cost signal and Robert has not bought one, so the next best
+ * thing is a commitment a model would not make: a single variable family
+ * stretched to wdth 125 for display and left at 100 for text.
+ *
+ * Archivo carries a wdth axis from 62 to 125. Expanded, tight-tracked and
+ * heavy, it reads like fleet lettering and shop signage - which is the
+ * industry - while the normal width sets clean body copy from the same
+ * skeleton. Two registers, one family, no serif.
+ */
+const archivo = Archivo({
   subsets: ["latin"],
-  variable: "--font-display",
-  weight: ["500"],
-  display: "swap",
-});
-
-// Characterful neo-grotesk body — carries everything below --t-2xl. One
-// weight: the whole type system is differentiated by size and opacity.
-const body = Work_Sans({
-  subsets: ["latin"],
-  variable: "--font-body",
-  weight: ["400", "500"],
+  variable: "--font-sans",
+  axes: ["wdth"],
   display: "swap",
 });
 
@@ -28,11 +31,11 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://green-starsolutions.com"),
   title: {
     default:
-      "Green Star Solutions — Perception Studio for the Trades | Las Vegas, NV",
+      "Green Star Solutions: Perception Studio for the Trades | Las Vegas, NV",
     template: "%s | Green Star Solutions",
   },
   description:
-    "We redesign the feeling people get when they look at your business. Brand, website, socials, and ads that let trade companies charge premium prices — plus the follow-up system that books every new call. Las Vegas, NV.",
+    "Homeowners decide in eight seconds. We design what they see, then make sure the call gets answered. Brand, website, socials and ads for HVAC, plumbing, electrical, roofing and landscaping companies in Las Vegas.",
   keywords: [
     "trades branding agency Las Vegas",
     "HVAC website design",
@@ -43,9 +46,9 @@ export const metadata: Metadata = {
     "local service business marketing",
   ],
   openGraph: {
-    title: "Green Star Solutions — Perception Studio for the Trades",
+    title: "Green Star Solutions: Perception Studio for the Trades",
     description:
-      "We redesign the feeling people get when they look at your business — brand, website, socials, ads, and the conversion system behind them.",
+      "Homeowners decide in eight seconds. We design what they see, then make sure the call gets answered.",
     type: "website",
     locale: "en_US",
     siteName: "Green Star Solutions",
@@ -61,7 +64,7 @@ const jsonLd = {
   email: "robert@green-starsolutions.com",
   telephone: "+1-702-742-9285",
   description:
-    "Perception studio for the trades: brand, website, social, and ad design that lets HVAC, plumbing, electrical, roofing, and landscaping companies charge premium prices — with automated follow-up that books every call.",
+    "Perception studio for the trades: brand, website, social, and ad design that lets HVAC, plumbing, electrical, roofing, and landscaping companies charge premium prices, with automated follow-up that books every call.",
   address: {
     "@type": "PostalAddress",
     addressLocality: "Las Vegas",
@@ -85,8 +88,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${display.variable} ${body.variable}`}>
+    <html lang="en" className="js-anim">
+      <head>
+        {/* The reveals are opacity 0 in the stylesheet, gated on .js-anim, so
+            a visitor with scripting off would otherwise get a page with
+            nothing on it. Rather than adding the class with a script (which
+            hydration-mismatches against the server HTML, and which React will
+            not run on client navigation anyway), the class is server
+            rendered and this undoes it when there is no scripting. noscript
+            styles need no script by definition and cost nothing otherwise. */}
+        <noscript>
+          <style>{`.js-anim .reveal{opacity:1!important;transform:none!important}`}</style>
+        </noscript>
+      </head>
+      <body className={archivo.variable}>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

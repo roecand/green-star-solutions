@@ -7,9 +7,9 @@ import ProjectCard from "@/components/ProjectCard";
 import { projects } from "@/lib/projects";
 
 export const metadata: Metadata = {
-  title: "Portfolio — Concept Work | Green Star Solutions",
+  title: "Portfolio: Concept Work",
   description:
-    "Six full concept websites — including two HVAC companies designed as completely different brands, a luxury landscape studio, a 24/7 plumber, a roofing company, and a neighborhood bakery. Each in its own visual language.",
+    "Six full concept websites, including two HVAC companies designed as completely different brands, a luxury landscape studio, a 24/7 plumber, a roofing company, and a neighborhood bakery. Each in its own visual language.",
 };
 
 export default function PortfolioPage() {
@@ -21,15 +21,15 @@ export default function PortfolioPage() {
         <section className="pfhero">
           <div className="container">
             <p className="label">Portfolio · Concept work</p>
-            <h1 className="display t-display pfhero__title">
+            <h1 className="wide t-display pfhero__title">
               One agency,
               <br />
               every voice.
             </h1>
             <p className="lead measure-wide pfhero__lead">
-              A great trades website doesn&rsquo;t look like a template — it looks
+              A great trades website doesn&rsquo;t look like a template, it looks
               like the business. To prove it, we designed six complete concept
-              websites, each in its own visual language — including two HVAC
+              websites, each in its own visual language, including two HVAC
               companies built as completely different brands. Every one is
               live: click in, scroll around, resize it.
             </p>
@@ -60,14 +60,14 @@ export default function PortfolioPage() {
         </section>
 
         {/* closing */}
-        <section className="section surface-forest pfclose">
+        <section className="section on-dark pfclose">
           <div className="container pfclose__inner">
-            <h2 className="display t-2xl pfclose__head">
+            <h2 className="wide t-2xl pfclose__head">
               Imagine your business up here.
             </h2>
             <p className="lead pfclose__sub measure-wide">
               This is the level of design your customers see before they ever
-              call you. Let&rsquo;s build the real thing — for your company.
+              call you. Let&rsquo;s build the real thing, for your company.
             </p>
             <Link href="/#start" className="btn btn--light">
               Book a Free Strategy Call

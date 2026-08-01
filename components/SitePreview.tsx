@@ -4,7 +4,7 @@
  * no screenshots to keep in sync.
  *
  * Fluid mode (default): the iframe is 1/scale the container's width, scaled
- * back down to fill it — works at any responsive size.
+ * back down to fill it, works at any responsive size.
  * Fixed mode (pass `viewport`): the iframe renders at an exact viewport width
  * (e.g. 375 for a phone) and the container must be viewport × scale wide.
  */

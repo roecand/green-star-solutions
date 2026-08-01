@@ -1,71 +1,59 @@
+import Slot from "./Slot";
+
+/**
+ * Editorial manifesto hero. One claim, one line of support, one action, then
+ * a wide band of photography. Playbook A: about 30 words above the fold.
+ *
+ * The old hero ran a three-line headline, a four-line paragraph, two CTAs and
+ * a three-item definition list side by side. That is four competing text
+ * blocks in the one moment where the page has a single job.
+ */
 export default function Hero() {
   return (
     <section id="top" className="hero">
-      <div className="container hero__grid">
-        <div className="hero__main">
-          <p className="label hero__eyebrow">A perception studio for the trades</p>
+      <div className="container">
+        <h1 className="wide hero__head">
+          <span className="hero__line">
+            <span>Homeowners decide</span>
+          </span>
+          <span className="hero__line">
+            <span>in eight seconds.</span>
+          </span>
+        </h1>
 
-          <h1 className="display hero__head hero__head--sentence">
-            <span className="hero__line">
-              <span>We redesign the feeling</span>
-            </span>
-            <span className="hero__line">
-              <span>people get when they</span>
-            </span>
-            <span className="hero__line">
-              <span>look at your business.</span>
-            </span>
-          </h1>
-
-          <p className="lead hero__lead measure-wide">
-            Brand, website, socials, and ads that make homeowners see the
-            company worth premium prices — and a follow-up system that makes
-            sure none of the new calls slip away.
+        <div className="hero__foot">
+          <p className="lead hero__sub">
+            We design what they see in those eight seconds. Then we make sure
+            the call actually gets answered.
           </p>
-
           <div className="hero__cta">
             <a className="btn" href="#start">
-              Book a Free Strategy Call
+              Book a free call
             </a>
-            <a className="tlink hero__see" href="#work">
-              See the transformations
+            <a className="tlink" href="#work">
+              See the work
             </a>
           </div>
         </div>
-
-        <aside className="hero__meta" aria-label="What we do">
-          <dl className="hero__meta-list">
-            <div>
-              <dt>Dept. 01 — Perception</dt>
-              <dd>Brand · Website · Socials · Ads</dd>
-            </div>
-            <div>
-              <dt>Dept. 02 — Conversion</dt>
-              <dd>Follow-up · Booking · CRM · Reviews</dd>
-            </div>
-            <div>
-              <dt>Built for</dt>
-              <dd>HVAC · Plumbing · Electrical · Roofing · Landscaping</dd>
-            </div>
-          </dl>
-        </aside>
       </div>
 
-      {/* Full-bleed establishing shot. The headline sits in ink above it
-          rather than over it — the left of the frame is bright sky and would
-          not hold white text. */}
-      <div className="plate hero__plate">
-        <picture>
-          <source srcSet="/media/hero-plate.webp" type="image/webp" />
-          <img
-            src="/media/hero-plate.jpg"
-            alt="A Green Star Solutions work van on a desert road outside Las Vegas at golden hour."
-            width={2400}
-            height={1028}
-            fetchPriority="high"
-            decoding="async"
-          />
-        </picture>
+      <div className="bleed hero__band">
+        {/* Holding image, and the first one to replace. Two problems, both
+            checked against the actual pixels rather than the filename:
+            measured isolation 1.4 against a target of 2.5 and lightness 27
+            against a page at 94, AND the van carries the four-point sparkle
+            on its door, which is the glyph this redesign just removed from
+            the brand. Replacement prompt: IMAGE-BRIEF.md §1. Drop the new
+            file in at this path and nothing else changes. */}
+        <Slot
+          id="HERO"
+          spec="Full bleed, 2400x1000. A single work van shot three-quarter front on a Las Vegas residential street, hard late-afternoon sun, van sharply isolated against a bright pale stucco wall. Bright background, no people, no signage clutter."
+          src="/media/hero-plate.jpg"
+          alt="A green and white work van parked on open desert ground at sunset, with low mountains on the horizon behind it."
+          width={2400}
+          height={1028}
+          priority
+        />
       </div>
     </section>
   );

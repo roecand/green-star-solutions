@@ -18,7 +18,7 @@ const GOALS = [
   "Run Google or Meta ads",
   "Automate follow-up & reviews",
   "Stop missing calls",
-  "Not sure — I need a plan",
+  "Not sure, I need a plan",
 ];
 
 const MARKETING = [
@@ -28,7 +28,7 @@ const MARKETING = [
   "Nothing consistent yet",
 ];
 
-const BUDGETS = ["Under $1k/mo", "$1k–$3k/mo", "$3k–$6k/mo", "$6k+/mo", "Not sure yet"];
+const BUDGETS = ["Under $1k/mo", "$1k-$3k/mo", "$3k-$6k/mo", "$6k+/mo", "Not sure yet"];
 const TIMES = ["Morning", "Afternoon", "Evening", "Anytime"];
 
 const STEPS = ["Business", "Goals", "Marketing", "Contact"];
@@ -88,7 +88,7 @@ export default function ProjectForm() {
     if (s === 3) {
       if (!data.name.trim()) return "We need a name to know who we're calling.";
       if (!validEmail(data.email)) return "Add a valid email so we can confirm.";
-      if (!data.phone.trim()) return "Add a phone number — it's a call, after all.";
+      if (!data.phone.trim()) return "Add a phone number, it's a call, after all.";
     }
     return "";
   }
@@ -139,12 +139,12 @@ export default function ProjectForm() {
       <section id="start" className="form section">
         <div className="container">
           <div className="form__success">
-            <h2 className="display form__success-head">
+            <h2 className="wide form__success-head">
               You&rsquo;re on the calendar.
             </h2>
             <p className="lead measure-wide" style={{ marginInline: "auto" }}>
               Thanks, {data.name.split(" ")[0] || "there"}. We&rsquo;ll reach out
-              within one business day to lock in your free strategy call — and
+              within one business day to lock in your free strategy call, and
               come ready with a few ideas for {data.business || "your business"}.
             </p>
           </div>
@@ -157,13 +157,12 @@ export default function ProjectForm() {
     <section id="start" className="form section">
       <div className="container">
         <div className="form__head">
-          <p className="label">Book a free strategy call</p>
-          <h2 className="display t-2xl">
+          <h2 className="wide t-2xl">
             Let&rsquo;s map out your transformation.
           </h2>
           <p className="lead measure-wide">
             Four quick questions. On the call we&rsquo;ll show you exactly how
-            your company reads to a homeowner today — and where the jobs are
+            your company reads to a homeowner today, and where the jobs are
             leaking. No obligation, no hard sell.
           </p>
         </div>
@@ -186,12 +185,15 @@ export default function ProjectForm() {
           </div>
 
           <div className="form__panel">
-            {/* STEP 0 — business */}
+            {/* STEP 0, business */}
             {step === 0 && (
               <Fieldset legend="Your business" hint="Step 1 of 4">
                 <Field label="Business name" required>
+                  {/* No autoFocus. The form sits at the bottom of a long
+                      page, so focusing it on mount scrolled every visitor
+                      past the entire site and dropped screen-reader focus
+                      into the middle of the document. */}
                   <input
-                    autoFocus
                     value={data.business}
                     onChange={(e) => set("business", e.target.value)}
                     placeholder="e.g. Sunstate Heating & Air"
@@ -230,7 +232,7 @@ export default function ProjectForm() {
               </Fieldset>
             )}
 
-            {/* STEP 1 — goals */}
+            {/* STEP 1, goals */}
             {step === 1 && (
               <Fieldset legend="What are you after?" hint="Step 2 of 4">
                 <p className="form__sublabel">Pick anything that fits.</p>
@@ -258,7 +260,7 @@ export default function ProjectForm() {
               </Fieldset>
             )}
 
-            {/* STEP 2 — current marketing */}
+            {/* STEP 2, current marketing */}
             {step === 2 && (
               <Fieldset legend="Where are you now?" hint="Step 3 of 4">
                 <p className="form__sublabel">
@@ -295,7 +297,7 @@ export default function ProjectForm() {
               </Fieldset>
             )}
 
-            {/* STEP 3 — contact */}
+            {/* STEP 3, contact */}
             {step === 3 && (
               <Fieldset legend="Where do we reach you?" hint="Step 4 of 4">
                 <div className="grid2">
@@ -411,13 +413,17 @@ export default function ProjectForm() {
           padding-left: 1rem;
           transition: color 0.3s var(--ease), border-color 0.3s var(--ease);
         }
+        /* Active is the only place the accent appears in the form chrome: a
+           forest bar marks where you are. Done drops to a hairline, so the
+           two states are told apart by weight rather than by both being
+           green. */
         .pdot.is-active {
           color: var(--ink);
-          border-left-color: var(--forest);
+          border-left-color: var(--accent);
         }
         .pdot.is-done {
-          color: var(--forest);
-          border-left-color: var(--forest);
+          color: var(--ink-soft);
+          border-left-color: var(--line-strong);
         }
         .pdot__no {
           font-size: var(--t-s);
@@ -432,7 +438,7 @@ export default function ProjectForm() {
         }
         .form__panel {
           background: var(--paper-2);
-          border-radius: var(--plate-radius);
+          border-radius: var(--radius-lg);
           padding: clamp(1.5rem, 3.5vw, 2.75rem);
         }
         .form__sublabel {
@@ -455,22 +461,28 @@ export default function ProjectForm() {
           font-size: var(--t-s);
           font-weight: 500;
           padding: 0.6em 1.05em;
-          border-radius: var(--radius);
-          border: 1px solid color-mix(in srgb, var(--ink) 12%, transparent);
-          background: rgba(22, 32, 27, 0.04);
+          border-radius: var(--radius-pill);
+          border: 1px solid var(--line-strong);
+          background: transparent;
           color: var(--ink-soft);
           cursor: pointer;
           transition: background 0.2s var(--ease), border-color 0.2s var(--ease),
-            color 0.2s var(--ease);
+            color 0.2s var(--ease), transform 0.2s var(--ease);
         }
         .chip:hover {
-          border-color: var(--forest);
+          border-color: var(--ink);
           color: var(--ink);
         }
+        .chip:active {
+          transform: scale(0.97);
+        }
+        /* Selected is a forest field with paper type on it: 8.9:1. The
+           accent token flips by surface, so this stays correct if the panel
+           ever moves onto a dark ground. */
         .chip.is-on {
-          background: var(--forest);
-          border-color: var(--forest);
-          color: var(--paper);
+          background: var(--accent);
+          border-color: var(--accent);
+          color: var(--ink);
         }
         .form__error {
           margin-top: 1.2rem;
@@ -515,10 +527,10 @@ export default function ProjectForm() {
             padding: 0.5rem 0 0;
           }
           .pdot.is-active {
-            border-top-color: var(--forest);
+            border-top-color: var(--accent);
           }
           .pdot.is-done {
-            border-top-color: var(--forest);
+            border-top-color: var(--line-strong);
           }
           .pdot__label {
             display: none;
@@ -547,7 +559,7 @@ function Fieldset({
   return (
     <div className="fieldset">
       <div className="fieldset__head">
-        <h3 className="display fieldset__legend">{legend}</h3>
+        <h3 className="wide fieldset__legend">{legend}</h3>
         <span className="fieldset__hint">{hint}</span>
       </div>
       {children}
@@ -591,7 +603,7 @@ function Field({
       <span className="field__label">
         {label}
         {required && <span className="field__req"> *</span>}
-        {hint && <span className="field__hint"> — {hint}</span>}
+        {hint && <span className="field__hint">, {hint}</span>}
       </span>
       {children}
       <style jsx>{`
