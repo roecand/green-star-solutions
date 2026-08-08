@@ -40,7 +40,7 @@ export default function Departments() {
               <li>Social presence</li>
               <li>Google and Meta ads</li>
             </ul>
-            <p className="dept__price">Brand transformations from $8,500</p>
+            <p className="dept__price">Scoped to the job. Free quote.</p>
             {/* Holding image. Alt written from the pixels, not the
                 filename. Note the polo carries the retired four-point
                 sparkle embroidered on the chest, so this is a replacement
@@ -74,7 +74,7 @@ export default function Departments() {
               <li>CRM setup</li>
               <li>Reputation and reviews</li>
             </ul>
-            <p className="dept__price">Growth retainers from $1,200 a month</p>
+            <p className="dept__price">Monthly, cancel anytime.</p>
             {/* Holding image. The only one of the four large photographs
                 with no retired sparkle in it, but still a dusk scene at
                 lightness 27. IMAGE-BRIEF.md §3 replaces it with daylight. */}

@@ -1,31 +1,18 @@
 import type { Metadata } from "next";
 import Script from "next/script";
-import { Archivo } from "next/font/google";
 import "./globals.css";
 
 // Google Analytics 4 - property "Green Star", stream 15185244702.
 const GA_ID = "G-FJJNMXN1TJ";
 
 /**
- * ONE typeface, used at two ends of its width axis.
+ * The typeface is no longer loaded here.
  *
- * The old stack was Zilla Slab + Work Sans: two Google fonts, which
- * DESIGN-STANDARD.md §3 calls out as literally the default answer. A licensed
- * face is the real cost signal and Robert has not bought one, so the next best
- * thing is a commitment a model would not make: a single variable family
- * stretched to wdth 125 for display and left at 100 for text.
- *
- * Archivo carries a wdth axis from 62 to 125. Expanded, tight-tracked and
- * heavy, it reads like fleet lettering and shop signage - which is the
- * industry - while the normal width sets clean body copy from the same
- * skeleton. Two registers, one family, no serif.
+ * Fraunces ships from app/brand.css, vendored from the greenstar-systems
+ * package, so the site and the design system cannot drift apart. next/font
+ * had to go with it: its generated class sets --font-sans on <body>, which
+ * overrides the :root alias and would silently win.
  */
-const archivo = Archivo({
-  subsets: ["latin"],
-  variable: "--font-sans",
-  axes: ["wdth"],
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://green-starsolutions.com"),
@@ -110,13 +97,13 @@ export default function RootLayout({
             it in the body. */}
         <script src="/signature-intro.js" />
       </head>
-      <body className={archivo.variable}>
+      <body>
         {/* FIRST node in the body — it covers the page the instant the parser
             reaches it, so anything above it would flash. Forest dot on the
             paper ground; `background` must stay in sync with --paper or a
             seam shows as the circle opens. */}
         <signature-intro
-          color="#0e4a33"
+          color="#35603f"
           background="#eff0eb"
           suppressHydrationWarning
         />

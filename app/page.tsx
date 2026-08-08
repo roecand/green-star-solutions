@@ -14,7 +14,7 @@ import Footer from "@/components/Footer";
 
 /**
  * Section order is an argument, not a menu:
- *   claim -> proof -> diagnosis -> method -> fit -> price -> ask.
+ *   claim -> proof -> diagnosis -> method -> fit -> engagements -> ask.
  *
  * Proof comes before the pitch because the live concept sites are the only
  * thing here that shows rather than tells. Price comes before the form
