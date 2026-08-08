@@ -56,6 +56,18 @@ export default function Reveal({
       );
       io.observe(el);
 
+      // Anything already scrolled past is shown immediately.
+      //
+      // Observers only attach once the intro releases, roughly two seconds in.
+      // A visitor who scrolls hard in those two seconds moves content ABOVE
+      // the viewport before anything is watching it, and an element above the
+      // viewport never intersects again — so it would sit at opacity 0 for the
+      // rest of the session. Worse, the observer's initial callback still
+      // fires (reporting not-intersecting), which sets `delivered` and
+      // disarms the failsafe below. Measuring the element's own position is
+      // the only thing that catches this case.
+      if (el.getBoundingClientRect().top < window.innerHeight) setShown(true);
+
       // Failsafe. Content must never stay invisible because an optional
       // enhancement did not run: the reveal starts at opacity 0, so anything
       // that stops the observer from delivering takes the whole page with it.
