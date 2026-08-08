@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "./brand.css";
 
 /* ============================================================
    GREEN STAR SOLUTIONS
@@ -10,7 +11,9 @@
    something a model would not have picked and then held it everywhere.
 
      1. ROUND.     One radius, doubled for slabs, plus pills for buttons.
-     2. ONE FAMILY. Archivo at two ends of its width axis. No serif.
+     2. ONE FAMILY. Fraunces at two ends of its OPTICAL SIZE axis, WONK on
+                    at display only. Colour and type tokens live in brand.css,
+                    vendored from the greenstar-systems package.
      3. FOREST IS ARCHITECTURE, NOT ACCENT. It is the dark surface, at roughly
                     a third of page area, and the button fill. Never a tint.
      4. ONE CURVE.  --ease on every transition and every keyframe.
@@ -20,40 +23,9 @@
    ============================================================ */
 
 :root {
-  /* --- COMMITMENT 5: three surfaces --- */
-  --paper: #eff0eb;
-  --paper-2: #e2e4dd;
-  --forest: #0e4a33;
-  --ink: #14201a;
-
-  /* --- COMMITMENT 3 ---
-     DESIGN-STANDARD.md §3 is explicit that this exact green failed here
-     before: "a 68%-saturation mid-dark accent is the hedge, too quiet to
-     punch, too coloured to read as structure." That verdict was about forest
-     used as a 0.5% tint on chrome. The fix is not a different green, it is a
-     different JOB. Forest is now the ground under every dark block on the
-     site and the fill of every primary button. Paper on forest measures
-     8.9:1, forest type on paper measures 8.9:1, so it works as surface and as
-     type without a third colour existing.
-
-     The accent flips with the surface rather than being a fixed hue: forest
-     on light ground, paper on dark ground. Any component using
-     var(--accent) / var(--on-accent) inverts correctly inside .on-dark
-     without knowing where it sits. */
-  --accent: var(--forest);
-  --on-accent: var(--paper);
-
-  /* Text tints. Measured against --paper: soft 7.2:1, stone 5.0:1.
-     Nothing below stone exists, so nothing on this site can fail AA. */
-  --ink-soft: #4a534d;
-  --stone: #616a63;
-
-  --line: rgba(20, 32, 26, 0.14);
-  --line-strong: rgba(20, 32, 26, 0.28);
-
-  /* Paper-on-dark equivalents, same two steps. */
-  --paper-soft: rgba(239, 240, 235, 0.74);
-  --paper-line: rgba(239, 240, 235, 0.18);
+  /* Surfaces, accent, text tints, hairlines and the family now come from
+     brand.css (vendored from the design system). What remains below is
+     layout, radius, motion and the type scale. */
 
   --gutter: clamp(1.25rem, 5vw, 4.5rem);
   --maxw: 1440px;
@@ -93,8 +65,6 @@
      Expanded is for display only and never drops below --t-xl. Text width
      carries everything else. Hierarchy comes from size, width and opacity,
      never from a second family. */
-  --wdth-wide: 125;
-  --wdth-text: 100;
 
   --t-display: clamp(2.5rem, 6vw, 5.1rem);
   --t-2xl: clamp(1.9rem, 3.8vw, 3.2rem);
@@ -120,7 +90,8 @@ body {
   background: var(--paper);
   color: var(--ink);
   font-family: var(--font-sans), system-ui, sans-serif;
-  font-variation-settings: "wdth" var(--wdth-text);
+  font-variation-settings: "opsz" var(--gs-opsz-text),
+    "WONK" var(--gs-wonk-text), "SOFT" var(--gs-soft);
   font-size: 1.0625rem;
   line-height: 1.6;
   font-weight: 400;
@@ -162,14 +133,20 @@ img {
 }
 
 /* ---------- type ----------
-   .wide is the display register: Archivo pushed to wdth 125 and weight 700,
-   tracked in hard. It is allowed at --t-xl and above and nowhere else.
-   Expanded type at body size is illegible and looks like a mistake. */
+   .wide is the display register: Fraunces on its display optical cut with
+   WONK on, so the splayed alternates appear only where they read as
+   character rather than noise. Allowed at --t-xl and above and nowhere else
+   — the display cut's hairlines break up at body size.
+
+   The name is historical: it was a width axis once. It is the DISPLAY
+   register, whatever axis delivers it. Weight stays 500 across the system;
+   700 was tuned for a grotesque and clogs an old-style serif. */
 .wide {
-  font-variation-settings: "wdth" var(--wdth-wide);
-  font-weight: 700;
-  letter-spacing: -0.035em;
-  line-height: 1.02;
+  font-variation-settings: "opsz" var(--gs-opsz-display),
+    "WONK" var(--gs-wonk-display), "SOFT" var(--gs-soft);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.04;
   text-wrap: balance;
 }
 
@@ -177,7 +154,7 @@ h1,
 h2,
 h3,
 h4 {
-  font-weight: 600;
+  font-weight: 500;
   line-height: 1.12;
   text-wrap: balance;
   margin: 0;
@@ -465,8 +442,9 @@ h4 {
   position: relative;
   border-radius: var(--radius-pill);
   font-size: var(--t-xs);
-  font-weight: 700;
-  font-variation-settings: "wdth" var(--wdth-wide);
+  font-weight: 500;
+  font-variation-settings: "opsz" var(--gs-opsz-display),
+    "WONK" var(--gs-wonk-display), "SOFT" var(--gs-soft);
   letter-spacing: -0.01em;
   background: var(--accent);
   color: var(--on-accent);
@@ -592,6 +570,24 @@ h4 {
     opacity: 1;
     transform: none;
   }
+}
+
+/* ---------- hero entrance vs. the signature intro ----------
+   The intro covers the page until roughly 2.8s. Every hero entrance above
+   starts on load and is finished by about 1.8s, so without this the whole
+   choreography would play behind the veil and the circle would open onto a
+   hero that had already arrived.
+
+   Pausing rather than re-timing keeps the two independent: nothing here
+   encodes how long the intro runs. <signature-intro> holds .si-run on <html>
+   for exactly as long as it is on screen and removes it on teardown, at which
+   point these resume from their first frame. When the intro does not run --
+   reduced motion, a repeat visit, an inner page -- the class never appears
+   and this block does nothing. */
+html.si-run .hero__line > span,
+html.si-run .hero__foot,
+html.si-run .hero__band {
+  animation-play-state: paused;
 }
 
 /* A single strip of fact under the band. Not an eyebrow, not a trust badge
@@ -1138,7 +1134,7 @@ h4 {
 }
 .engrow {
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: 1fr;
   align-items: baseline;
   gap: 1rem 2rem;
   padding: 1.4rem 0;
@@ -1160,17 +1156,10 @@ h4 {
 .engrow:hover .engrow__name {
   transform: translateX(0.5rem);
 }
-.engrow__figure {
-  font-size: var(--t-l);
-  font-weight: 700;
-  font-variation-settings: "wdth" var(--wdth-wide);
-  letter-spacing: -0.03em;
-  white-space: nowrap;
-  transition: color var(--t-fast) var(--ease);
+.eng__foot {
+  margin-top: 1.8rem;
 }
-.engrow:hover .engrow__figure {
-  color: var(--ink);
-}
+
 .engrow__desc {
   grid-column: 1 / -1;
   margin: 0.4rem 0 0;
@@ -1367,9 +1356,10 @@ h4 {
   align-items: center;
   gap: 0.6rem;
   font-size: var(--t-l);
-  font-weight: 700;
-  font-variation-settings: "wdth" var(--wdth-wide);
-  letter-spacing: -0.03em;
+  font-weight: 500;
+  font-variation-settings: "opsz" var(--gs-opsz-display),
+    "WONK" var(--gs-wonk-display), "SOFT" var(--gs-soft);
+  letter-spacing: -0.012em;
   margin-bottom: 1rem;
   transition: color var(--t-fast) var(--ease);
 }
