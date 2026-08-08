@@ -1,3 +1,4 @@
+import Motif from "./Motif";
 import Reveal from "./Reveal";
 
 /**
@@ -42,6 +43,11 @@ export default function Engagement() {
             number comes after we have looked rather than before. The audit is
             free either way.
           </p>
+          {/* The one motif on the page. It sits in real empty ground rather
+              than behind copy: --gs-paper-soft is already at the AA floor on
+              forest, so a volume behind body text fails contrast at any
+              opacity. Here nothing overlaps it. */}
+          <Motif shape="warp" size={400} className="eng__motif" />
         </Reveal>
 
         <ul className="eng__rows">

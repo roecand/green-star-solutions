@@ -2311,3 +2311,98 @@ html.si-run .hero__band {
     transform: scaleX(1);
   }
 }
+
+
+/* ============================================================
+   MOTIFS — abstract dimensional volumes
+   Ported from the greenstar-systems package. Lighting comes from the
+   --gs-form-* tokens in brand.css, which invert inside .on-dark, so one
+   motif serves both grounds without a variant.
+
+   Placed large and cropped by the slab edge. Two per page, different forms,
+   from opposite corners so they do not rhyme. They are structure, not
+   stickers, and there is no third one.
+   ============================================================ */
+
+.motif {
+  display: block;
+  max-width: 100%;
+}
+
+/* The slabs must clip, and must not raise the motif above their own copy. */
+.eng__motif {
+  margin-top: clamp(2.5rem, 5vw, 4rem);
+  margin-left: clamp(-150px, -9vw, -60px);
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+
+
+/* Below the two-column breakpoint the copy needs the whole slab, and a form
+   sitting under text at this scale is noise rather than structure. */
+@media (max-width: 860px) {
+  .eng__motif {
+    display: none;
+  }
+}
+
+/* ============================================================
+   TYPOGRAPHY — size-specific tracking
+   Tracking is not one value for all sizes. Large text reads too loose as it
+   grows and wants negative tracking; small text wants a touch of positive
+   for legibility. A single letter-spacing is wrong somewhere, so each step
+   carries its own, and leading tightens as size increases.
+   ============================================================ */
+
+.t-display {
+  letter-spacing: -0.032em;
+  line-height: 1.02;
+}
+.t-2xl {
+  letter-spacing: -0.024em;
+  line-height: 1.05;
+}
+.t-xl {
+  letter-spacing: -0.016em;
+  line-height: 1.1;
+}
+.t-l {
+  letter-spacing: -0.008em;
+}
+/* Body sits at zero. Below it, a small positive bump keeps the text cut
+   legible at the sizes where its strokes are finest. */
+.t-s {
+  letter-spacing: 0.004em;
+}
+.t-xs {
+  letter-spacing: 0.01em;
+}
+
+/* ============================================================
+   RESPONSE — feedback belongs on the press, not the release
+   Anything a cursor can commit should acknowledge the pointer going DOWN.
+   Waiting for the click to show state is the difference between an
+   interface that answers and one that reports.
+   ============================================================ */
+
+.tlink:active,
+.nav__link:active,
+.footer__nav a:active,
+.footer__contact a:active {
+  transform: scale(0.985);
+}
+.tlink,
+.nav__link {
+  transition: color var(--t-fast) var(--ease),
+    transform var(--t-fast) var(--ease);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tlink:active,
+  .nav__link:active,
+  .footer__nav a:active,
+  .footer__contact a:active {
+    transform: none;
+  }
+}
