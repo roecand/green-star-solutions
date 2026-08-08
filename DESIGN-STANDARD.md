@@ -93,6 +93,14 @@ businesses belong in A.
 - **One easing curve, used everywhere.** Clay commits `cubic-bezier(.16,1,.3,1)`
   **264 times**. If your most-used easing is `ease`, you have not chosen one —
   that's the browser default.
+  - *Scope: interface motion.* The rule governs anything responding to a user —
+    hovers, menus, reveals, image scaling. **Simulated physics is exempt**, and
+    the only exemption on this site is `<signature-intro>`, the bouncing-dot
+    page opener in `/public/signature-intro.js`.
+    A bounce needs two curves, not one: falling accelerates, rising decelerates.
+    Forced onto a single curve the dot rises and falls identically and stops
+    reading as something with weight. Its curves are sealed inside a shadow root
+    and cannot leak into site CSS. Decision made 2026-08-02 — do not "fix" it.
 - **Animate `transform`, not just `opacity`.** Opacity-and-blur alone reads as
   things *appearing*; transform reads as things *moving*.
 - **Never apply a uniform stagger.** `delay={i * 90}` across every grid is the
@@ -202,7 +210,8 @@ bug.
 - [ ] Radii: one language (square **or** round), one token
 - [ ] Accent: absent, or 100% saturation on ≤3% of area
 - [ ] ≤4 surface colours
-- [ ] One easing curve; `ease` appears zero times
+- [ ] One easing curve for interface motion; `ease` appears zero times
+      (simulated physics exempt — see Motion)
 - [ ] `transform` animated, not just opacity
 - [ ] No uniform `delay={i * n}` stagger anywhere
 - [ ] 60+ authored hover rules; everything clickable responds

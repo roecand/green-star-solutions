@@ -87,8 +87,12 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // suppressHydrationWarning on <html>: the intro script runs before hydration
+  // and has to add a class and lock scrolling on <html> to cover the page at
+  // first paint. React would otherwise flag those as a mismatch and revert them
+  // mid-animation. It is scoped to that element's own attributes.
   return (
-    <html lang="en" className="js-anim">
+    <html lang="en" className="js-anim" suppressHydrationWarning>
       <head>
         {/* The reveals are opacity 0 in the stylesheet, gated on .js-anim, so
             a visitor with scripting off would otherwise get a page with
@@ -100,8 +104,22 @@ export default function RootLayout({
         <noscript>
           <style>{`.js-anim .reveal{opacity:1!important;transform:none!important}`}</style>
         </noscript>
+        {/* Defines <signature-intro> below. Deliberately a plain tag and not
+            next/script: every strategy it offers runs after hydration, and
+            this has to have defined the element before the parser reaches
+            it in the body. */}
+        <script src="/signature-intro.js" />
       </head>
       <body className={archivo.variable}>
+        {/* FIRST node in the body — it covers the page the instant the parser
+            reaches it, so anything above it would flash. Forest dot on the
+            paper ground; `background` must stay in sync with --paper or a
+            seam shows as the circle opens. */}
+        <signature-intro
+          color="#0e4a33"
+          background="#eff0eb"
+          suppressHydrationWarning
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

@@ -594,6 +594,24 @@ h4 {
   }
 }
 
+/* ---------- hero entrance vs. the signature intro ----------
+   The intro covers the page until roughly 2.8s. Every hero entrance above
+   starts on load and is finished by about 1.8s, so without this the whole
+   choreography would play behind the veil and the circle would open onto a
+   hero that had already arrived.
+
+   Pausing rather than re-timing keeps the two independent: nothing here
+   encodes how long the intro runs. <signature-intro> holds .si-run on <html>
+   for exactly as long as it is on screen and removes it on teardown, at which
+   point these resume from their first frame. When the intro does not run --
+   reduced motion, a repeat visit, an inner page -- the class never appears
+   and this block does nothing. */
+html.si-run .hero__line > span,
+html.si-run .hero__foot,
+html.si-run .hero__band {
+  animation-play-state: paused;
+}
+
 /* A single strip of fact under the band. Not an eyebrow, not a trust badge
    row: three concrete statements of what the studio is, set as plain text. */
 .hero__facts {
