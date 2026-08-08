@@ -37,7 +37,7 @@ export default function Hero() {
         </div>
       </div>
 
-      <div className="bleed hero__band">
+      <div className="container hero__band">
         {/* Holding image, and the first one to replace. Two problems, both
             checked against the actual pixels rather than the filename:
             measured isolation 1.4 against a target of 2.5 and lightness 27

@@ -20,17 +20,42 @@ import { useEffect, useRef, useState } from "react";
  */
 export default function StickyCTA() {
   const sentinel = useRef<HTMLDivElement | null>(null);
-  const [show, setShow] = useState(false);
+  const [pastHero, setPastHero] = useState(false);
+  const [atForm, setAtForm] = useState(false);
 
   useEffect(() => {
     const el = sentinel.current;
     if (!el) return;
     const io = new IntersectionObserver(([entry]) => {
-      setShow(!entry.isIntersecting);
+      setPastHero(!entry.isIntersecting);
     });
     io.observe(el);
     return () => io.disconnect();
   }, []);
+
+  // Retire the chip once the form is on screen.
+  //
+  // It is a route TO the form, so over the form it is redundant — and on a
+  // phone it is worse than redundant. Fixed bottom-right at 375px, the chip
+  // lands on top of the form's own Continue button: measured, the chip ends
+  // at y=802 and Continue starts at y=783, and elementFromPoint in that band
+  // returns the chip. Someone advancing the form taps "Book a free call" and
+  // gets thrown out of it.
+  //
+  // The comment above says a corner chip cannot collide with anything. It
+  // cannot collide with page TEXT, which is what that was about. It very much
+  // can collide with a control.
+  useEffect(() => {
+    const form = document.querySelector("#start");
+    if (!form) return;
+    const io = new IntersectionObserver(([entry]) => setAtForm(entry.isIntersecting), {
+      rootMargin: "0px 0px -10% 0px",
+    });
+    io.observe(form);
+    return () => io.disconnect();
+  }, []);
+
+  const show = pastHero && !atForm;
 
   return (
     <>

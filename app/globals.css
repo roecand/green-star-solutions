@@ -28,7 +28,7 @@
      layout, radius, motion and the type scale. */
 
   --gutter: clamp(1.25rem, 5vw, 4.5rem);
-  --maxw: 1440px;
+  --maxw: 1240px;
   --inset: clamp(10px, 1.4vw, 20px);
 
   /* --- COMMITMENT 1: round, and committed ---
@@ -554,12 +554,30 @@ h4 {
 .hero__band {
   border-radius: var(--radius-lg);
   overflow: hidden;
-  margin-top: clamp(2.5rem, 5vw, 4.5rem);
-  height: clamp(300px, 52vh, 620px);
+  margin-top: clamp(2rem, 4vw, 3.5rem);
+  /* The plate is 2400x1028 and the van spans roughly 18% to 72% of its
+     height, so a shallow FULL-BLEED band could never contain it: at that
+     width `cover` crops only vertically and no object-position can frame
+     around the subject. It cut the van mid-wheel, which is what read as
+     accidental.
+
+     Held to content width instead, and capped rather than fixed. At the
+     1240 column the natural height is ~532 and the cap takes it to 460,
+     which still contains the whole van with sky above and ground below —
+     nothing is severed — while the shared left and right margin stops the
+     photograph from dominating the fold. */
+  aspect-ratio: 2400 / 1028;
+  height: auto;
+  max-height: 460px;
   animation: band-in 1.3s var(--ease) 0.5s both;
 }
 .hero__band .slot {
   height: 100%;
+}
+/* Only bites when the height cap engages, and at 38% it keeps the van clear
+   of both edges. */
+.hero__band img {
+  object-position: center 38%;
 }
 @keyframes band-in {
   from {
@@ -595,10 +613,22 @@ html.si-run .hero__band {
 .hero__facts {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: clamp(1rem, 3vw, 3rem);
-  margin-top: clamp(1.6rem, 3vw, 2.4rem);
-  padding-top: 1.3rem;
+  gap: clamp(1.5rem, 3.5vw, 3.5rem);
+  margin-top: clamp(2.5rem, 5vw, 4rem);
+  padding-top: 1.6rem;
   border-top: 1px solid var(--line-strong);
+  /* The slab that follows is a hard colour change and needs air before it.
+     Without this the three statements were pinned between a photograph and a
+     forest block with nothing to breathe into. */
+  padding-bottom: clamp(4rem, 8vw, 7rem);
+}
+
+/* A hairline between the statements. The gap alone left three paragraphs
+   floating in a row with no reason to be read as three separate things, and
+   the hairline is already this system's separator everywhere else. */
+.hero__fact + .hero__fact {
+  border-left: 1px solid var(--line);
+  padding-left: clamp(1.5rem, 3.5vw, 3.5rem);
 }
 .hero__fact {
   font-size: var(--t-s);
@@ -618,7 +648,13 @@ html.si-run .hero__band {
 @media (max-width: 760px) {
   .hero__facts {
     grid-template-columns: 1fr;
-    gap: 0.9rem;
+    gap: 1.4rem;
+    padding-bottom: clamp(3rem, 10vw, 4rem);
+  }
+  /* Stacked, a left rule would read as a quote block. Separate with space. */
+  .hero__fact + .hero__fact {
+    border-left: 0;
+    padding-left: 0;
   }
   .hero__head {
     max-width: none;
