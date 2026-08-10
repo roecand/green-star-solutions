@@ -9,11 +9,27 @@
  *
  * Resolves immediately when there is no intro to wait for: reduced motion, a
  * repeat visit in the same tab, any page that isn't home, or a browser that
- * can't run it. In all of those the element removes itself before hydration.
+ * can't run it.
+ *
+ * "Nothing to wait for" is NOT the same as "the element is gone". It used to
+ * be: the element deleted itself on every one of those paths. It no longer
+ * does -- deleting a node React had server-rendered crashed the next
+ * client-side navigation -- so it stays parented and hidden for the life of
+ * the page, and presence alone would mean this never resolves early. Every
+ * page that skips the intro then waited out the 6s failsafe below with all of
+ * its content still at opacity 0, which reads as a very slow page.
+ *
+ * The signal is the retired marker the element sets the moment it finishes or
+ * bails, which it does during parse and therefore before hydration.
  */
+const introRunning = () => {
+  const el = document.querySelector("signature-intro");
+  return !!el && !el.hasAttribute("data-si-retired");
+};
+
 export function whenIntroDone(): Promise<void> {
   if (typeof document === "undefined") return Promise.resolve();
-  if (!document.querySelector("signature-intro")) return Promise.resolve();
+  if (!introRunning()) return Promise.resolve();
 
   return new Promise<void>((resolve) => {
     let poll = 0;
@@ -28,10 +44,10 @@ export function whenIntroDone(): Promise<void> {
 
     document.addEventListener("si:done", finish);
 
-    // The element can also vanish without ever reporting -- React discarding
-    // a node during hydration, say -- so treat its absence as finished too.
+    // The element can also retire without ever reporting -- a bail condition
+    // reached after this gate was created, say -- so poll the marker too.
     poll = window.setInterval(() => {
-      if (!document.querySelector("signature-intro")) finish();
+      if (!introRunning()) finish();
     }, 150);
 
     // Content must never be held hostage to an optional flourish. If the
