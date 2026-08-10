@@ -1077,7 +1077,13 @@ html.si-run .hero__band {
   align-items: center;
   gap: clamp(1rem, 3vw, 3rem);
   padding: clamp(1.1rem, 2vw, 1.6rem) 0;
-  padding-right: clamp(104px, 11vw, 148px);
+  padding-right: clamp(88px, 7vw, 112px);
+  /* Floor for the thumb. Once the photograph came out of flow the text set the
+     row height, and a row whose description fits on one line is shorter than
+     the thumb — which then crossed the hairlines above and below it. This is
+     the thumb's own height plus clearance, so the circle always sits inside
+     its row no matter how the copy wraps. */
+  min-height: 104px;
   border-top: 1px solid var(--line);
   transition: border-top-color var(--t-mid) var(--ease);
 }
@@ -1114,7 +1120,9 @@ html.si-run .hero__band {
   right: 0;
   top: 50%;
   border-radius: var(--radius-pill);
-  width: clamp(88px, 10vw, 132px);
+  /* Sized against the row, not the viewport. The old 10vw reached 132px on a
+     wide screen, inside a 98px row. */
+  width: clamp(64px, 5.5vw, 80px);
   aspect-ratio: 1;
   overflow: hidden;
   opacity: 0;
@@ -2351,9 +2359,13 @@ html.si-run .hero__band {
 }
 
 /* The slabs must clip, and must not raise the motif above their own copy. */
+/* Flush with the column it lives in. It used to be pulled up to 150px left of
+   its own text, which at 400px wide read as a deliberate bleed off the edge;
+   at 300px it just read as a shape that had slipped out of alignment, sharing
+   an edge with nothing. Aligned to the heading and body copy above it, it is
+   part of the column instead of an accident in it. */
 .eng__motif {
   margin-top: clamp(1.75rem, 3vw, 2.75rem);
-  margin-left: clamp(-150px, -9vw, -60px);
   opacity: 0.55;
   pointer-events: none;
 }
