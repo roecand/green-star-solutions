@@ -28,17 +28,16 @@ export default function PortfolioPage() {
             </h1>
             <p className="lead measure-wide pfhero__lead">
               A great trades website doesn&rsquo;t look like a template, it looks
-              like the business. To prove it, we designed six complete concept
-              websites, each in its own visual language, including two HVAC
-              companies built as completely different brands. Every one is
-              live: click in, scroll around, resize it.
+              like the business. So we built six, each in its own visual
+              language, including two HVAC companies as completely different
+              brands. Every one is live: click in, scroll around, resize it.
             </p>
             <div className="pfhero__disclaimer">
               <span className="pfhero__disclaimer-tag">Concept website</span>
               <p>
-                Each project below is a <strong>concept for a fictional
-                business</strong>, built by Green Star Solutions to demonstrate
-                design range. None represent real clients.
+                Each project is a <strong>concept for a fictional
+                business</strong>, built to demonstrate design range. None are
+                real clients.
               </p>
             </div>
           </div>
@@ -67,7 +66,7 @@ export default function PortfolioPage() {
             </h2>
             <p className="lead pfclose__sub measure-wide">
               This is the level of design your customers see before they ever
-              call you. Let&rsquo;s build the real thing, for your company.
+              call. Let&rsquo;s build the real thing for your company.
             </p>
             <Link href="/#start" className="btn btn--light">
               Book a Free Strategy Call

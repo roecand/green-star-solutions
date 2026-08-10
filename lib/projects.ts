@@ -47,25 +47,25 @@ export const projects: Project[] = [
     url: "/concepts/summit-climate/index.html",
     accent: "#175ee4",
     overview: [
-      "Summit Climate is a concept for a high-end heating and cooling company in Las Vegas: the contractor a homeowner calls when the house is architect-designed and the budget says 'do it properly.' Most HVAC sites shout urgency; this one projects calm competence, because at the top of the market, composure is the sales pitch.",
-      "White space, a single alpine-blue accent, grotesk type, and mono coordinates ('36.17° N · elev. 2,001 ft') give it the register of a premium product launch, not a service directory. Heat pumps are presented like flagship hardware, with spec grids and 19-decibel whisper claims, and membership and financing are packaged with the same polish.",
+      "A concept for a high-end Las Vegas HVAC company — the contractor you call when the house is architect-designed. Most HVAC sites shout urgency; this one projects calm, because at the top of the market composure is the sales pitch.",
+      "White space, one alpine-blue accent, grotesk type and mono coordinates give it the register of a product launch rather than a service directory. Heat pumps are staged like flagship hardware, with spec grids and 19-decibel whisper claims.",
     ],
     designGoals: [
       {
         title: "Sell composure, not urgency",
-        body: "Emergency service exists (there's a 24/7 bar), but the brand leads with design consultations and engineering. The customer who spends $30k on a system buys from the company that doesn't look desperate.",
+        body: "The brand leads with consultations and engineering, not emergencies. Nobody spending $30k buys from a company that looks desperate.",
       },
       {
         title: "Present equipment like a flagship product",
-        body: "The heat pump gets a dark 'product page' treatment with a spec grid (22 SEER2, 19 dB) borrowed from consumer-electronics launches. Specs signal engineering; engineering justifies price.",
+        body: "A dark product-page treatment and a spec grid (22 SEER2, 19 dB). Specs signal engineering; engineering justifies price.",
       },
       {
         title: "Make the premium tier the default",
-        body: "Summit Care membership and $0-down financing are designed like subscription cards, normalizing the high-end path and smoothing a five-figure decision into a monthly number.",
+        body: "Summit Care membership and $0-down financing are designed like subscription cards, smoothing a five-figure decision into a monthly number.",
       },
       {
         title: "Let restraint do the pricing",
-        body: "One accent color, generous whitespace, mono microlabels. Nothing shouts, so everything reads expensive: the same trick luxury architecture firms use.",
+        body: "One accent color, generous whitespace, mono microlabels. Nothing shouts, so everything reads expensive.",
       },
     ],
     features: [
@@ -79,10 +79,10 @@ export const projects: Project[] = [
       "Trust strip: 4.9 rating, factory authorizations, 12-year guarantee",
     ],
     problem: {
-      lead: "In luxury home services, the website is the first walkthrough: the company that looks like a premium product gets the premium install.",
+      lead: "The website is the first walkthrough. The company that looks like a premium product gets the premium install.",
       body: [
-        "High-end homeowners don't shop HVAC on price; they shop on trust and taste. But nearly every HVAC site in a metro looks the same: red 'CALL NOW' banners, coupon pop-ups, clip-art snowflakes. A company that actually does $30,000 installs has no way to look like it.",
-        "This concept gives the top of the market something to recognize. The calm layout, product-grade equipment presentation, and membership packaging tell an affluent homeowner 'this is the company your architect would pick': which moves the conversation from 'how much?' to 'when can you start?'",
+        "High-end homeowners shop on trust and taste, not price. But every HVAC site in the metro looks identical: CALL NOW banners, coupon pop-ups, clip-art snowflakes. A company doing $30,000 installs has no way to look like it.",
+        "This concept gives that buyer something to recognize. Calm layout, product-grade equipment, packaged membership: it reads like the company your architect would pick, which moves the conversation from 'how much?' to 'when can you start?'",
       ],
     },
     palette: [
@@ -122,25 +122,25 @@ export const projects: Project[] = [
     url: "/concepts/silver-state-hvac/index.html",
     accent: "#21a7d6",
     overview: [
-      "Silver State is a concept for a high-volume premium HVAC company in Las Vegas, and a deliberate counterpoint to the Summit Climate concept. Same industry, same city, opposite brief: where Summit whispers to the luxury buyer, Silver State moves fast for the homeowner staring at a 108° forecast with a dead AC.",
-      "A dark, kinetic interface (animated thermostat dial, drifting heat-and-cool glows, count-up stat band) makes the brand feel like the cavalry arriving. Warm amber means heat and urgency, cool cyan means relief and action, and every scroll ends in a booking path.",
+      "A high-volume premium HVAC company, and a deliberate counterpoint to Summit Climate. Same trade, same city, opposite brief: where Summit whispers to the luxury buyer, Silver State moves fast for the homeowner staring at a 108° forecast with a dead AC.",
+      "A dark, kinetic interface — animated thermostat dial, drifting glows, count-up stats — makes the brand feel like the cavalry arriving, and every scroll ends in a booking path.",
     ],
     designGoals: [
       {
         title: "Dramatize the problem in one glance",
-        body: "The hero's '108° out there. Perfect in here.' pairs an animated thermostat dial with outside/inside temperature chips: the entire value proposition rendered before a word of body copy is read.",
+        body: "'108° out there. Perfect in here.' — an animated dial and outside/inside chips carry the whole value proposition before a word of body copy.",
       },
       {
         title: "Engineer every section toward booking",
-        body: "Same-day service links, financing, maintenance plans, and a chip-based booking widget mean a visitor is never more than one viewport away from starting an appointment.",
+        body: "Same-day links, financing, maintenance plans and a chip-based booking widget keep a visitor one viewport from starting an appointment.",
       },
       {
         title: "Split the palette by physics",
-        body: "Amber is heat, urgency, and money; cyan is cool, relief, and action. The two-tone system keeps a fast, dense page feeling coherent instead of loud.",
+        body: "Amber is heat and money; cyan is relief and action. Two tones keep a fast, dense page coherent instead of loud.",
       },
       {
         title: "Prove reliability with numbers in motion",
-        body: "Count-up stats, a Google review badge, neighborhood-anchored testimonials, and a pinned service-area map make 'we show up fast, everywhere' feel measured rather than claimed.",
+        body: "Count-up stats, a Google badge, neighborhood testimonials and a pinned service-area map make 'we show up fast' measured rather than claimed.",
       },
     ],
     features: [
@@ -154,10 +154,10 @@ export const projects: Project[] = [
       "Chip-based booking widget with confirmation state",
     ],
     problem: {
-      lead: "When the AC dies in a Vegas July, the job goes to the company that looks fastest and most alive: within seconds of the page loading.",
+      lead: "When the AC dies in a Vegas July, the job goes to whoever looks fastest within seconds of the page loading.",
       body: [
-        "Emergency-adjacent HVAC is won on momentum. Most competitors greet a sweating homeowner with a static stock photo and a contact form that feels like paperwork. Every extra second of doubt sends the visitor back to the search results.",
-        "This concept converts urgency into motion. The animated dial mirrors exactly what the visitor is feeling, the stat band and reviews de-risk the call, and the booking widget turns 'I should deal with this' into a tapped-out appointment. Paired with the Summit concept, it also proves a point: one trade, two different companies, two completely different designs.",
+        "Emergency-adjacent HVAC is won on momentum. Most competitors greet a sweating homeowner with a stock photo and a form that feels like paperwork, and every second of doubt sends them back to the search results.",
+        "This concept converts urgency into motion. The dial mirrors what the visitor feels, stats and reviews de-risk the call, and the widget turns 'I should deal with this' into a booked appointment. Paired with Summit: one trade, two completely different designs.",
       ],
     },
     palette: [
@@ -197,25 +197,25 @@ export const projects: Project[] = [
     url: "/concepts/rio-verde-plumbing/index.html",
     accent: "#ff5c1a",
     overview: [
-      "Rio Verde is a concept for a 24/7 emergency plumbing company in Las Vegas. When someone lands on a plumber's website, there's a decent chance water is actively running across their floor: so the entire design is built around urgency and trust, in that order.",
-      "The visual language borrows from the job site itself: safety-orange against near-black, hazard-stripe dividers, condensed industrial type. It looks like a crew that shows up with the right truck, because for a homeowner in a panic, looking capable is half the sale.",
+      "A concept for a 24/7 emergency plumbing company. When someone lands on a plumber's site there's a good chance water is running across their floor, so the design is built around urgency and trust, in that order.",
+      "The visual language comes off the job site: safety orange on near-black, hazard-stripe dividers, condensed industrial type. For a homeowner in a panic, looking capable is half the sale.",
     ],
     designGoals: [
       {
         title: "Make the phone number unavoidable",
-        body: "The number appears in the top bar, the sticky nav, the hero, the hours card, and the closing section: always tappable, always labeled 24/7. A visitor should never scroll to find it.",
+        body: "The number sits in the top bar, sticky nav, hero, hours card and closing section — always tappable, always labeled 24/7.",
       },
       {
         title: "Look like the crew, not the brochure",
-        body: "Safety orange, hazard stripes, and heavy condensed type signal blue-collar competence. No stock handshakes, no gradient fluff: the aesthetic is the trust signal.",
+        body: "Safety orange, hazard stripes and condensed type signal blue-collar competence. No stock handshakes: the aesthetic is the trust signal.",
       },
       {
         title: "Answer panic questions in seconds",
-        body: "Do you answer now? (Live-dispatch pulse.) How fast? (2-hour windows.) Will I get ripped off? (Flat-rate promise, late = free.) Each objection gets a visual slot above the fold or one scroll below it.",
+        body: "Do you answer now? (Live-dispatch pulse.) How fast? (2-hour windows.) Will I get ripped off? (Flat rate, late = free.) Every objection answered above the fold.",
       },
       {
         title: "Zero decoration without function",
-        body: "Every element earns its place: proof stats, guarantee band, review cards with neighborhoods, service-area list. Dark theme keeps the orange CTAs at maximum contrast.",
+        body: "Every element earns its place: proof stats, guarantee band, neighborhood reviews, service-area list. The dark theme keeps orange CTAs at maximum contrast.",
       },
     ],
     features: [
@@ -229,10 +229,10 @@ export const projects: Project[] = [
       "Click-to-call CTAs styled for one-thumb mobile use",
     ],
     problem: {
-      lead: "Emergency plumbing is a race: the first company that looks trustworthy and answerable gets the job.",
+      lead: "Emergency plumbing is a race. The first company that looks trustworthy and answerable gets the job.",
       body: [
-        "Most plumbing sites bury the phone number, open with a paragraph about being family-owned since 1987, and make a panicking homeowner hunt for proof that anyone will actually pick up. Every second of hunting is a second closer to the back button and the next Google result.",
-        "This design treats the website like a dispatcher. It answers the three panic questions immediately, keeps a call button under the thumb at all times, and uses industrial styling to signal 'real crew, real trucks': converting high-intent emergency traffic before a competitor can.",
+        "Most plumbing sites bury the number, open with a paragraph about being family-owned since 1987, and make a panicking homeowner hunt for proof anyone will pick up. Every second of hunting is a second closer to the next Google result.",
+        "This design treats the website like a dispatcher: it answers the three panic questions immediately, keeps a call button under the thumb, and signals real crew, real trucks — converting high-intent traffic before a competitor can.",
       ],
     },
     palette: [
@@ -272,25 +272,25 @@ export const projects: Project[] = [
     url: "/concepts/agave-and-stone/index.html",
     accent: "#c26a45",
     overview: [
-      "Agave & Stone is a concept for a high-end desert landscape design-build studio. The client it's built to attract isn't shopping on price: they're choosing a designer they trust with a six-figure backyard. So the site reads like a design journal, not a contractor directory listing.",
-      "Warm cream, sage, and terracotta set an organic tone; a light editorial serif does the talking. Hand-drawn agave line art, an italic manifesto quote, and named garden projects position the studio as an author of spaces: which is exactly what lets it charge design fees instead of bidding against lawn crews.",
+      "A concept for a high-end desert landscape design-build studio. The client isn't shopping on price; they're choosing a designer to trust with a six-figure backyard. So the site reads like a design journal.",
+      "Cream, sage and terracotta, a light editorial serif, hand-drawn agave line art and named garden projects position the studio as an author of spaces — which is what lets it charge design fees instead of bidding against lawn crews.",
     ],
     designGoals: [
       {
         title: "Position as a studio, not a service",
-        body: "Language ('compose', 'steward'), numbered disciplines, and named projects with years (the conventions of an architecture portfolio) reframe landscaping as design work worth a design budget.",
+        body: "Language ('compose', 'steward'), numbered disciplines and named, dated projects borrow architecture-portfolio conventions, reframing landscaping as work worth a design budget.",
       },
       {
         title: "Let whitespace do the pricing",
-        body: "Generous spacing, thin rules, and a restrained palette communicate expense without saying it. Dense, salesy layouts read cheap; this layout reads considered.",
+        body: "Generous spacing, thin rules and a restrained palette communicate expense without saying it. Salesy layouts read cheap; this one reads considered.",
       },
       {
         title: "Sell the desert, don't apologize for it",
-        body: "The copy and palette embrace the Mojave (water-wise pride, native planting, terracotta heat), turning the region's constraint into the studio's signature.",
+        body: "Copy and palette embrace the Mojave — water-wise pride, native planting, terracotta heat — turning the region's constraint into the studio's signature.",
       },
       {
         title: "Qualify leads before they call",
-        body: "A $250 consultation fee stated plainly, 'limited gardens per season' scarcity, and a short intake form filter out tire-kickers so every inquiry is worth a site walk.",
+        body: "A $250 consultation fee, limited gardens per season, and a short intake form filter out tire-kickers, so every inquiry is worth a site walk.",
       },
     ],
     features: [
@@ -306,8 +306,8 @@ export const projects: Project[] = [
     problem: {
       lead: "Premium landscape studios lose high-end clients when their website looks like every $99/month lawn service.",
       body: [
-        "In the trades, design-build landscaping has the widest gap between what the work costs and what the average website communicates. A studio charging $80k for an outdoor kitchen cannot afford a site with clip-art grass and a coupon banner: affluent clients bounce in seconds and call the firm whose site looks like their architect's.",
-        "This concept closes that gap. Editorial typography and portfolio conventions signal taste, the stated consultation fee anchors expectations upward, and the qualification-first form means the studio spends its limited season on serious projects only.",
+        "No trade has a wider gap between what the work costs and what the website communicates. A studio charging $80k for an outdoor kitchen cannot afford clip-art grass and a coupon banner: affluent clients bounce and call the firm whose site looks like their architect's.",
+        "This concept closes the gap. Editorial type and portfolio conventions signal taste, the stated fee anchors expectations upward, and the qualifying form keeps a limited season on serious projects only.",
       ],
     },
     palette: [
@@ -347,25 +347,25 @@ export const projects: Project[] = [
     url: "/concepts/golden-hour-bakehouse/index.html",
     accent: "#d23c2e",
     overview: [
-      "Golden Hour is a concept for a small-batch neighborhood bakery: the non-trades entry in this set, built to show range beyond service businesses. Where the plumbing concept sells urgency and the landscape concept sells taste, this one sells affection: the site's job is to make you want to be a regular.",
-      "Butter yellow, cherry red, and espresso brown; a chunky retro serif with handwritten asides; scalloped dividers and a rotating sun mark. Every menu item is written like the bakers actually talk ('our starter Dolly is eight years old'), because in hospitality, personality is the product.",
+      "A small-batch neighborhood bakery, and the non-trades entry in this set. Where the plumbing concept sells urgency and the landscape concept sells taste, this one sells affection: it should make you want to be a regular.",
+      "Butter yellow, cherry red, espresso brown; a chunky retro serif with handwritten asides. Every item is written like the bakers talk ('our starter Dolly is eight years old'), because in hospitality personality is the product.",
     ],
     designGoals: [
       {
         title: "Bottle the smell of the place",
-        body: "Warm bakery tones, rounded corners, offset 'sticker' shadows, and handwritten script asides recreate the feeling of the counter: so the site markets the experience, not just the menu.",
+        body: "Warm tones, rounded corners, offset sticker shadows and handwritten asides recreate the counter, so the site markets the experience rather than the menu.",
       },
       {
         title: "Turn scarcity into a habit",
-        body: "'Sells out by 9', 'Saturdays only', 'gone by noon': real small-bakery constraints become the marketing. Scarcity copy trains customers to come early and come often.",
+        body: "'Sells out by 9', 'Saturdays only', 'gone by noon' — real constraints become the marketing, training customers to come early and come often.",
       },
       {
         title: "Give every item a voice",
-        body: "Menu cards read like the bakers wrote them, with prices and honest notes. Personality in microcopy is what separates a beloved neighborhood spot from a mall kiosk.",
+        body: "Menu cards read like the bakers wrote them, prices and honest notes included. Microcopy separates a neighborhood favorite from a mall kiosk.",
       },
       {
         title: "Route regulars to order-ahead",
-        body: "The highest-value customer is the weekly whole-loaf order. Order-ahead gets its own card, its own CTA, and a clear cutoff time: turning foot traffic into recurring revenue.",
+        body: "The weekly whole-loaf order is the highest-value customer, so order-ahead gets its own card, CTA and cutoff time.",
       },
     ],
     features: [
@@ -379,10 +379,10 @@ export const projects: Project[] = [
       "Hours, location, and order-ahead cards with sell-out honesty",
     ],
     problem: {
-      lead: "Small bakeries sell out of product but stay invisible online: losing the pre-orders and regulars that smooth out revenue.",
+      lead: "Small bakeries sell out of product but stay invisible online, losing the pre-orders and regulars that smooth revenue.",
       body: [
-        "Most neighborhood bakeries run on an outdated Facebook page and a Google listing with wrong hours. Customers show up after the case is empty, get frustrated, and don't come back: while the bakery's actual superpower (things sell out because they're that good) goes unmarketed.",
-        "This concept flips sell-outs into the brand. Scarcity is stated proudly, hours are unmissable, and the order-ahead path captures demand the display case can't hold. The personality-heavy design also gives the bakery a social-media-ready identity: the site, the case, and the Instagram all speak the same visual language.",
+        "Most neighborhood bakeries run on an outdated Facebook page and a Google listing with wrong hours. Customers arrive after the case is empty and don't come back, while the bakery's actual superpower — things sell out because they're that good — goes unmarketed.",
+        "This concept flips sell-outs into the brand. Scarcity is stated proudly, hours are unmissable, and order-ahead captures demand the case can't hold. The identity is social-ready too: the site, the case and the Instagram all speak the same language.",
       ],
     },
     palette: [
@@ -422,25 +422,25 @@ export const projects: Project[] = [
     url: "/concepts/caprock-roofing/index.html",
     accent: "#1450e0",
     overview: [
-      "Caprock is a concept for a residential and commercial roofing company in Las Vegas. Roofing is one of the lowest-trust purchases a homeowner ever makes: storm-chasers, vague bids, and disappearing warranties have trained people to expect the worst. So this design's entire job is to look like the opposite of that.",
-      "The visual language is borrowed from engineering documents: a blueprint grid, cobalt-on-white precision, monospaced spec labels, and an interactive seven-layer roof diagram. A sample spec report sits right in the hero: because the company that shows its paperwork first wins the trust war before price is even discussed.",
+      "A concept for a residential and commercial roofing company. Roofing is one of the lowest-trust purchases a homeowner makes: storm-chasers, vague bids and disappearing warranties have trained people to expect the worst. This design's job is to look like the opposite.",
+      "The visual language is borrowed from engineering documents: blueprint grid, cobalt-on-white precision, monospaced labels, a seven-layer roof diagram. A sample spec report sits in the hero, because whoever shows their paperwork first wins before price comes up.",
     ],
     designGoals: [
       {
         title: "Look like engineers, not salesmen",
-        body: "Space Grotesk headlines, IBM Plex Mono labels, a drafting-grid hero background, and numbered sections (S.01, L.07) frame roofing as a technical discipline: the visual opposite of the door-knocker aesthetic.",
+        body: "Space Grotesk headlines, Plex Mono labels, a drafting grid and numbered sections (S.01, L.07) frame roofing as a technical discipline — the opposite of the door-knocker.",
       },
       {
         title: "Lead with documentation",
-        body: "A sample spec report is the hero image. Drone inspections, photo records, and written fixed-price specs are the differentiators, so they're the first thing a visitor sees: not a stock photo of shingles.",
+        body: "A sample spec report is the hero image. Drone inspections, photo records and fixed-price written specs are the differentiators, so they lead.",
       },
       {
         title: "Neutralize the storm-chaser stigma",
-        body: "The copy addresses the elephant directly: 'honestly, not opportunistically', a review about telling a customer half the damage didn't need fixing. Naming the industry's bad behavior is the fastest way to signal you're not it.",
+        body: "'Honestly, not opportunistically', and a review about telling a customer half the damage didn't need fixing. Naming the industry's bad behavior is the fastest way to signal you're not it.",
       },
       {
         title: "Make the free inspection irresistible",
-        body: "The inspection offer is $0, obligation-free, and yields a deliverable (drone photo report) the homeowner keeps either way. The form asks one qualifying question and promises a callback within the hour.",
+        body: "The inspection is $0 and yields a drone photo report the homeowner keeps either way. One qualifying question, callback within the hour.",
       },
     ],
     features: [
@@ -457,8 +457,8 @@ export const projects: Project[] = [
     problem: {
       lead: "Roofing is a five-figure purchase in an industry famous for door-knockers: trust, not price, decides who gets the job.",
       body: [
-        "After every monsoon, Las Vegas homeowners are flooded with knocks, flyers, and wildly divergent bids with no explanation. Most roofing websites make it worse: no prices, no process, no proof: just a phone number and stock photos. The homeowner can't tell the 30-year company from the guy who arrived after the storm.",
-        "This design sells verifiability. Spec documents, layer diagrams, photo documentation, and a warranty a manufacturer backs all say the same thing: everything we do is written down and checkable. For a low-trust industry, a site that looks like an engineering firm is a competitive weapon: it converts the skeptical majority the door-knockers scared off.",
+        "After every monsoon, homeowners are flooded with knocks, flyers and wildly divergent bids. Most roofing websites make it worse — no prices, no process, no proof, just a number and stock photos. The homeowner can't tell the 30-year company from the guy who arrived after the storm.",
+        "This design sells verifiability. Spec documents, layer diagrams, photo records and a manufacturer-backed warranty all say the same thing: everything we do is written down and checkable. In a low-trust industry that converts the skeptical majority the door-knockers scared off.",
       ],
     },
     palette: [
