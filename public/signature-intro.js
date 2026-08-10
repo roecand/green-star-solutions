@@ -144,6 +144,29 @@
       var self = this;
       var A = function (n) { return self.getAttribute(n); };
 
+      // --- retiring the element ----------------------------
+      // Hide, never remove.
+      //
+      // This tag is usually authored inside a framework's own markup -- in
+      // React/Next it is server-rendered as a child of <body> -- and that
+      // framework keeps a live reference to the node in its virtual tree.
+      // Calling self.remove() deletes a node it still believes it owns, and
+      // the next client-side navigation commits insertBefore/removeChild
+      // against it, throws "NotFoundError: ... is not a child of this node",
+      // and takes the whole app down with it. Removing during parse (the
+      // bail path) breaks hydration the same way.
+      //
+      // display:none is equivalent for the visitor -- out of layout, paint,
+      // hit-testing and the accessibility tree, and it halts the animations --
+      // while leaving the DOM exactly the shape every other library thinks it
+      // is. Inline style, so it beats the :host rule in the shadow sheet.
+      var retire = function () {
+        self.setAttribute('aria-hidden', 'true');
+        self.setAttribute('data-si-retired', '');
+        self.style.display = 'none';
+        if (self.shadowRoot) self.shadowRoot.textContent = '';
+      };
+
       // --- bail conditions ---------------------------------
       // Every one of these runs BEFORE anything is covered, so a bail
       // can never strand a blank page.
@@ -154,7 +177,7 @@
       var force = /[?&]intro(&|=|$)/.test(location.search);
       var skip = function (why) {
         if (force) console.warn('[signature-intro] skipped: ' + why);
-        self.remove();
+        retire();
         return true;
       };
 
@@ -272,15 +295,21 @@
       this.setAttribute('aria-hidden', 'true');
       try { if (once) sessionStorage.setItem(key, '1'); } catch (e) {}
 
+      // Guarded because the safety net below calls done() a second time when
+      // the normal teardown already fired -- clearTimeout on an elapsed timer
+      // does nothing. Without this, consumers get two si:done events.
+      var finished = false;
       var done = function () {
+        if (finished) return;
+        finished = true;
         htmlEl.style.overflow = prevOverflow;
         htmlEl.classList.remove('si-run');
         var ls = document.getElementById(LIFT_STYLE_ID);
         if (ls) ls.remove();
-        // Dispatch BEFORE removing: a detached node can't bubble, and
-        // listeners on document are the useful way to consume this.
+        // Dispatch BEFORE retiring, so listeners that read the element still
+        // see it in its finished state.
         self.dispatchEvent(new CustomEvent('si:done', { bubbles: true }));
-        self.remove();
+        retire();
       };
 
       var t = setTimeout(done, teardown);
