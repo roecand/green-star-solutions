@@ -122,8 +122,13 @@ img {
   padding-inline: var(--gutter);
 }
 
+/* Section rhythm is set on the SEAM, not the section. Every value here is
+   doubled in practice, because two stacked sections each contribute their own
+   padding: 11rem read as 22rem of blank between the last line of one section
+   and the first of the next, which is a scroll through nothing. 6rem gives a
+   192px seam at full width — still a clear break, no longer a void. */
 .section {
-  padding-block: clamp(5rem, 11vw, 11rem);
+  padding-block: clamp(3.25rem, 6vw, 6rem);
 }
 
 .rule {
@@ -619,8 +624,10 @@ html.si-run .hero__band {
   border-top: 1px solid var(--line-strong);
   /* The slab that follows is a hard colour change and needs air before it.
      Without this the three statements were pinned between a photograph and a
-     forest block with nothing to breathe into. */
-  padding-bottom: clamp(4rem, 8vw, 7rem);
+     forest block with nothing to breathe into. Less than it was: the forest
+     block now brings 6rem of its own, and the two together were a full
+     empty screen. */
+  padding-bottom: clamp(2.5rem, 4vw, 3.5rem);
 }
 
 /* A hairline between the statements. The gap alone left three paragraphs
@@ -673,7 +680,7 @@ html.si-run .hero__band {
   justify-content: space-between;
   gap: 2rem;
   flex-wrap: wrap;
-  margin-bottom: clamp(2rem, 4vw, 3.5rem);
+  margin-bottom: clamp(1.6rem, 2.6vw, 2.4rem);
 }
 .work__title {
   max-width: 16ch;
@@ -936,12 +943,16 @@ html.si-run .hero__band {
 .method__grid {
   display: grid;
   grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
-  gap: clamp(2rem, 6vw, 6rem);
+  gap: clamp(2rem, 4.5vw, 4.5rem);
   align-items: start;
 }
+/* Pinned lower than the nav clears it. The heading is a third the height of
+   the steps beside it, so pinning it at the top left the bottom two-thirds of
+   the left column empty for the whole scroll. Sitting it near the optical
+   middle puts the void above and below rather than all in one block. */
 .method__sticky {
   position: sticky;
-  top: clamp(2rem, 8vh, 6rem);
+  top: clamp(2rem, 22vh, 11rem);
 }
 .method__title {
   max-width: 12ch;
@@ -959,7 +970,7 @@ html.si-run .hero__band {
   padding: 0;
 }
 .mstep {
-  padding: clamp(1.6rem, 3vw, 2.6rem) 0;
+  padding: clamp(1.4rem, 2.4vw, 2.1rem) 0;
   border-top: 1px solid var(--line);
   transition: border-top-color var(--t-mid) var(--ease);
 }
@@ -1034,7 +1045,7 @@ html.si-run .hero__band {
    headline, and expanded display type makes a 22ch wrapper about six words
    wide. */
 .sec-head {
-  margin-bottom: clamp(2rem, 4vw, 3.5rem);
+  margin-bottom: clamp(1.6rem, 2.6vw, 2.4rem);
 }
 .sec-head h2 {
   max-width: 22ch;
@@ -1044,7 +1055,7 @@ html.si-run .hero__band {
   max-width: 50ch;
 }
 .trades__head {
-  margin-bottom: clamp(2rem, 4vw, 3.5rem);
+  margin-bottom: clamp(1.6rem, 2.6vw, 2.4rem);
 }
 .trades__head h2 {
   max-width: 24ch;
@@ -1054,12 +1065,19 @@ html.si-run .hero__band {
   margin: 0;
   padding: 0;
 }
+/* The thumb is out of flow on purpose. It is invisible until hover, but as a
+   grid track it still claimed its own 115px of height, so every row was sized
+   by a photograph nobody could see: 196px of row for 112px of content, five
+   times over. Absolute keeps the reveal identical and lets the text set the
+   height. The right padding is what the thumb used to reserve. */
 .trade {
+  position: relative;
   display: grid;
-  grid-template-columns: minmax(140px, 0.9fr) minmax(0, 1.6fr) auto;
+  grid-template-columns: minmax(140px, 0.9fr) minmax(0, 1.6fr);
   align-items: center;
   gap: clamp(1rem, 3vw, 3rem);
-  padding: clamp(1.3rem, 2.6vw, 2.1rem) 0;
+  padding: clamp(1.1rem, 2vw, 1.6rem) 0;
+  padding-right: clamp(104px, 11vw, 148px);
   border-top: 1px solid var(--line);
   transition: border-top-color var(--t-mid) var(--ease);
 }
@@ -1092,20 +1110,22 @@ html.si-run .hero__band {
   transform: translateX(0.8rem);
 }
 .trade__thumb {
-  justify-self: end;
+  position: absolute;
+  right: 0;
+  top: 50%;
   border-radius: var(--radius-pill);
   width: clamp(88px, 10vw, 132px);
   aspect-ratio: 1;
   overflow: hidden;
   opacity: 0;
-  transform: scale(0.9);
+  transform: translateY(-50%) scale(0.9);
   transition: opacity var(--t-mid) var(--ease),
     transform var(--t-mid) var(--ease);
 }
 .trade:hover .trade__thumb,
 .trade:focus-within .trade__thumb {
   opacity: 1;
-  transform: none;
+  transform: translateY(-50%);
 }
 /* Same slow media scale the project previews use. Four repeated gestures
    across the page (media scale, hairline darken, row indent, underline wipe)
@@ -1124,20 +1144,21 @@ html.si-run .hero__band {
 }
 @media (max-width: 860px) {
   .trade {
-    grid-template-columns: 1fr auto;
-    gap: 0.4rem 1.4rem;
+    grid-template-columns: 1fr;
+    gap: 0.4rem;
   }
-  .trade__desc {
-    grid-column: 1;
-  }
+  /* No hover on touch, so the photograph is simply always on. It stays out of
+     flow: the stacked name and description are taller than it is here, so it
+     no longer needs a track of its own to sit in. */
   .trade__thumb {
-    grid-row: 1 / 3;
-    grid-column: 2;
     opacity: 1;
-    transform: none;
+    transform: translateY(-50%);
   }
 }
 @media (max-width: 480px) {
+  .trade {
+    padding-right: 0;
+  }
   .trade__thumb {
     display: none;
   }
@@ -1151,7 +1172,7 @@ html.si-run .hero__band {
 .eng__grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr);
-  gap: clamp(2rem, 5vw, 5rem);
+  gap: clamp(2rem, 4vw, 4rem);
   align-items: start;
 }
 .eng__title {
@@ -2331,7 +2352,7 @@ html.si-run .hero__band {
 
 /* The slabs must clip, and must not raise the motif above their own copy. */
 .eng__motif {
-  margin-top: clamp(2.5rem, 5vw, 4rem);
+  margin-top: clamp(1.75rem, 3vw, 2.75rem);
   margin-left: clamp(-150px, -9vw, -60px);
   opacity: 0.55;
   pointer-events: none;

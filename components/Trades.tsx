@@ -13,31 +13,31 @@ const trades = [
     name: "HVAC",
     image: "ind-hvac",
     alt: "An air-conditioning condenser unit beside a stucco wall in warm evening light.",
-    body: "Look like the company that installs the $30k system, and fill the schedule year round instead of only at peak.",
+    body: "Look like the company that installs the $30k system, and fill the schedule year round.",
   },
   {
     name: "Plumbing",
     image: "ind-plumbing",
     alt: "Brass and copper trap pipework under a counter against a dark wall.",
-    body: "Win the panicked 2am search on trust at first glance, then book more of the high-ticket repipes and remodels.",
+    body: "Win the panicked 2am search on first glance, then book the repipes and remodels.",
   },
   {
     name: "Electrical",
     image: "ind-electrical",
     alt: "An open breaker panel with neatly dressed wiring.",
-    body: "Panel upgrades and EV chargers go to whoever reads licensed, exact and safe, and that judgment happens before the first call.",
+    body: "Panel upgrades and EV chargers go to whoever reads licensed, exact and safe.",
   },
   {
     name: "Roofing",
     image: "ind-roofing",
     alt: "A close view of asphalt shingles along a gutter edge in raking light.",
-    body: "Five-figure jobs in a low-trust industry go to whoever looks most established. Be that company before storm season.",
+    body: "Five-figure jobs go to whoever looks most established. Be that company before storm season.",
   },
   {
     name: "Landscaping",
     image: "ind-landscaping",
     alt: "An agave planted in gravel beside a stacked stone wall.",
-    body: "Charge design fees instead of bidding against lawn crews, with a brand that reads like a studio rather than a truck.",
+    body: "Charge design fees instead of bidding against lawn crews. Read like a studio, not a truck.",
   },
 ];
 
@@ -74,8 +74,8 @@ export default function Trades() {
         </ul>
 
         <Reveal className="trades__note" motion="rise">
-          Not on the list? If you sell a service to local homeowners, the same
-          thing is almost certainly true of your market.
+          Not on the list? If you sell to local homeowners, the same is true of
+          your market.
         </Reveal>
       </div>
     </section>

@@ -29,9 +29,8 @@ export default function Work() {
             </h2>
           </div>
           <p className="work__aside">
-            Summit Climate and Silver State are both HVAC, and both are ours.
-            One sells composure, the other sells muscle. A template cannot do
-            that, which is the whole argument.
+            Summit Climate and Silver State are both HVAC. One sells composure,
+            the other sells muscle. A template cannot do that.
           </p>
         </Reveal>
 
@@ -89,9 +88,8 @@ export default function Work() {
             All six concepts
           </Link>
           <p className="work__aside">
-            Every one is a real, live site you can click into. They are concept
-            builds for companies that do not exist, because the design is the
-            portfolio.
+            Every one is a live site you can click into. Concept builds for
+            companies that do not exist, because the design is the portfolio.
           </p>
         </Reveal>
       </div>

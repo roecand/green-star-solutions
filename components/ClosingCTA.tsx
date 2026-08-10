@@ -24,9 +24,8 @@ export default function ClosingCTA() {
             Let&rsquo;s redesign how people see you.
           </h2>
           <p className="lead closing__sub">
-            We audit how your company reads to a homeowner today, and show you
-            exactly what would change. No obligation, and you keep the audit
-            either way.
+            We audit how you read to a homeowner today and show you exactly
+            what would change. No obligation.
           </p>
           <a href="#start" className="btn closing__btn">
             Book a free call

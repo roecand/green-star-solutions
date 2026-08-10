@@ -17,11 +17,11 @@ import Reveal from "./Reveal";
 const rows = [
   {
     name: "Perception audit",
-    desc: "The teardown of how your company reads to a homeowner today: site, brand, reviews, socials. Yours to keep whether or not you hire us.",
+    desc: "The teardown of how you read to a homeowner today. Yours whether or not you hire us.",
   },
   {
     name: "Brand transformation",
-    desc: "The project. Brand identity, website, content and photo direction, social presence, and ad creative built to run.",
+    desc: "The project. Brand identity, website, content and photo direction, socials, and ads built to run.",
   },
   {
     name: "Growth retainer",
@@ -39,15 +39,14 @@ export default function Engagement() {
             Three ways to work with us.
           </h2>
           <p className="eng__body">
-            Every job is scoped to what is actually in front of it, so the
-            number comes after we have looked rather than before. The audit is
-            free either way.
+            Every job is scoped after we look, never before. The audit is free
+            either way.
           </p>
           {/* The one motif on the page. It sits in real empty ground rather
               than behind copy: --gs-paper-soft is already at the AA floor on
               forest, so a volume behind body text fails contrast at any
               opacity. Here nothing overlaps it. */}
-          <Motif shape="warp" size={400} className="eng__motif" />
+          <Motif shape="warp" size={300} className="eng__motif" />
         </Reveal>
 
         <ul className="eng__rows">

@@ -23,8 +23,7 @@ export default function Hero() {
 
         <div className="hero__foot">
           <p className="lead hero__sub">
-            We design what they see in those eight seconds. Then we make sure
-            the call actually gets answered.
+            We design what they see. Then we make sure the call gets answered.
           </p>
           <div className="hero__cta">
             <a className="btn" href="#start">

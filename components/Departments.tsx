@@ -17,7 +17,7 @@ export default function Departments() {
         <Reveal motion="rise" className="sec-head">
           <h2 className="wide t-2xl">You do not have a leads problem.</h2>
           <p className="lead">
-            You have a perception problem and a follow-up problem. There is a
+            You have a perception problem and a follow-up problem. One
             department for each.
           </p>
         </Reveal>
@@ -29,9 +29,9 @@ export default function Departments() {
               Change what a homeowner feels in the first eight seconds.
             </h3>
             <p className="dept__body">
-              Brand, website, content direction, socials and ads, rebuilt so the
-              company reads like the one worth trusting with the $15,000 job.
-              This is the work that raises your prices, not just your traffic.
+              Brand, website, content and ads rebuilt so you read like the
+              company worth the $15,000 job. It raises your prices, not just
+              your traffic.
             </p>
             <ul className="dept__list">
               <li>Brand identity</li>
@@ -62,10 +62,9 @@ export default function Departments() {
               Then make sure every call that comes in gets booked.
             </h3>
             <p className="dept__body">
-              You are about to get more calls, and this is what stops them
-              leaking. Follow-up, missed-call text back, appointment automation,
-              CRM and reviews: every lead contacted in seconds, every job chased
-              to the close.
+              More calls only pay if they get answered. Follow-up, missed-call
+              text back, automation, CRM and reviews chase every lead within
+              seconds.
             </p>
             <ul className="dept__list">
               <li>AI follow-up</li>

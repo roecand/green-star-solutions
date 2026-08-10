@@ -11,18 +11,16 @@ export default function Facts() {
       <div className="hero__facts">
         <p className="hero__fact">
           <b>Two departments</b>
-          Perception rebuilds how the company reads. Conversion makes sure the
-          calls it creates get booked.
+          Perception rebuilds how you read. Conversion books the calls it
+          creates.
         </p>
         <p className="hero__fact">
           <b>Five trades</b>
-          HVAC, plumbing, electrical, roofing and landscaping. Home service
-          only.
+          HVAC, plumbing, electrical, roofing, landscaping.
         </p>
         <p className="hero__fact">
           <b>Las Vegas</b>
-          Local to the valley. Home service only, so the work is built around
-          how your customers actually decide.
+          Local to the valley, and home service only.
         </p>
       </div>
     </section>

@@ -10,19 +10,19 @@ import Reveal from "./Reveal";
 const steps = [
   {
     title: "The perception audit",
-    body: "We tear down how the company reads today: site, brand, reviews, socials. Then we show you what a homeowner actually feels in the eight seconds they spend looking at you.",
+    body: "We tear down how you read today: site, brand, reviews, socials. Then we show you what a homeowner sees before they call.",
   },
   {
     title: "The transformation",
-    body: "Brand, website, content and ads rebuilt in your own voice, so the $15,000 job stops going to whoever happened to look more established.",
+    body: "Brand, website, content and ads rebuilt in your voice, so the $15,000 job stops going to whoever looks more established.",
   },
   {
     title: "The conversion system",
-    body: "Follow-up, missed-call text back and booking automation switch on, so every call the new brand creates gets answered and chased instead of sitting in a voicemail box.",
+    body: "Follow-up, missed-call text back and booking automation switch on, so no new call sits in a voicemail box.",
   },
   {
     title: "Ongoing growth",
-    body: "We sharpen the ads, feed the reviews, and track what is actually booking jobs rather than what is generating clicks, while you are out on the tools.",
+    body: "We sharpen the ads, feed the reviews, and track what books jobs rather than what gets clicks.",
   },
 ];
 
@@ -36,8 +36,8 @@ export default function Method() {
               First we change how you look. Then we make sure it pays.
             </h2>
             <p className="method__note">
-              Four stages. The first one is free, and you keep the findings
-              whether or not you hire us.
+              Four stages. The first is free, and the findings are yours to
+              keep.
             </p>
           </Reveal>
         </div>

@@ -144,8 +144,8 @@ export default function ProjectForm() {
             </h2>
             <p className="lead measure-wide" style={{ marginInline: "auto" }}>
               Thanks, {data.name.split(" ")[0] || "there"}. We&rsquo;ll reach out
-              within one business day to lock in your free strategy call, and
-              come ready with a few ideas for {data.business || "your business"}.
+              within one business day with a few ideas for{" "}
+              {data.business || "your business"}.
             </p>
           </div>
         </div>
@@ -161,9 +161,8 @@ export default function ProjectForm() {
             Let&rsquo;s map out your transformation.
           </h2>
           <p className="lead measure-wide">
-            Four quick questions. On the call we&rsquo;ll show you exactly how
-            your company reads to a homeowner today, and where the jobs are
-            leaking. No obligation, no hard sell.
+            Four quick questions. On the call we&rsquo;ll show you how your
+            company reads to a homeowner today, and where the jobs are leaking.
           </p>
         </div>
 
