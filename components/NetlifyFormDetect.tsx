@@ -20,6 +20,10 @@ export default function NetlifyFormDetect() {
       <textarea name="goal_notes" />
       <input name="current_marketing" />
       <input name="ad_budget" />
+      <input name="credentials" />
+      <input name="license_number" />
+      <input name="proof" />
+      <textarea name="proof_notes" />
       <input name="name" />
       <input name="email" type="email" />
       <input name="phone" />

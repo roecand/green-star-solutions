@@ -31,7 +31,32 @@ const MARKETING = [
 const BUDGETS = ["Under $1k/mo", "$1k-$3k/mo", "$3k-$6k/mo", "$6k+/mo", "Not sure yet"];
 const TIMES = ["Morning", "Afternoon", "Evening", "Anytime"];
 
-const STEPS = ["Business", "Goals", "Marketing", "Contact"];
+// Two different kinds of trust, so they're asked as two lists. Credentials are
+// what the state and the manufacturers say you're allowed to do; proof is what
+// other people have said about you. The first becomes the license bar near the
+// footer, the second becomes the "as seen in" marquee.
+const CREDENTIALS = [
+  "State contractor license",
+  "Bonded & insured",
+  "Manufacturer certified dealer",
+  "Trade certifications",
+  "BBB accredited",
+  "Google Guaranteed / Screened",
+  "Background-checked techs",
+];
+
+const PROOF = [
+  "Featured in local news or press",
+  "Podcast or radio appearance",
+  "Awards or “best of” lists",
+  "Recognizable clients or job sites",
+  "Brand or manufacturer partnerships",
+  "Chamber or trade association member",
+  "Community sponsorships",
+];
+
+const STEPS = ["Business", "Goals", "Marketing", "Credibility", "Contact"];
+const LAST = STEPS.length - 1;
 
 type State = {
   business: string;
@@ -42,6 +67,10 @@ type State = {
   goalNote: string;
   currentMarketing: string;
   adBudget: string;
+  credentials: string[];
+  licenseNumber: string;
+  proof: string[];
+  proofNote: string;
   name: string;
   email: string;
   phone: string;
@@ -57,6 +86,10 @@ const initial: State = {
   goalNote: "",
   currentMarketing: "",
   adBudget: "",
+  credentials: [],
+  licenseNumber: "",
+  proof: [],
+  proofNote: "",
   name: "",
   email: "",
   phone: "",
@@ -72,12 +105,11 @@ export default function ProjectForm() {
   const set = <K extends keyof State>(k: K, v: State[K]) =>
     setData((d) => ({ ...d, [k]: v }));
 
-  const toggleGoal = (g: string) =>
+  // Three multi-select lists share this, keyed by field.
+  const toggle = (k: "goals" | "credentials" | "proof", v: string) =>
     setData((d) => ({
       ...d,
-      goals: d.goals.includes(g)
-        ? d.goals.filter((x) => x !== g)
-        : [...d.goals, g],
+      [k]: d[k].includes(v) ? d[k].filter((x) => x !== v) : [...d[k], v],
     }));
 
   const validEmail = (e: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
@@ -85,7 +117,7 @@ export default function ProjectForm() {
   function validate(s: number): string {
     if (s === 0 && !data.business.trim())
       return "Add your business name to continue.";
-    if (s === 3) {
+    if (s === LAST) {
       if (!data.name.trim()) return "We need a name to know who we're calling.";
       if (!validEmail(data.email)) return "Add a valid email so we can confirm.";
       if (!data.phone.trim()) return "Add a phone number, it's a call, after all.";
@@ -97,7 +129,7 @@ export default function ProjectForm() {
     const err = validate(step);
     if (err) return setError(err);
     setError("");
-    setStep((s) => Math.min(s + 1, STEPS.length - 1));
+    setStep((s) => Math.min(s + 1, LAST));
   }
   function back() {
     setError("");
@@ -105,7 +137,7 @@ export default function ProjectForm() {
   }
 
   async function submit() {
-    const err = validate(3);
+    const err = validate(LAST);
     if (err) return setError(err);
     setStatus("sending");
     setError("");
@@ -120,6 +152,10 @@ export default function ProjectForm() {
     fd.append("goal_notes", data.goalNote);
     fd.append("current_marketing", data.currentMarketing);
     fd.append("ad_budget", data.adBudget);
+    fd.append("credentials", data.credentials.join(", "));
+    fd.append("license_number", data.licenseNumber);
+    fd.append("proof", data.proof.join(", "));
+    fd.append("proof_notes", data.proofNote);
     fd.append("name", data.name);
     fd.append("email", data.email);
     fd.append("phone", data.phone);
@@ -161,7 +197,7 @@ export default function ProjectForm() {
             Let&rsquo;s map out your transformation.
           </h2>
           <p className="lead measure-wide">
-            Four quick questions. On the call we&rsquo;ll show you how your
+            Five quick questions. On the call we&rsquo;ll show you how your
             company reads to a homeowner today, and where the jobs are leaking.
           </p>
         </div>
@@ -186,7 +222,7 @@ export default function ProjectForm() {
           <div className="form__panel">
             {/* STEP 0, business */}
             {step === 0 && (
-              <Fieldset legend="Your business" hint="Step 1 of 4">
+              <Fieldset legend="Your business" hint="Step 1 of 5">
                 <Field label="Business name" required>
                   {/* No autoFocus. The form sits at the bottom of a long
                       page, so focusing it on mount scrolled every visitor
@@ -233,7 +269,7 @@ export default function ProjectForm() {
 
             {/* STEP 1, goals */}
             {step === 1 && (
-              <Fieldset legend="What are you after?" hint="Step 2 of 4">
+              <Fieldset legend="What are you after?" hint="Step 2 of 5">
                 <p className="form__sublabel">Pick anything that fits.</p>
                 <div className="chips">
                   {GOALS.map((g) => (
@@ -241,7 +277,7 @@ export default function ProjectForm() {
                       type="button"
                       key={g}
                       className={`chip ${data.goals.includes(g) ? "is-on" : ""}`}
-                      onClick={() => toggleGoal(g)}
+                      onClick={() => toggle("goals", g)}
                       aria-pressed={data.goals.includes(g)}
                     >
                       {g}
@@ -261,7 +297,7 @@ export default function ProjectForm() {
 
             {/* STEP 2, current marketing */}
             {step === 2 && (
-              <Fieldset legend="Where are you now?" hint="Step 3 of 4">
+              <Fieldset legend="Where are you now?" hint="Step 3 of 5">
                 <p className="form__sublabel">
                   Helps us come to the call with the right plan.
                 </p>
@@ -296,9 +332,75 @@ export default function ProjectForm() {
               </Fieldset>
             )}
 
-            {/* STEP 3, contact */}
+            {/* STEP 3, credentials and proof. Every field here is optional:
+                it's asset-gathering for the build, not qualification, and
+                nobody should lose a call because they can't remember their
+                license number on a phone. */}
             {step === 3 && (
-              <Fieldset legend="Where do we reach you?" hint="Step 4 of 4">
+              <Fieldset legend="What backs you up?" hint="Step 4 of 5">
+                <p className="form__sublabel">
+                  Licenses, certifications, press, partners. This is what we put
+                  in the trust bar and the moving strip near the top of your
+                  site. Skip anything you don&rsquo;t have.
+                </p>
+
+                <p className="form__grouplabel">Licensed &amp; certified</p>
+                <div className="chips">
+                  {CREDENTIALS.map((c) => (
+                    <button
+                      type="button"
+                      key={c}
+                      className={`chip ${
+                        data.credentials.includes(c) ? "is-on" : ""
+                      }`}
+                      onClick={() => toggle("credentials", c)}
+                      aria-pressed={data.credentials.includes(c)}
+                    >
+                      {c}
+                    </button>
+                  ))}
+                </div>
+                <Field
+                  label="License numbers"
+                  hint="the ones you want shown"
+                >
+                  <input
+                    value={data.licenseNumber}
+                    onChange={(e) => set("licenseNumber", e.target.value)}
+                    placeholder="e.g. NV #0084213, EPA 608 Universal"
+                  />
+                </Field>
+
+                <p className="form__grouplabel form__grouplabel--split">
+                  Seen, said, or worked with
+                </p>
+                <div className="chips">
+                  {PROOF.map((p) => (
+                    <button
+                      type="button"
+                      key={p}
+                      className={`chip ${data.proof.includes(p) ? "is-on" : ""}`}
+                      onClick={() => toggle("proof", p)}
+                      aria-pressed={data.proof.includes(p)}
+                    >
+                      {p}
+                    </button>
+                  ))}
+                </div>
+                <Field label="Name them" hint="optional, links are even better">
+                  <textarea
+                    rows={3}
+                    value={data.proofNote}
+                    onChange={(e) => set("proofNote", e.target.value)}
+                    placeholder="Review-Journal 2023, Trane Comfort Specialist, KLAS Ch. 8, Wynn Resorts…"
+                  />
+                </Field>
+              </Fieldset>
+            )}
+
+            {/* STEP 4, contact */}
+            {step === 4 && (
+              <Fieldset legend="Where do we reach you?" hint="Step 5 of 5">
                 <div className="grid2">
                   <Field label="Your name" required>
                     <input
@@ -443,6 +545,19 @@ export default function ProjectForm() {
         .form__sublabel {
           color: var(--ink-soft);
           margin: -0.4rem 0 1.4rem;
+        }
+        /* Two chip groups in one step need a divider, or the second list
+           reads as an overflow of the first. */
+        .form__grouplabel {
+          font-size: var(--t-s);
+          font-weight: 500;
+          color: var(--ink);
+          margin: 0 0 0.9rem;
+        }
+        .form__grouplabel--split {
+          border-top: 1px solid var(--line);
+          padding-top: 1.6rem;
+          margin-top: 0.4rem;
         }
         .grid2 {
           display: grid;
