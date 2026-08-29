@@ -28,7 +28,7 @@ export default function PortfolioPage() {
             </h1>
             <p className="lead measure-wide pfhero__lead">
               A great trades website doesn&rsquo;t look like a template, it looks
-              like the business. So we built six, each in its own visual
+              like the business. So we built seven, each in its own visual
               language, including two HVAC companies as completely different
               brands. Every one is live: click in, scroll around, resize it.
             </p>

@@ -487,6 +487,81 @@ export const projects: Project[] = [
       "Free drone report reframes the sales call",
     ],
   },
+  {
+    slug: "cherry-pit",
+    name: "Cherry Pit Nail Studio",
+    industry: "Nail studio",
+    sector: "Beauty",
+    styleLabel: "Editorial minimal \u00b7 Weight-led type \u00b7 Colour only in the work",
+    tagline:
+      "A one-room nail studio that prices its work in public. Every surface on the site is a pale neutral, so the only saturated colour anywhere is polish, in a photograph, on somebody's hands.",
+    url: "/concepts/cherry-pit/index.html",
+    accent: "#d4283c",
+    overview: [
+      "A concept for a nail studio on South Main in Las Vegas \u2014 the kind of room that takes four clients a day and paints all ten nails by hand. The category's websites are a wall of pink gradients, orchid stock photography and the word 'luxury', and almost none of them show you what the artist actually makes.",
+      "So this one inverts the whole thing. A warm bone ground, a single variable grotesk carrying every level of hierarchy through weight alone, and photographs at roughly a third of the page. The only saturated colour on the entire site is the polish in the pictures, which means a good set is the only thing on the page that can catch your eye.",
+    ],
+    designGoals: [
+      {
+        title: "Let the work be the only colour",
+        body: "Every ground, rule and letterform is a pale neutral. Nothing competes with the photographs, so the sets read as the product instead of as decoration around a booking button.",
+      },
+      {
+        title: "Put the price in public, including the hidden parts",
+        body: "Removal, repairs and the length surcharge are the three line items that turn a $70 quote into a $130 bill elsewhere. They are on the menu with everything else, which is the whole trust argument.",
+      },
+      {
+        title: "Give the searched-for things real pages",
+        body: "Prices and location are what people search by name, so they get their own URLs, titles and descriptions rather than being anchors that scroll the homepage.",
+      },
+      {
+        title: "Sell the hours, not the word luxury",
+        body: "The owner explains that she does four sets a day where her mother did fourteen, and that the difference is time to paint. That arithmetic justifies the price better than any adjective.",
+      },
+    ],
+    features: [
+      "Painted intro: a polish brush lays a streak across the screen, then the colour opens out of it to reveal the page",
+      "Four real pages \u2014 home, work, prices, visit \u2014 each with its own title and shareable URL",
+      "Portfolio grid captioned with what each set cost and what it had to survive",
+      "Price list carrying removal, repairs and length surcharges rather than hiding them",
+      "Owner's story told first-person, in her voice, not in brochure register",
+      "Standing Book button and phone number in the header of every page",
+      "One variable typeface at three weights; no second family anywhere",
+      "Intro plays once per session and is skipped entirely for reduced-motion",
+    ],
+    problem: {
+      lead: "A nail artist's work is already visual and already online. The website is the one place that could explain why a set costs $95, and it is the one place nobody uses to do it.",
+      body: [
+        "Instagram sells the picture; the website has to sell the price. Most studio sites answer that question with a gradient and a booking form, which reads as the same $45 set every strip-mall shop offers. The craft, the fitting, the two hours of prep \u2014 none of it survives to the page.",
+        "This concept makes the argument instead. Prices sit on their own page with the usually-hidden costs included, the appointment is broken down into where the two hours actually go, and the owner states the arithmetic behind her rate in plain language. The photographs then carry the only colour on the site, so the work is what you remember.",
+      ],
+    },
+    palette: [
+      { name: "Bone", hex: "#f7f4ef" },
+      { name: "Cherry", hex: "#d4283c", onDark: true },
+      { name: "Ink", hex: "#1a1613", onDark: true },
+      { name: "Line", hex: "#e7e0d6" },
+    ],
+    fonts: [
+      { role: "Display", name: "Familjen Grotesk 700", sample: "Ten small paintings, every three weeks." },
+      { role: "Body", name: "Familjen Grotesk 400", sample: "Custom nail art in one room on South Main." },
+      { role: "Numerals", name: "Familjen Grotesk 600", sample: "$60 \u00b7 $78 \u00b7 $95 \u00b7 2 HR 10" },
+    ],
+    before: [
+      "Pink-to-cream gradients and orchid stock photography",
+      "The word 'luxury' somewhere above the fold",
+      "Pricing withheld behind 'contact for a quote'",
+      "Removal and repair costs discovered at the till",
+      "A nav where every link only scrolls the same page",
+    ],
+    after: [
+      "One warm neutral ground; colour only in the work",
+      "Every price stated, including removal and repairs",
+      "Prices and location on their own shareable URLs",
+      "The owner's case for her rate, in her own words",
+      "A brush-stroke intro that opens into the site",
+    ],
+  },
 ];
 
 export function getProject(slug: string): Project | undefined {

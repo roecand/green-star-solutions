@@ -1,0 +1,257 @@
+/* ------------------------------------------------------------------
+   Cherry Pit Nail Studio — v3
+   One variable grotesk worked across weight. Warm bone ground, soft
+   rectangles, capsule actions. The only saturated colour on the site
+   is polish, in a photograph.
+   ------------------------------------------------------------------ */
+
+:root{
+  --bone:  #F7F4EF;
+  --cream: #FFFDFA;
+  --ink:   #1A1613;
+  --soft:  #6B635B;
+  --line:  #E7E0D6;
+
+  --r: 20px;
+  --e: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --t: 260ms;
+
+  --pad: clamp(1.25rem, 5vw, 5.5rem);
+  --bar: 72px;
+}
+
+*,*::before,*::after{ box-sizing:border-box; }
+html{ -webkit-text-size-adjust:100%; scroll-behavior:smooth; }
+@media (prefers-reduced-motion:reduce){ html{ scroll-behavior:auto; } }
+
+body{
+  margin:0;
+  background:var(--bone);
+  color:var(--ink);
+  font-family:"Familjen Grotesk", "Helvetica Neue", sans-serif;
+  font-size:clamp(1rem, 0.95rem + 0.3vw, 1.15rem);
+  font-weight:400;
+  line-height:1.55;
+  letter-spacing:-0.006em;
+  -webkit-font-smoothing:antialiased;
+}
+
+img{ display:block; width:100%; height:auto; border:0; background:var(--line); }
+a{ color:inherit; text-decoration:none; }
+h1,h2,h3,p,figure,ul,ol,dl,dd,blockquote{ margin:0; }
+ul,ol{ list-style:none; padding:0; }
+
+/* ---- weight does the hierarchy now ---- */
+.xl{ font-size:clamp(2.9rem, 8.4vw, 7.6rem); font-weight:700; line-height:0.92; letter-spacing:-0.045em; }
+.lg{ font-size:clamp(2rem, 4.6vw, 3.9rem); font-weight:700; line-height:1; letter-spacing:-0.035em; }
+.md{ font-size:clamp(1.15rem, 1.6vw, 1.45rem); font-weight:600; line-height:1.25; letter-spacing:-0.018em; }
+.lead{ font-size:clamp(1.1rem, 1rem + 0.55vw, 1.45rem); font-weight:400; line-height:1.45; letter-spacing:-0.014em; color:var(--soft); }
+.sm{ font-size:0.94rem; color:var(--soft); }
+.measure{ max-width:36rem; }
+
+section{ padding-block:clamp(3.6rem, 8vw, 9rem); scroll-margin-top:calc(var(--bar) + 8px); }
+.band{ padding-inline:var(--pad); }
+.wrap{ max-width:88rem; margin-inline:auto; }
+
+/* ---- nav: five things, not nine ---- */
+.nav{ position:sticky; top:0; z-index:30; background:var(--bone); }
+.nav-in{ max-width:88rem; margin-inline:auto; min-height:var(--bar); padding-inline:var(--pad);
+         display:flex; align-items:center; gap:1.5rem; }
+.brand{ font-weight:700; font-size:1.18rem; letter-spacing:-0.03em; transition:color var(--t) var(--e); }
+.brand:hover{ color:var(--soft); }
+.nav-links{ margin-left:auto; display:flex; align-items:center; gap:clamp(1.2rem,2.4vw,2.4rem); }
+.nav-links a:not(.btn){ font-size:1rem; font-weight:500; color:var(--soft); transition:color var(--t) var(--e); }
+.nav-links a:not(.btn):hover{ color:var(--ink); }
+@media (max-width:620px){
+  .nav-in{ gap:0.9rem; }
+  .nav-links{ gap:1rem; }
+  .nav-links a:not(.btn){ font-size:0.95rem; padding-block:0.55rem; }
+  .nav-links a[href="#visit"]:not(.btn){ display:none; }
+  .btn{ padding:0.62rem 1.15rem; }
+}
+
+.btn{ display:inline-flex; align-items:center; justify-content:center; gap:0.5rem;
+      padding:0.72rem 1.5rem; border-radius:999px; font-weight:600; font-size:1rem;
+      background:var(--ink); color:var(--bone); border:1px solid var(--ink);
+      transition:background var(--t) var(--e), color var(--t) var(--e), transform var(--t) var(--e); }
+.btn:hover{ transform:translateY(-2px); background:#332B25; border-color:#332B25; color:var(--bone); }
+.btn.line{ background:transparent; color:var(--ink); border-color:var(--line); }
+.btn.line:hover{ background:var(--ink); color:var(--bone); border-color:var(--ink); }
+.btn.big{ padding:0.95rem 1.9rem; font-size:1.08rem; }
+
+/* ---- shared image treatment ---- */
+.shot{ overflow:hidden; border-radius:var(--r); background:var(--line); }
+.shot img{ transition:transform 700ms var(--e); }
+.shot:hover img{ transform:scale(1.04); }
+
+/* ---- hero ---- */
+.hero{ padding-top:clamp(2.4rem,5vw,5rem); }
+.hero .xl{ max-width:13ch; }
+.hero-row{ display:grid; grid-template-columns:minmax(0,1fr) minmax(0,auto); gap:2rem 3rem;
+           align-items:end; margin-top:clamp(1.6rem,3vw,2.4rem); }
+.hero-row .lead{ max-width:30rem; }
+.hero-row .btn{ justify-self:start; }
+.hero-shot{ margin-top:clamp(2.2rem,4.5vw,3.6rem); }
+.hero-shot img{ height:clamp(360px,66vh,720px); object-fit:cover; object-position:center 38%; }
+@media (max-width:760px){ .hero-row{ grid-template-columns:1fr; align-items:start; } }
+
+/* ---- section headers ---- */
+.head{ display:flex; align-items:baseline; justify-content:space-between; gap:1.5rem; flex-wrap:wrap;
+       margin-bottom:clamp(1.6rem,3vw,2.6rem); }
+.head .sm{ display:inline-block; padding-block:0.25rem; transition:color var(--t) var(--e); }
+a.sm:hover{ color:var(--ink); text-decoration:underline; text-underline-offset:0.2em; }
+.head:hover .sm{ color:var(--ink); }
+
+/* ---- work: photo plus one line. Nothing else. ---- */
+.grid{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:clamp(1rem,2vw,1.8rem); }
+.card{ display:block; }
+.card .shot img{ height:clamp(300px,38vw,600px); object-fit:cover; }
+.card .cap{ display:flex; align-items:baseline; justify-content:space-between; gap:1rem;
+            margin-top:0.85rem; transition:opacity var(--t) var(--e); }
+.card .cap b{ font-weight:600; font-size:1.05rem; letter-spacing:-0.014em; }
+.card .cap span{ color:var(--soft); font-size:0.95rem; transition:color var(--t) var(--e); }
+.card:hover .cap span{ color:var(--ink); }
+.card:hover .cap b{ text-decoration:underline; text-underline-offset:0.22em; text-decoration-thickness:1.5px; }
+.grid .card:nth-child(3){ grid-column:span 2; }
+.grid .card:nth-child(3) .shot img{ height:clamp(320px,42vw,680px); }
+@media (max-width:700px){
+  .grid{ grid-template-columns:1fr; }
+  .grid .card:nth-child(3){ grid-column:span 1; }
+}
+
+/* ---- prices: name and number, nothing between them ---- */
+.list{ max-width:52rem; }
+.item{ display:flex; align-items:baseline; justify-content:space-between; gap:1.5rem;
+       padding:clamp(1rem,1.8vw,1.4rem) 0; border-bottom:1px solid var(--line);
+       transition:padding-left var(--t) var(--e); }
+.item:first-child{ border-top:1px solid var(--line); }
+.item:hover{ padding-left:0.6rem; }
+.item .n{ font-weight:600; font-size:clamp(1.1rem,1.7vw,1.35rem); letter-spacing:-0.018em; }
+.item .n em{ display:block; font-style:normal; font-weight:400; font-size:0.94rem; color:var(--soft);
+             margin-top:0.15rem; transition:color var(--t) var(--e); }
+.item:hover .n em{ color:var(--ink); }
+.item .p{ font-weight:600; font-size:clamp(1.1rem,1.7vw,1.35rem); white-space:nowrap; letter-spacing:-0.018em; }
+
+/* ---- three steps ---- */
+.steps{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:clamp(1rem,2vw,1.8rem); }
+.step .shot img{ height:clamp(240px,24vw,360px); object-fit:cover; }
+.step h3{ margin-top:0.9rem; }
+.step p{ color:var(--soft); margin-top:0.3rem; font-size:0.98rem; transition:color var(--t) var(--e); }
+.step:hover p{ color:var(--ink); }
+@media (max-width:820px){ .steps{ grid-template-columns:1fr; } }
+
+/* ---- split blocks ---- */
+.split{ display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:clamp(1.8rem,4vw,4.5rem); align-items:center; }
+.split.flip > .shot{ order:-1; }
+.split .shot img{ height:clamp(340px,38vw,600px); object-fit:cover; }
+@media (max-width:820px){ .split{ grid-template-columns:1fr; } .split.flip > .shot{ order:0; } }
+
+.visit dl{ margin-top:1.6rem; }
+.visit dl > div{ display:flex; gap:1.2rem; padding:0.6rem 0; border-bottom:1px solid var(--line); }
+.visit dt{ width:6.5rem; flex:0 0 auto; color:var(--soft); transition:color var(--t) var(--e); }
+.visit dl > div:hover dt{ color:var(--ink); }
+.visit a{ display:inline-block; font-weight:500; border-bottom:1px solid var(--line); transition:border-color var(--t) var(--e); }
+@media (max-width:700px){ .visit dl a{ padding-block:0.3rem; } }
+.visit a:hover{ border-bottom-color:var(--ink); }
+
+/* ---- footer ---- */
+footer{ padding:clamp(2.6rem,5vw,4rem) var(--pad); border-top:1px solid var(--line); }
+.foot{ max-width:88rem; margin-inline:auto; display:flex; flex-wrap:wrap; gap:1.5rem 3rem;
+       align-items:baseline; justify-content:space-between; }
+.foot a{ color:var(--soft); transition:color var(--t) var(--e); }
+.foot a:hover{ color:var(--ink); }
+.foot nav{ display:flex; gap:1.5rem; flex-wrap:wrap; }
+
+a:focus-visible, button:focus-visible{ outline:2px solid var(--ink); outline-offset:3px; }
+@media (prefers-reduced-motion:reduce){ *{ transition-duration:1ms !important; } }
+
+/* ------------------------------------------------------------------
+   Multi-page additions
+   ------------------------------------------------------------------ */
+
+/* the nav tells you where you are */
+.nav-links a[aria-current="page"]{ color:var(--ink); font-weight:600; }
+.nav-links a[aria-current="page"]::after{ content:""; display:block; height:2px; margin-top:3px;
+                                          background:var(--ink); }
+
+/* subpage opener — smaller than the homepage hero, same family of spacing */
+.page-head{ padding-top:clamp(2.4rem,5vw,4.5rem); padding-bottom:clamp(1.6rem,3vw,2.6rem); }
+.page-head .lead{ margin-top:1rem; max-width:34rem; }
+
+/* the hand-off strip that closes every subpage */
+.cta-strip{ border-top:1px solid var(--line); }
+.cta-strip .inner{ display:flex; align-items:center; justify-content:space-between; gap:1.5rem 2.5rem;
+                   flex-wrap:wrap; padding-block:clamp(2.4rem,5vw,4rem); }
+.cta-strip p{ max-width:30rem; }
+@media (max-width:620px){ .cta-strip .inner{ flex-direction:column; align-items:flex-start; } }
+
+/* a short practical list, used on the visit page */
+.plain li{ padding:0.7rem 0; border-bottom:1px solid var(--line); transition:padding-left var(--t) var(--e); }
+.plain li:first-child{ border-top:1px solid var(--line); }
+.plain li:hover{ padding-left:0.5rem; }
+.plain b{ font-weight:600; }
+.plain span{ color:var(--soft); transition:color var(--t) var(--e); }
+.plain li:hover span{ color:var(--ink); }
+
+
+/* ------------------------------------------------------------------
+   Intro — a brush lays a streak of polish across the middle, then the
+   colour floods out of it and lifts to reveal the page.
+
+   Plays once per session (see the inline script in <head>), never for
+   prefers-reduced-motion, and never at all without JS: the overlay is
+   display:none until the head script adds .intro-on to <html>, so a
+   failed script means an ordinary page rather than a blank screen.
+
+   The cherry is the one saturated colour on this site that is not
+   inside a photograph. It is polish, which is the exception the rule
+   was written around.
+   ------------------------------------------------------------------ */
+
+.intro{ display:none; }
+
+html.intro-on{ overflow:hidden; }
+html.intro-on body{ overflow:hidden; }
+
+html.intro-on .intro{
+  --polish:#D4283C;
+  --sw:min(40vw, 185px);
+  display:block; position:fixed; inset:0; z-index:100;
+  background:var(--bone); overflow:hidden;
+  animation:introOut 400ms 1880ms var(--e) forwards;
+}
+
+.intro-stage{ position:absolute; inset:0; display:grid; place-items:center; }
+.intro-sweep{ position:relative; width:var(--sw); }
+
+/* Two animations on one element: the clip reveals the streak under the
+   brush, then the streak itself scales up. Growing the streak rather than
+   blooming a circle out of it keeps the brushed silhouette — the wavy
+   edges sweep off the top and bottom of the screen as it opens. */
+.intro-streak{ display:block; width:100%; height:auto; overflow:visible;
+               transform-origin:50% 50%;
+               clip-path:inset(0 100% 0 0);
+               animation:streak 720ms 180ms var(--e) forwards,
+                         streakGrow 820ms 1060ms cubic-bezier(0.62,0,0.36,1) forwards; }
+@keyframes streak{ to{ clip-path:inset(0 -2% 0 0); } }
+@keyframes streakGrow{ from{ transform:scale(1); } to{ transform:scale(95); } }
+
+.intro-brush{ position:absolute; left:0; top:50%; width:30px; height:auto;
+              transform:translate3d(-15px,-90%,0) rotate(-13deg);
+              animation:brushSweep 720ms 180ms var(--e) forwards,
+                        brushLift 320ms 900ms var(--e) forwards; }
+@keyframes brushSweep{
+  from{ transform:translate3d(-15px,-90%,0) rotate(-13deg); }
+  to{ transform:translate3d(calc(var(--sw) - 13px),-90%,0) rotate(-13deg); }
+}
+@keyframes brushLift{
+  from{ transform:translate3d(calc(var(--sw) - 13px),-90%,0) rotate(-13deg); opacity:1; }
+  to{ transform:translate3d(calc(var(--sw) + 12px),-210%,0) rotate(7deg); opacity:0; }
+}
+
+@keyframes introOut{ to{ opacity:0; visibility:hidden; } }
+
+@media (prefers-reduced-motion:reduce){
+  html.intro-on .intro{ display:none; }
+  html.intro-on, html.intro-on body{ overflow:visible; }
+}

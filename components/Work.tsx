@@ -85,7 +85,7 @@ export default function Work() {
 
         <Reveal className="work__foot" motion="rise">
           <Link href="/portfolio/" className="btn">
-            All six concepts
+            All seven concepts
           </Link>
           <p className="work__aside">
             Every one is a live site you can click into. Concept builds for
