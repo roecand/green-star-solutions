@@ -12,7 +12,8 @@ export class AnthropicLLM implements LLMClient {
     const response = await this.client.messages.create({
       model: this.model,
       max_tokens: req.maxTokens ?? 2000,
-      ...(req.temperature !== undefined ? { temperature: req.temperature } : {}),
+      // `temperature` is deliberately not sent: current Claude models reject
+      // it (400 "temperature is deprecated for this model").
       system: req.system,
       messages: [{ role: "user", content: req.prompt }],
     });

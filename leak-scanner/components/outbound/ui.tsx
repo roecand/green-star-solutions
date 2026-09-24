@@ -100,7 +100,14 @@ export function TextLink({ href, children }: { href: string; children: React.Rea
 
 export function fmtDateTime(value: Date | number | null | undefined): string {
   if (!value) return "—";
-  return new Date(value).toLocaleString("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" });
+  // Server renders in UTC on Railway; show Greenstar's local time.
+  return new Date(value).toLocaleString("en-US", {
+    timeZone: process.env.NEXT_PUBLIC_DISPLAY_TIMEZONE || "America/Los_Angeles",
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+  });
 }
 
 export const selectClass =
