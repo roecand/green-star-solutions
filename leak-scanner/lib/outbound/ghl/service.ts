@@ -70,12 +70,8 @@ export async function syncLeadToGhl(
     await ghl.addNote(contactId, buildNote(lead, context, observations, analysis?.recommendedAngle ?? null));
 
     let opportunityId = lead.ghlOpportunityId;
-    if (!opportunityId && context.statusTag === GHL_TAGS.interested && config.pipelineId && config.stageInterestedId) {
-      opportunityId = await ghl.createOpportunity({
-        contactId,
-        name: `${lead.companyName} — Greenstar outbound`,
-        stageId: config.stageInterestedId,
-      });
+    if (!opportunityId && context.statusTag === GHL_TAGS.interested) {
+      opportunityId = await ghl.createOpportunity({ contactId, name: `${lead.companyName} — Greenstar outbound` });
     }
     await db
       .update(schema.outboundLeads)
@@ -94,12 +90,27 @@ export async function syncLeadToGhl(
   }
 }
 
+/** Settings-page connection check: token, location and pipeline lookup. */
+export async function testGhlConnection(): Promise<string> {
+  const config = ghlConfig();
+  if (!config) return "GHL_API_TOKEN and GHL_LOCATION_ID are not both set.";
+  const client = new GhlClient(config);
+  const pipelines = await client.listPipelines();
+  const r = await client.resolvePipeline();
+  const pipeline = pipelines.find((p) => p.id === r.pipelineId)!;
+  const stageName = (id: string | null) => pipeline.stages.find((s) => s.id === id)?.name ?? "not found";
+  return `Connected. Pipeline "${pipeline.name}": new interested leads → "${stageName(r.stageInterestedId)}", booked → "${stageName(r.stageBookedId)}".`;
+}
+
 /** Moves an existing opportunity to the booked stage (manual "Booked" action). */
 export async function markBookedInGhl(lead: OutboundLead): Promise<void> {
   const config = ghlConfig();
-  if (!config || !lead.ghlOpportunityId || !config.stageBookedId) return;
+  if (!config || !lead.ghlOpportunityId) return;
   try {
-    await new GhlClient(config).moveOpportunityStage(lead.ghlOpportunityId, config.stageBookedId);
+    const client = new GhlClient(config);
+    const { stageBookedId } = await client.resolvePipeline();
+    if (!stageBookedId) return;
+    await client.moveOpportunityStage(lead.ghlOpportunityId, stageBookedId);
     await logActivity({ leadId: lead.id, type: "CRM_STAGE_MOVED", message: "Opportunity moved to booked stage" });
   } catch (error) {
     await logActivity({ leadId: lead.id, type: "CRM_SYNC_FAILED", level: "error", message: errorMessage(error) });

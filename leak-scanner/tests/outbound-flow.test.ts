@@ -187,8 +187,7 @@ describe("outbound pipeline", () => {
   it("pushes interested leads to GHL through the service layer", async () => {
     process.env.GHL_API_TOKEN = "test-token";
     process.env.GHL_LOCATION_ID = "loc1";
-    process.env.GHL_PIPELINE_ID = "pipe1";
-    process.env.GHL_STAGE_INTERESTED_ID = "stage1";
+    // Pipeline/stages resolved by name via the API.
     const { GhlClient, ghlConfig } = await import("@/lib/outbound/ghl/client");
     const { syncLeadToGhl } = await import("@/lib/outbound/ghl/service");
     const calls: Array<{ url: string; body: Record<string, unknown> }> = [];
@@ -197,12 +196,15 @@ describe("outbound pipeline", () => {
       calls.push({ url: String(url), body });
       if (String(url).endsWith("/contacts/upsert")) return new Response(JSON.stringify({ new: true, contact: { id: "c1" } }));
       if (String(url).endsWith("/opportunities/")) return new Response(JSON.stringify({ opportunity: { id: "o1" } }));
+      if (String(url).includes("/opportunities/pipelines"))
+        return new Response(JSON.stringify({ pipelines: [{ id: "other", name: "Client Funnel", stages: [] }, { id: "pipe1", name: "Greenstar Outbound", stages: [{ id: "stage1", name: "Interested" }, { id: "stage2", name: "Call Booked" }] }] }));
       return new Response("{}");
     }) as unknown as typeof fetch;
     const mike = await leadByEmail("mike@mikes.example");
     const result = await syncLeadToGhl(mike, { reply: null, statusTag: "interested", originalMessage: { subject: "s", body: "b" } }, new GhlClient(ghlConfig()!, fetchImpl));
     expect(result).toEqual({ status: "synced", contactId: "c1", opportunityId: "o1" });
-    expect(calls.map((c) => new URL(c.url).pathname)).toEqual(["/contacts/upsert", "/contacts/c1/tags", "/contacts/c1/notes", "/opportunities/"]);
+    expect(calls.map((c) => new URL(c.url).pathname)).toEqual(["/contacts/upsert", "/contacts/c1/tags", "/contacts/c1/notes", "/opportunities/pipelines", "/opportunities/"]);
+    expect(calls[4].body).toMatchObject({ pipelineId: "pipe1", pipelineStageId: "stage1", locationId: "loc1", status: "open" });
     expect(calls[0].body.tags).toEqual(expect.arrayContaining(["greenstar-outbound", "interested", "brand-opportunity", "followup-opportunity"]));
     expect((await leadByEmail("mike@mikes.example")).ghlOpportunityId).toBe("o1");
     delete process.env.GHL_API_TOKEN;

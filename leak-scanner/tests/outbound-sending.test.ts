@@ -64,3 +64,17 @@ describe("fetchJson", () => {
     expect(calls).toBe(1);
   });
 });
+
+describe("GHL pipeline lookup", () => {
+  it("finds pipeline and stages by name, case-insensitively, with id overrides", async () => {
+    const { pickPipeline } = await import("@/lib/outbound/ghl/client");
+    const base = { token: "t", locationId: "l", pipelineId: null, stageInterestedId: null, stageBookedId: null, pipelineName: "Greenstar Outbound", stageInterestedName: "Interested", stageBookedName: "Call Booked", version: "v" };
+    const pipelines = [
+      { id: "p0", name: "Client Funnel", stages: [{ id: "s0", name: "New Lead" }] },
+      { id: "p1", name: "greenstar  outbound", stages: [{ id: "a", name: "Interested" }, { id: "b", name: "call booked" }] },
+    ];
+    expect(pickPipeline(pipelines, base)).toEqual({ pipelineId: "p1", stageInterestedId: "a", stageBookedId: "b" });
+    expect(pickPipeline(pipelines, { ...base, pipelineId: "p0" })).toEqual({ pipelineId: "p0", stageInterestedId: "s0", stageBookedId: null });
+    expect(() => pickPipeline(pipelines, { ...base, pipelineName: "Nope" })).toThrow(/not found/);
+  });
+});

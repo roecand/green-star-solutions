@@ -6,7 +6,7 @@ import { listEmailProviders } from "@/lib/outbound/email";
 import { ghlConfig } from "@/lib/outbound/ghl/client";
 import { llmProviderName } from "@/lib/outbound/llm";
 import { senderConfig } from "@/lib/outbound/personalization/render";
-import { addSuppressionAction, saveSettingsAction } from "../actions";
+import { addSuppressionAction, saveSettingsAction, testGhlAction } from "../actions";
 import { Notice, Section, fmtDateTime, inputClass, primaryButtonClass, buttonClass } from "@/components/outbound/ui";
 
 export const metadata: Metadata = { title: "Settings" };
@@ -31,7 +31,7 @@ export default async function OutboundSettingsPage({ searchParams }: { searchPar
     ["Cron secret", has("OUTBOUND_CRON_SECRET"), "OUTBOUND_CRON_SECRET — lets n8n/cron call /api/outbound/tick"],
     ["Webhook secret", has("OUTBOUND_WEBHOOK_SECRET"), "OUTBOUND_WEBHOOK_SECRET — protects /api/outbound/webhooks/email"],
     ["GoHighLevel", !!ghl, ghl ? `location ${ghl.locationId}` : "GHL_API_TOKEN + GHL_LOCATION_ID"],
-    ["GHL pipeline", !!ghl?.pipelineId && !!ghl?.stageInterestedId, "GHL_PIPELINE_ID + GHL_STAGE_INTERESTED_ID (opportunities)"],
+    ["GHL pipeline", !!ghl, ghl ? `found by name: "${ghl.pipelineName}" → "${ghl.stageInterestedName}" / "${ghl.stageBookedName}" (use Test connection)` : "needs the token + location first"],
     ["Owner notifications", has("OUTBOUND_NOTIFY_EMAIL") || has("ADMIN_NOTIFICATION_EMAIL"), `${process.env.OUTBOUND_NOTIFY_EMAIL || process.env.ADMIN_NOTIFICATION_EMAIL || "not set"} via Resend (${has("RESEND_API_KEY") ? "live" : "mocked"})`],
   ];
 
@@ -51,6 +51,11 @@ export default async function OutboundSettingsPage({ searchParams }: { searchPar
             </li>
           ))}
         </ul>
+        {ghl ? (
+          <form action={testGhlAction} className="mt-4">
+            <button className={buttonClass}>Test GoHighLevel connection</button>
+          </form>
+        ) : null}
       </Section>
 
       <Section title="Sending & qualification">

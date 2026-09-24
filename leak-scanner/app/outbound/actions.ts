@@ -17,7 +17,7 @@ import {
 } from "@/lib/outbound/campaigns/service";
 import { errorMessage, logActivity } from "@/lib/outbound/core/activity";
 import { getOutboundSettings, saveOutboundSettings } from "@/lib/outbound/core/settings";
-import { markBookedInGhl, syncLeadToGhl, GHL_TAGS } from "@/lib/outbound/ghl/service";
+import { markBookedInGhl, syncLeadToGhl, testGhlConnection, GHL_TAGS } from "@/lib/outbound/ghl/service";
 import { importLeadsFromCsv, insertLeads } from "@/lib/outbound/leads/import";
 import { normalizeRecord } from "@/lib/outbound/leads/normalize";
 import { handleInboundReply, handleUnsubscribe, reclassifyReply } from "@/lib/outbound/replies/handle";
@@ -266,4 +266,17 @@ export async function addSuppressionAction(form: FormData) {
   if (!/^(@[a-z0-9.-]+\.[a-z]{2,}|[^@\s]+@[a-z0-9.-]+\.[a-z]{2,})$/.test(value)) back("/outbound/settings", "Enter an email or @domain.com", "error");
   await suppress(value, "manual", "settings page");
   back("/outbound/settings", `${value} suppressed.`);
+}
+
+export async function testGhlAction() {
+  await guard();
+  let result: string;
+  let ok = true;
+  try {
+    result = await testGhlConnection();
+  } catch (error) {
+    ok = false;
+    result = `GHL test failed: ${errorMessage(error)}`;
+  }
+  back("/outbound/settings", result, ok ? "ok" : "error");
 }
