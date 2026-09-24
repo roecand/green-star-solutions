@@ -41,6 +41,8 @@ export interface ExtractedPage {
   /** All visible text, whitespace-normalized. */
   text: string;
   wordCount: number;
+  /** Hostnames of third-party scripts/iframes (chat, booking, review widgets). */
+  thirdPartyScripts?: string[];
 }
 
 export interface ExtractedSite {

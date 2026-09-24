@@ -27,6 +27,10 @@ which has breaking changes vs older versions (docs in `node_modules/next/dist/do
 | Migrations auto-apply on db boot (`lib/db/index.ts`) | dev/tests/prod stay in sync with no manual step |
 | e2e runs a production build in `.next-e2e` with its own SQLite db | dev-server HMR/hydration flake eliminated; never collides with a running dev server |
 | `SCANNER_ALLOW_PRIVATE=1` env relaxes the SSRF guard | e2e scans a fixture page served by the app itself; never set in production |
+| Outbound engine lives here (`lib/outbound/`, `/outbound`, `outbound_*` tables) | reuses the hardened fetcher/extractor, DB, auth and the Leak Score engine the paid funnel will share; namespaced so it can be extracted later. Read `docs/outbound/README.md` |
+| Outbound scores are deterministic; LLM only phrases observations/drafts | same rule as the scanner — every claim traces to a stored signal; LLM output is Zod-validated + linted, with template fallback |
+| Two email-provider shapes: `per_message` (we schedule) and `sequence_push` (Smartlead schedules) | cold-email platforms don't expose single-send APIs; forcing one shape would break one of them |
+| All sequence stops go through `stopLeadSequences()` | one choke point for reply/bounce/unsubscribe/DNC — local state first, provider second |
 
 ## Hard rules
 
@@ -64,6 +68,8 @@ which has breaking changes vs older versions (docs in `node_modules/next/dist/do
 - `lib/services/` — Greenstar service catalog, recommendation mapping
 - `lib/billing/` — stripe client, plans, limits
 - `lib/email/` — resend adapter, templates
+- `lib/outbound/` — outbound engine (leads, website-analysis, lead-scoring,
+  personalization, email providers, sending, reply-classification, replies, ghl, llm)
 - `lib/auth/` — sessions, passwords, guards
 - `components/ui/` — shared primitives; `components/report/` — report UI
 - `tests/` — vitest unit; `e2e/` — playwright
@@ -81,6 +87,10 @@ which has breaking changes vs older versions (docs in `node_modules/next/dist/do
 - `next.config.ts` MUST keep `turbopack.root` — the parent directory has
   another project's lockfile and Next otherwise infers the wrong workspace
   root, resolving React from the wrong node_modules (breaks hydration).
+- Extractor: hidden forms (Netlify detection copies), honeypots, radio groups
+  and `<br>` all produced false outbound observations on real sites — keep the
+  regression tests in `tests/outbound-analysis.test.ts` passing.
+- Server actions: `redirect()` throws — never call it inside a `try` block.
 - Playwright: prefer role-based locators; plain `getByText` collides with the
   Next route announcer in strict mode.
 
@@ -104,3 +114,4 @@ which has breaking changes vs older versions (docs in `node_modules/next/dist/do
 - [x] M10 Emails & notifications (Resend adapter + mock)
 - [x] M11 Analytics, marketing, legal, demo, docs, e2e (48 unit + 5 e2e)
 - [x] M12 Final hardening & summary
+- [x] O1 Outbound engine MVP (import → analysis → drafts → approval → sending → replies → GHL → dashboard)

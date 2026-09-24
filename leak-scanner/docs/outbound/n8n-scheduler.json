@@ -1,0 +1,29 @@
+{
+  "name": "Greenstar outbound — scheduler",
+  "nodes": [
+    {
+      "parameters": { "rule": { "interval": [{ "field": "minutes", "minutesInterval": 3 }] } },
+      "name": "Every 3 minutes",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [0, 0]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://YOUR-APP-DOMAIN/api/outbound/tick",
+        "sendHeaders": true,
+        "headerParameters": { "parameters": [{ "name": "Authorization", "value": "Bearer YOUR_OUTBOUND_CRON_SECRET" }] },
+        "options": { "timeout": 300000 }
+      },
+      "name": "Run outbound tick",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [240, 0]
+    }
+  ],
+  "connections": {
+    "Every 3 minutes": { "main": [[{ "node": "Run outbound tick", "type": "main", "index": 0 }]] }
+  },
+  "settings": {}
+}

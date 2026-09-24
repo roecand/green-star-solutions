@@ -254,3 +254,250 @@ export type Lead = typeof leads.$inferSelect;
 export type Recommendation = typeof recommendations.$inferSelect;
 export type Plan = Organization["plan"];
 export type LeadLifecycleStatus = (typeof LEAD_LIFECYCLE_STATUSES)[number];
+
+// ===========================================================================
+// Outbound prospecting engine (lib/outbound/*). Namespaced `outbound_` so it
+// stays independent of the public scanner funnel's `leads` table and can be
+// extracted into its own service later without a data migration.
+// ===========================================================================
+
+export const OUTBOUND_LEAD_STATUSES = [
+  "NEW",
+  "QUEUED",
+  "ANALYZING",
+  "ANALYSIS_FAILED",
+  "READY",
+  "DISQUALIFIED",
+  "ACTIVE_SEQUENCE",
+  "REPLIED",
+  "INTERESTED",
+  "NOT_INTERESTED",
+  "DO_NOT_CONTACT",
+  "BOUNCED",
+  "BOOKED",
+  "CUSTOMER",
+] as const;
+
+const updatedAt = () =>
+  integer("updated_at", { mode: "timestamp_ms" })
+    .notNull()
+    .$defaultFn(() => new Date());
+
+export const outboundLeads = sqliteTable("outbound_leads", {
+  id: id(),
+  companyName: text("company_name").notNull(),
+  contactFirstName: text("contact_first_name"),
+  contactLastName: text("contact_last_name"),
+  // Lowercased. Null allowed on import (lead is then disqualified for email).
+  email: text("email"),
+  phone: text("phone"),
+  website: text("website"),
+  // Bare hostname (no www) — dedupe key when email is missing.
+  websiteDomain: text("website_domain"),
+  industry: text("industry"),
+  city: text("city"),
+  state: text("state"),
+  source: text("source"),
+  status: text("status", { enum: OUTBOUND_LEAD_STATUSES }).notNull().default("NEW"),
+  priorityScore: integer("priority_score"),
+  priorityReasonsJson: text("priority_reasons_json"),
+  // Random token for the public unsubscribe link.
+  unsubscribeToken: text("unsubscribe_token").notNull().unique(),
+  analysisAttempts: integer("analysis_attempts").notNull().default(0),
+  lastError: text("last_error"),
+  lastActivityAt: integer("last_activity_at", { mode: "timestamp_ms" }),
+  ghlContactId: text("ghl_contact_id"),
+  ghlOpportunityId: text("ghl_opportunity_id"),
+  createdAt: createdAt(),
+  updatedAt: updatedAt(),
+});
+
+export const outboundLeadAnalyses = sqliteTable("outbound_lead_analyses", {
+  id: id(),
+  leadId: text("lead_id")
+    .notNull()
+    .references(() => outboundLeads.id, { onDelete: "cascade" }),
+  websiteSummary: text("website_summary").notNull(),
+  brandScore: integer("brand_score").notNull(),
+  conversionScore: integer("conversion_score").notNull(),
+  followupOpportunityScore: integer("followup_opportunity_score").notNull(),
+  // AnalysisObservation[]
+  observationsJson: text("observations_json").notNull(),
+  recommendedAngle: text("recommended_angle").notNull(),
+  // Deterministic WebsiteSignals the observations were grounded in.
+  signalsJson: text("signals_json").notNull(),
+  source: text("source", { enum: ["ai", "fallback"] }).notNull(),
+  model: text("model"),
+  analyzedAt: integer("analyzed_at", { mode: "timestamp_ms" })
+    .notNull()
+    .$defaultFn(() => new Date()),
+});
+
+export const OUTBOUND_CAMPAIGN_STATUSES = ["DRAFT", "ACTIVE", "PAUSED", "COMPLETED"] as const;
+
+export const outboundCampaigns = sqliteTable("outbound_campaigns", {
+  id: id(),
+  name: text("name").notNull(),
+  niche: text("niche"),
+  status: text("status", { enum: OUTBOUND_CAMPAIGN_STATUSES }).notNull().default("DRAFT"),
+  // Outbound email provider id (see lib/outbound/email) + its campaign ref.
+  provider: text("provider").notNull().default("mock"),
+  providerCampaignRef: text("provider_campaign_ref"),
+  // SequenceStep[] — day offsets + step intent.
+  sequenceJson: text("sequence_json").notNull(),
+  dailyLimit: integer("daily_limit").notNull().default(30),
+  sendWindowStart: integer("send_window_start").notNull().default(8),
+  sendWindowEnd: integer("send_window_end").notNull().default(16),
+  timezone: text("timezone").notNull().default("America/Los_Angeles"),
+  // JSON array of ISO weekdays (1 = Mon … 7 = Sun).
+  sendDaysJson: text("send_days_json").notNull().default("[1,2,3,4,5]"),
+  minDelaySeconds: integer("min_delay_seconds").notNull().default(180),
+  requireApproval: integer("require_approval", { mode: "boolean" }).notNull().default(true),
+  launchedAt: integer("launched_at", { mode: "timestamp_ms" }),
+  createdAt: createdAt(),
+  updatedAt: updatedAt(),
+});
+
+export const OUTBOUND_CAMPAIGN_LEAD_STATUSES = [
+  "PENDING_DRAFT", // waiting for personalized messages to be generated
+  "DRAFTED", // messages generated, awaiting review
+  "APPROVED", // reviewed; starts when the campaign is ACTIVE
+  "ACTIVE", // in sequence
+  "COMPLETED", // every step sent, no reply
+  "STOPPED", // reply / bounce / unsubscribe / manual
+  "FAILED",
+] as const;
+
+export const outboundCampaignLeads = sqliteTable("outbound_campaign_leads", {
+  id: id(),
+  campaignId: text("campaign_id")
+    .notNull()
+    .references(() => outboundCampaigns.id, { onDelete: "cascade" }),
+  leadId: text("lead_id")
+    .notNull()
+    .references(() => outboundLeads.id, { onDelete: "cascade" }),
+  status: text("status", { enum: OUTBOUND_CAMPAIGN_LEAD_STATUSES })
+    .notNull()
+    .default("PENDING_DRAFT"),
+  // 0 = nothing sent yet; N = step N was the last one sent.
+  currentStep: integer("current_step").notNull().default(0),
+  nextSendAt: integer("next_send_at", { mode: "timestamp_ms" }),
+  lastContactedAt: integer("last_contacted_at", { mode: "timestamp_ms" }),
+  stopReason: text("stop_reason"),
+  providerLeadRef: text("provider_lead_ref"),
+  draftAttempts: integer("draft_attempts").notNull().default(0),
+  createdAt: createdAt(),
+  updatedAt: updatedAt(),
+});
+
+export const OUTBOUND_MESSAGE_STATUSES = [
+  "DRAFT",
+  "APPROVED",
+  "SENDING",
+  "QUEUED_AT_PROVIDER",
+  "SENT",
+  "FAILED",
+  "CANCELLED",
+] as const;
+
+export const outboundMessages = sqliteTable("outbound_messages", {
+  id: id(),
+  leadId: text("lead_id")
+    .notNull()
+    .references(() => outboundLeads.id, { onDelete: "cascade" }),
+  campaignId: text("campaign_id")
+    .notNull()
+    .references(() => outboundCampaigns.id, { onDelete: "cascade" }),
+  campaignLeadId: text("campaign_lead_id")
+    .notNull()
+    .references(() => outboundCampaignLeads.id, { onDelete: "cascade" }),
+  sequenceStep: integer("sequence_step").notNull(),
+  subject: text("subject").notNull(),
+  body: text("body").notNull(),
+  status: text("status", { enum: OUTBOUND_MESSAGE_STATUSES }).notNull().default("DRAFT"),
+  generationSource: text("generation_source", { enum: ["ai", "fallback", "manual"] }).notNull(),
+  // Personalization lint issues found at generation time (string[]).
+  lintJson: text("lint_json"),
+  providerMessageId: text("provider_message_id"),
+  error: text("error"),
+  sentAt: integer("sent_at", { mode: "timestamp_ms" }),
+  createdAt: createdAt(),
+  updatedAt: updatedAt(),
+});
+
+export const OUTBOUND_REPLY_CLASSIFICATIONS = [
+  "INTERESTED",
+  "QUESTION",
+  "NOT_NOW",
+  "NOT_INTERESTED",
+  "DO_NOT_CONTACT",
+  "OUT_OF_OFFICE",
+  "UNKNOWN",
+] as const;
+
+export const outboundReplies = sqliteTable("outbound_replies", {
+  id: id(),
+  leadId: text("lead_id")
+    .notNull()
+    .references(() => outboundLeads.id, { onDelete: "cascade" }),
+  campaignId: text("campaign_id").references(() => outboundCampaigns.id, {
+    onDelete: "set null",
+  }),
+  fromEmail: text("from_email"),
+  subject: text("subject"),
+  content: text("content").notNull(),
+  classification: text("classification", { enum: OUTBOUND_REPLY_CLASSIFICATIONS }).notNull(),
+  classificationSource: text("classification_source", {
+    enum: ["rule", "ai", "manual"],
+  }).notNull(),
+  confidence: text("confidence", { enum: ["high", "medium", "low"] }).notNull(),
+  // Provider event id — dedupes webhook retries.
+  providerRef: text("provider_ref").unique(),
+  receivedAt: integer("received_at", { mode: "timestamp_ms" }).notNull(),
+  createdAt: createdAt(),
+});
+
+export const outboundActivities = sqliteTable("outbound_activities", {
+  id: id(),
+  leadId: text("lead_id").references(() => outboundLeads.id, { onDelete: "cascade" }),
+  campaignId: text("campaign_id"),
+  // e.g. LEAD_IMPORTED, ANALYSIS_COMPLETED, EMAIL_SENT, WEBSITE_FETCH_FAILED…
+  type: text("type").notNull(),
+  level: text("level", { enum: ["info", "warn", "error"] }).notNull().default("info"),
+  message: text("message"),
+  metadataJson: text("metadata_json"),
+  createdAt: createdAt(),
+});
+
+export const outboundSuppressions = sqliteTable("outbound_suppressions", {
+  id: id(),
+  // Lowercased email, or "@domain.com" for a whole-domain block.
+  value: text("value").notNull().unique(),
+  reason: text("reason", {
+    enum: ["unsubscribed", "bounced", "do_not_contact", "manual"],
+  }).notNull(),
+  source: text("source"),
+  createdAt: createdAt(),
+});
+
+/** Non-secret runtime settings editable from /outbound/settings. */
+export const outboundSettings = sqliteTable("outbound_settings", {
+  key: text("key").primaryKey(),
+  value: text("value").notNull(),
+  updatedAt: updatedAt(),
+});
+
+/** Cross-request mutex so overlapping cron ticks never double-send. */
+export const outboundLocks = sqliteTable("outbound_locks", {
+  name: text("name").primaryKey(),
+  lockedUntil: integer("locked_until", { mode: "timestamp_ms" }).notNull(),
+});
+
+export type OutboundLead = typeof outboundLeads.$inferSelect;
+export type OutboundLeadStatus = (typeof OUTBOUND_LEAD_STATUSES)[number];
+export type OutboundLeadAnalysis = typeof outboundLeadAnalyses.$inferSelect;
+export type OutboundCampaign = typeof outboundCampaigns.$inferSelect;
+export type OutboundCampaignLead = typeof outboundCampaignLeads.$inferSelect;
+export type OutboundMessage = typeof outboundMessages.$inferSelect;
+export type OutboundReply = typeof outboundReplies.$inferSelect;
+export type ReplyClassification = (typeof OUTBOUND_REPLY_CLASSIFICATIONS)[number];

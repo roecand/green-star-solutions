@@ -45,7 +45,12 @@ function normalizeWhitespace(text: string): string {
 /** Parses one HTML document into structured signals. Pure — no network. */
 export function extractPage(html: string, pageUrl: string, kind: PageKind): ExtractedPage {
   const $ = cheerio.load(html);
+  // Before scripts/iframes are stripped: note which third-party widgets load
+  // (chat, booking, review embeds). Hostnames only — nothing is executed.
+  const thirdPartyScripts = collectThirdPartyHosts($, pageUrl);
   $("script, style, noscript, svg, iframe").remove();
+  // <br> carries no text; without this "decide<br>in" reads as "decidein".
+  $("br").replaceWith(" ");
 
   const title = normalizeWhitespace($("title").first().text()) || null;
   const metaDescription =
@@ -111,16 +116,33 @@ export function extractPage(html: string, pageUrl: string, kind: PageKind): Extr
     .slice(0, 60);
 
   const forms: ExtractedForm[] = $("form")
+    // Hidden forms (e.g. Netlify's build-time detection copy of a JS form)
+    // aren't what visitors see — counting them produced false "long form" claims.
+    .filter((_, formEl) => !isHiddenElement($, formEl))
     .map((_, formEl) => {
       const $form = $(formEl);
-      const fields = $form.find("input:not([type=hidden]), select, textarea");
+      const fields = $form
+        .find("input:not([type=hidden]):not([type=submit]):not([type=button]), select, textarea")
+        .filter((_, f) => !HONEYPOT_NAME.test($(f).attr("name") ?? "") && !isHiddenElement($, f));
+      // A radio/checkbox group is one question, not one field per option.
+      const groups = new Set<string>();
+      let fieldCount = 0;
+      fields.each((_, f) => {
+        const type = ($(f).attr("type") ?? "").toLowerCase();
+        if (type === "radio" || type === "checkbox") {
+          const key = $(f).attr("name") ?? `__${type}${fieldCount}`;
+          if (groups.has(key)) return;
+          groups.add(key);
+        }
+        fieldCount++;
+      });
       const fieldNames = fields
         .map((_, f) => `${$(f).attr("type") ?? ""} ${$(f).attr("name") ?? ""} ${$(f).attr("id") ?? ""}`)
         .get()
         .join(" ")
         .toLowerCase();
       return {
-        fieldCount: fields.length,
+        fieldCount,
         hasEmailField: /email/.test(fieldNames),
         hasPhoneField: /phone|tel/.test(fieldNames),
         hasTextarea: $form.find("textarea").length > 0,
@@ -128,6 +150,23 @@ export function extractPage(html: string, pageUrl: string, kind: PageKind): Extr
       };
     })
     .get();
+
+  // JS-built forms (div + inputs, submitted by script) have no <form> tag;
+  // treat 2+ visible inputs outside any form as one form so we don't claim
+  // "no contact form" about a site that has one.
+  const orphanFields = $("input:not([type=hidden]):not([type=submit]):not([type=button]):not([type=search]), select, textarea")
+    .filter((_, f) => $(f).closest("form").length === 0 && !HONEYPOT_NAME.test($(f).attr("name") ?? "") && !isHiddenElement($, f))
+    .toArray();
+  if (orphanFields.length >= 2) {
+    const names = orphanFields.map((f) => `${$(f).attr("type") ?? ""} ${$(f).attr("name") ?? ""} ${$(f).attr("id") ?? ""}`).join(" ").toLowerCase();
+    forms.push({
+      fieldCount: orphanFields.length,
+      hasEmailField: /email/.test(names),
+      hasPhoneField: /phone|tel/.test(names),
+      hasTextarea: orphanFields.some((f) => $(f).is("textarea")),
+      action: null,
+    });
+  }
 
   const bodyText = normalizeWhitespace($("body").text()).slice(0, 60_000);
   const telLinks = $('a[href^="tel:"]')
@@ -185,7 +224,47 @@ export function extractPage(html: string, pageUrl: string, kind: PageKind): Extr
     socialLinks: dedupe(socialLinks).slice(0, 20),
     text: bodyText,
     wordCount: bodyText ? bodyText.split(" ").length : 0,
+    thirdPartyScripts,
   };
+}
+
+const HONEYPOT_NAME = /bot[-_]?field|honeypot|^_?gotcha$|^hp[-_]|^website[-_]?url[-_]?confirm/i;
+
+const HIDDEN_STYLE = /display\s*:\s*none|visibility\s*:\s*hidden/i;
+
+/** True when the element or an ancestor is hidden via attribute or inline style. */
+function isHiddenElement($: cheerio.CheerioAPI, el: Parameters<cheerio.CheerioAPI>[0]): boolean {
+  const $el = $(el);
+  const hidden = (node: ReturnType<typeof $>) =>
+    node.is("[hidden]") || node.attr("aria-hidden") === "true" || HIDDEN_STYLE.test(node.attr("style") ?? "");
+  return hidden($el) || $el.parents().toArray().some((p) => hidden($(p)));
+}
+
+function collectThirdPartyHosts($: cheerio.CheerioAPI, pageUrl: string): string[] {
+  let ownHost = "";
+  try {
+    ownHost = new URL(pageUrl).hostname.replace(/^www\./, "");
+  } catch {
+    /* ignore */
+  }
+  const hosts: string[] = [];
+  $("script[src], iframe[src]").each((_, el) => {
+    try {
+      const host = new URL($(el).attr("src") ?? "", pageUrl).hostname.replace(/^www\./, "");
+      if (host && host !== ownHost) hosts.push(host);
+    } catch {
+      /* ignore */
+    }
+  });
+  // Inline loaders (e.g. widget snippets that inject a script at runtime).
+  $("script:not([src])").each((_, el) => {
+    const matches = $(el).text().match(/https?:\/\/[a-z0-9.-]+\.[a-z]{2,}/gi) ?? [];
+    for (const m of matches.slice(0, 10)) {
+      const host = m.replace(/^https?:\/\//i, "").replace(/^www\./, "").toLowerCase();
+      if (host !== ownHost) hosts.push(host);
+    }
+  });
+  return dedupe(hosts).slice(0, 60);
 }
 
 function collectSchemaTypes(node: unknown, out: string[]): void {
