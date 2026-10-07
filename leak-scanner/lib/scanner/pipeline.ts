@@ -215,6 +215,7 @@ export async function runScanPipeline(scanId: string): Promise<void> {
     let recommendations: ReturnType<typeof buildRecommendations>;
     let report: import("@/lib/ai/report-schema").AIReport;
     let source: "ai" | "fallback";
+    let aiError: string | null = null;
     let extractedText: string | null = null;
     let extractedMetadataJson: string;
 
@@ -244,7 +245,7 @@ export async function runScanPipeline(scanId: string): Promise<void> {
       await setStage(scanId, SCAN_STAGES[5]);
       recommendations = buildRecommendations(scoring.findings);
 
-      ({ report, source } = await generateReportWithFallback({
+      ({ report, source, error: aiError } = await generateReportWithFallback({
         business: { ...ctx, websiteUrl: scan.websiteUrl },
         scores: scoring,
         findings: scoring.findings,
@@ -264,6 +265,8 @@ export async function runScanPipeline(scanId: string): Promise<void> {
           wordCount: p.wordCount,
         })),
         fetchErrors: site.fetchErrors,
+        // Why the AI write-up fell back to templates, if it did.
+        aiError,
       });
     }
 

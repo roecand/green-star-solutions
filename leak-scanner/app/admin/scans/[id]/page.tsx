@@ -28,6 +28,13 @@ export default async function AdminScanDetailPage({
     findings = [];
   }
 
+  let aiError: string | null = null;
+  try {
+    aiError = scan.extractedMetadataJson ? (JSON.parse(scan.extractedMetadataJson).aiError ?? null) : null;
+  } catch {
+    aiError = null;
+  }
+
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
@@ -36,6 +43,7 @@ export default async function AdminScanDetailPage({
           <p className="text-sm text-muted-foreground">
             {scan.industry} · {formatDate(scan.createdAt)} · {scan.aiSource === "ai" ? "AI report" : "deterministic report"}
           </p>
+          {aiError ? <p className="mt-1 text-xs text-danger">AI write-up fell back to templates: {aiError}</p> : null}
         </div>
         <div className="flex gap-2">
           {lead && (

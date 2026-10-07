@@ -24,7 +24,7 @@ function buildUserPrompt(input: ReportInput): string {
   return JSON.stringify(
     {
       instructions:
-        "Produce the report JSON. category_summaries must contain exactly 5 entries, one per category: conversion, local, ai_visibility, trust, follow_up. top_revenue_leaks: 3-7 items drawn from the recommendations, most severe first. priority_roadmap items are short imperative sentences. greenstar_service_matches: 2-4 services from the catalog that map to the biggest issues, with reasons grounded in findings.",
+        "Produce the report JSON. Keep it tight: executive_summary under 900 characters, each category summary under 450, top_issue / suggested_fix / roadmap items under 200, leak explanations under 350, report_intro / report_conclusion under 600. category_summaries must contain exactly 5 entries, one per category: conversion, local, ai_visibility, trust, follow_up. top_revenue_leaks: 3-7 items drawn from the recommendations, most severe first. priority_roadmap items are short imperative sentences. greenstar_service_matches: 2-4 services from the catalog that map to the biggest issues, with reasons grounded in findings.",
       output_schema_hint: {
         executive_summary: "string (3-5 sentences)",
         score_verdict: "string (one sentence)",
@@ -55,12 +55,16 @@ export class AnthropicReportProvider implements AIReportProvider {
   name = "anthropic" as const;
   private client = new Anthropic();
 
-  async generateReport(input: ReportInput): Promise<AIReport> {
+  async generateReport(input: ReportInput, previousError?: string): Promise<AIReport> {
+    const prompt = previousError
+      ? `${buildUserPrompt(input)}\n\nYour previous answer was rejected: ${previousError.slice(0, 500)}\nReturn ONLY the corrected JSON object.`
+      : buildUserPrompt(input);
     const response = await this.client.messages.create({
       model: process.env.AI_MODEL ?? "claude-sonnet-5",
-      max_tokens: 4000,
+      // 4000 truncated longer reports mid-JSON on newer models.
+      max_tokens: 8000,
       system: SYSTEM_PROMPT,
-      messages: [{ role: "user", content: buildUserPrompt(input) }],
+      messages: [{ role: "user", content: prompt }],
     });
 
     const text = response.content
@@ -68,9 +72,17 @@ export class AnthropicReportProvider implements AIReportProvider {
       .map((block) => block.text)
       .join("");
 
-    // Tolerate accidental code fences.
+    // Tolerate accidental code fences or prose around the object.
     const jsonText = text.replace(/^\s*```(?:json)?/m, "").replace(/```\s*$/m, "").trim();
-    const parsed = JSON.parse(jsonText);
+    let parsed: unknown;
+    try {
+      parsed = JSON.parse(jsonText);
+    } catch {
+      const start = jsonText.indexOf("{");
+      const end = jsonText.lastIndexOf("}");
+      if (start < 0 || end <= start) throw new Error(`Model returned no JSON (stop_reason: ${response.stop_reason})`);
+      parsed = JSON.parse(jsonText.slice(start, end + 1));
+    }
     return aiReportSchema.parse(parsed);
   }
 }

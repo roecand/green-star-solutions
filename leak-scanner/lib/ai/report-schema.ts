@@ -1,38 +1,57 @@
 import { z } from "zod";
 
+/**
+ * Trims over-long model text at a sentence (or word) boundary instead of
+ * rejecting the whole report. Required-ness, enums and section counts stay
+ * strict; a paragraph that runs 40 characters long must not throw away an
+ * otherwise good AI report (it used to, silently falling back to templates).
+ */
+export function fitText(value: string, max: number): string {
+  const text = value.trim();
+  if (text.length <= max) return text;
+  const cut = text.slice(0, max);
+  const sentenceEnd = Math.max(cut.lastIndexOf(". "), cut.lastIndexOf("! "), cut.lastIndexOf("? "));
+  if (sentenceEnd > max * 0.5) return cut.slice(0, sentenceEnd + 1);
+  const wordEnd = cut.lastIndexOf(" ");
+  return `${cut.slice(0, wordEnd > 0 ? wordEnd : max - 1).replace(/[,;:\s]+$/, "")}…`;
+}
+
+const text = (max: number) => z.string().trim().min(1).transform((v) => fitText(v, max));
+const list = <T extends z.ZodTypeAny>(item: T, max: number) => z.array(item).transform((a) => a.slice(0, max));
+
 export const categorySummarySchema = z.object({
   category: z.enum(["conversion", "local", "ai_visibility", "trust", "follow_up"]),
-  summary: z.string().min(1).max(600),
-  top_issue: z.string().min(1).max(300),
-  suggested_fix: z.string().min(1).max(300),
+  summary: text(600),
+  top_issue: text(300),
+  suggested_fix: text(300),
 });
 
 export const revenueLeakSchema = z.object({
-  title: z.string().min(1).max(160),
-  explanation: z.string().min(1).max(500),
+  title: text(160),
+  explanation: text(500),
   severity: z.enum(["critical", "high", "medium", "low"]),
 });
 
 export const serviceMatchSchema = z.object({
-  service_id: z.string().min(1).max(60),
-  service_name: z.string().min(1).max(120),
-  reason: z.string().min(1).max(400),
+  service_id: text(60),
+  service_name: text(120),
+  reason: text(400),
 });
 
 export const aiReportSchema = z.object({
-  executive_summary: z.string().min(1).max(1200),
-  score_verdict: z.string().min(1).max(300),
+  executive_summary: text(1200),
+  score_verdict: text(300),
   category_summaries: z.array(categorySummarySchema).length(5),
-  top_revenue_leaks: z.array(revenueLeakSchema).min(1).max(7),
+  top_revenue_leaks: list(revenueLeakSchema, 7).refine((a) => a.length >= 1, "at least one leak"),
   priority_roadmap: z.object({
-    this_week: z.array(z.string().min(1).max(300)).max(6),
-    this_month: z.array(z.string().min(1).max(300)).max(6),
-    later: z.array(z.string().min(1).max(300)).max(8),
+    this_week: list(text(300), 6),
+    this_month: list(text(300), 6),
+    later: list(text(300), 8),
   }),
-  greenstar_service_matches: z.array(serviceMatchSchema).min(1).max(5),
-  email_subject: z.string().min(1).max(140),
-  report_intro: z.string().min(1).max(800),
-  report_conclusion: z.string().min(1).max(800),
+  greenstar_service_matches: list(serviceMatchSchema, 5).refine((a) => a.length >= 1, "at least one service match"),
+  email_subject: text(140),
+  report_intro: text(800),
+  report_conclusion: text(800),
 });
 
 export type AIReport = z.infer<typeof aiReportSchema>;

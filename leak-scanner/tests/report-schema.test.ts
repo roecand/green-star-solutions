@@ -74,3 +74,21 @@ describe("aiReportSchema", () => {
     expect(report.executive_summary).toContain(`${input.scores.revenueLeakScore}/100`);
   });
 });
+
+describe("over-long AI text", () => {
+  it("is trimmed at a sentence boundary instead of rejecting the whole report", async () => {
+    const { fitText } = await import("@/lib/ai/report-schema");
+    const good = buildFallbackReport(reportInputFor(WEAK_HOME_HTML));
+    const long = "This is a sentence that keeps going. ".repeat(60);
+    const parsed = aiReportSchema.parse({
+      ...good,
+      executive_summary: long,
+      top_revenue_leaks: Array.from({ length: 9 }, () => good.top_revenue_leaks[0]),
+    });
+    expect(parsed.executive_summary.length).toBeLessThanOrEqual(1200);
+    expect(parsed.executive_summary.endsWith(".")).toBe(true);
+    expect(parsed.top_revenue_leaks).toHaveLength(7);
+    expect(fitText("one two three four five six", 12)).toBe("one two…");
+    expect(fitText("short", 100)).toBe("short");
+  });
+});
