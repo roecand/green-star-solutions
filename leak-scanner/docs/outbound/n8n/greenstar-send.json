@@ -1,0 +1,50 @@
+{
+  "name": "Greenstar – send",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "greenstar-send",
+        "authentication": "headerAuth",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "name": "App asks to send",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [0, 0],
+      "webhookId": "greenstar-send"
+    },
+    {
+      "parameters": {
+        "fromEmail": "Robert <robert@YOUR-SENDING-DOMAIN.com>",
+        "toEmail": "={{ $json.body.to }}",
+        "subject": "={{ $json.body.subject }}",
+        "emailFormat": "both",
+        "text": "={{ $json.body.text }}",
+        "html": "={{ $json.body.html }}",
+        "options": { "appendAttribution": false }
+      },
+      "name": "Send from mailbox",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [260, 0]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { \"providerMessageId\": $json.messageId } }}",
+        "options": {}
+      },
+      "name": "Tell app it sent",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [520, 0]
+    }
+  ],
+  "connections": {
+    "App asks to send": { "main": [[{ "node": "Send from mailbox", "type": "main", "index": 0 }]] },
+    "Send from mailbox": { "main": [[{ "node": "Tell app it sent", "type": "main", "index": 0 }]] }
+  },
+  "settings": { "executionOrder": "v1" }
+}

@@ -82,7 +82,9 @@ export function extractPage(html: string, pageUrl: string, kind: PageKind): Extr
   $("a[href]").each((_, el) => {
     const hrefRaw = $(el).attr("href") ?? "";
     const text = normalizeWhitespace($(el).text()).slice(0, 120);
-    if (!hrefRaw || hrefRaw.startsWith("#") || hrefRaw.startsWith("javascript:")) return;
+    // Bare "#" and javascript: links go nowhere. In-page anchors (#contact,
+    // #quote) are kept: one-page sites route "Contact" / "Get a quote" to them.
+    if (!hrefRaw || hrefRaw === "#" || hrefRaw.startsWith("javascript:")) return;
     let resolved: URL;
     try {
       resolved = new URL(hrefRaw, pageUrl);

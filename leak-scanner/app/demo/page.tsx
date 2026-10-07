@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { inArray } from "drizzle-orm";
-import { db, schema } from "@/lib/db";
+import { db, dbReady, schema } from "@/lib/db";
+import { seedDemoBusinesses } from "@/lib/db/demo-seed";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { ScoreRing } from "@/components/report/score-ring";
@@ -18,8 +19,8 @@ export const metadata: Metadata = {
 // the production build (Railway).
 export const dynamic = "force-dynamic";
 
-export default async function DemoPage() {
-  const scans = await db
+async function loadDemoScans() {
+  return db
     .select({
       shareToken: schema.scans.shareToken,
       revenueLeakScore: schema.scans.revenueLeakScore,
@@ -36,6 +37,21 @@ export default async function DemoPage() {
       )
     )
     .all();
+}
+
+export default async function DemoPage() {
+  await dbReady();
+  let scans = await loadDemoScans();
+  // A fresh database (e.g. a new production volume) has no demo reports yet;
+  // build them on first visit instead of showing visitors a setup message.
+  if (scans.length < DEMO_BUSINESSES.length) {
+    try {
+      await seedDemoBusinesses(() => {});
+      scans = await loadDemoScans();
+    } catch (error) {
+      console.error("demo seed on first visit failed", error);
+    }
+  }
 
   const businesses = await db
     .select()
@@ -59,7 +75,7 @@ export default async function DemoPage() {
 
         {scans.length === 0 ? (
           <div className="mt-10 rounded-xl border border-dashed border-border p-10 text-center text-muted-foreground">
-            Demo data hasn&apos;t been seeded yet. Run <code>npm run db:seed</code>.
+            Demo reports are being prepared. Refresh in a moment.
           </div>
         ) : (
           <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

@@ -130,11 +130,11 @@ export const conversionRules: ScoringRule[] = [
   {
     id: "conv_contact_page",
     category: "conversion",
-    label: "Contact page detected",
+    label: "Contact page or contact section detected",
     weight: 10,
     detect: (site) => {
       if (hasPage(site, "contact")) return yes("Contact page detected");
-      const link = internalLinkMatching(site, /contact/i);
+      const link = internalLinkMatching(site, /contact|get[- ]in[- ]touch|quote|estimate/i);
       return link ? yes(`Contact link: "${link}"`) : no();
     },
   },
@@ -187,7 +187,21 @@ export const localRules: ScoringRule[] = [
     detect: (site, ctx) => {
       if (!ctx.city) return no();
       const cityRe = new RegExp(`\\b${escapeRegExp(ctx.city)}\\b`, "i");
-      return textMatch(site, cityRe);
+      const inBody = textMatch(site, cityRe);
+      if (inBody.detected) return inBody;
+      // Title, meta description and headings are what search engines and AI
+      // read first; a city there counts even if body copy never repeats it.
+      for (const page of site.pages) {
+        for (const [where, value] of [
+          ["page title", page.title],
+          ["meta description", page.metaDescription],
+          ["heading", [...page.h1, ...page.h2, ...page.h3].join(" | ")],
+        ] as const) {
+          const match = value?.match(cityRe);
+          if (match) return yes(`City in ${where}: "${value!.slice(0, 120)}"`);
+        }
+      }
+      return no();
     },
   },
   {
@@ -511,8 +525,14 @@ export const followUpRules: ScoringRule[] = [
     label: "Lead capture form detected",
     weight: 15,
     detect: (site) => {
-      const form = site.pages.flatMap((p) => p.forms).find((f) => f.hasEmailField || f.hasPhoneField);
-      return form ? yes(`Form captures ${form.hasEmailField ? "email" : "phone"}`) : no();
+      const forms = site.pages.flatMap((p) => p.forms);
+      const form = forms.find((f) => f.hasEmailField || f.hasPhoneField);
+      if (form) return yes(`Form captures ${form.hasEmailField ? "email" : "phone"}`);
+      // Multi-step forms often ask for contact details on a later step that
+      // isn't in the page HTML yet. A 3+ field form is still a lead form —
+      // never report "no lead form" next to a detected contact form.
+      const multiStep = forms.find((f) => f.fieldCount >= 3);
+      return multiStep ? yes(`Multi-step form with ${multiStep.fieldCount} fields on its first step`) : no();
     },
   },
   {

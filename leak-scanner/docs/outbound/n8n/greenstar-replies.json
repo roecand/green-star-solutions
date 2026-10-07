@@ -1,0 +1,37 @@
+{
+  "name": "Greenstar – replies",
+  "nodes": [
+    {
+      "parameters": {
+        "mailbox": "INBOX",
+        "postProcessAction": "nothing",
+        "format": "resolved",
+        "options": {}
+      },
+      "name": "New email in sending inbox",
+      "type": "n8n-nodes-base.emailReadImap",
+      "typeVersion": 2,
+      "position": [0, 0]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://scan.green-starsolutions.com/api/outbound/webhooks/email",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ type: 'reply', email: ($json.from?.value?.[0]?.address) || String($json.from ?? '').replace(/.*<([^>]+)>.*/, '$1'), subject: $json.subject ?? '', content: $json.text || $json.textPlain || $json.textHtml || '', id: $json.messageId ?? null }) }}",
+        "options": {}
+      },
+      "name": "Forward reply to Greenstar",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [260, 0]
+    }
+  ],
+  "connections": {
+    "New email in sending inbox": { "main": [[{ "node": "Forward reply to Greenstar", "type": "main", "index": 0 }]] }
+  },
+  "settings": { "executionOrder": "v1" }
+}
