@@ -52,3 +52,20 @@ describe("scanner accuracy on one-page sites", () => {
     expect(g.conv_contact_page.detected).toBe(false);
   });
 });
+
+describe("quote path consistency", () => {
+  it("a 'Free quote' CTA satisfies both the conversion CTA and follow-up quote checks", () => {
+    const f = scan(`<html><head><title>Acme | Las Vegas</title></head><body><h1>Roofing in Las Vegas</h1><a class="btn" href="#contact">Get a free quote</a><p>${"Roof repair done right. ".repeat(10)}</p></body></html>`);
+    expect(f.conv_primary_cta.detected).toBe(true);
+    expect(f.followup_quote_cta.detected).toBe(true);
+    const g = scan(`<html><body><h1>Acme</h1><a class="btn" href="/x">Free inspection</a></body></html>`);
+    expect(g.followup_quote_cta.detected).toBe(true);
+  });
+});
+
+describe("minified HTML", () => {
+  it("keeps adjacent elements' words apart", () => {
+    const page = extractPage(`<html><body><h1>Roofing</h1><a href="/q">Get a free quote</a><p>Serving Las Vegas</p></body></html>`, "https://a.example.com/", "home");
+    expect(page.text).toBe("Roofing Get a free quote Serving Las Vegas");
+  });
+});

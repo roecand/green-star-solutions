@@ -170,7 +170,19 @@ export function extractPage(html: string, pageUrl: string, kind: PageKind): Extr
     });
   }
 
-  const bodyText = normalizeWhitespace($("body").text()).slice(0, 60_000);
+  // Join text nodes with a space. $("body").text() concatenates adjacent
+  // elements verbatim, so minified HTML (<h1>Roofing</h1><a>Get a quote</a>)
+  // read as "RoofingGet a quote" and word-boundary checks silently failed.
+  const bodyText = normalizeWhitespace(
+    $("body")
+      .find("*")
+      .addBack()
+      .contents()
+      .filter((_, node) => node.type === "text")
+      .map((_, node) => (node as unknown as { data: string }).data)
+      .get()
+      .join(" ")
+  ).slice(0, 60_000);
   const telLinks = $('a[href^="tel:"]')
     .map((_, el) => ($(el).attr("href") ?? "").replace("tel:", ""))
     .get();

@@ -557,7 +557,12 @@ export const followUpRules: ScoringRule[] = [
     label: "Quote or estimate request path",
     weight: 10,
     detect: (site) =>
-      textMatch(site, /\b(request (a |your )?(quote|estimate)|get (a |your )?(free )?(quote|estimate)|free estimate)\b/i),
+      // Same quote/estimate wording the conversion CTA check accepts, so one
+      // report can't credit a "free quote" button and then call it missing.
+      textMatch(
+        site,
+        /\b((request|get|book|schedule) (a |an |your )?(free )?(quote|estimate|consultation|inspection)|free (quote|estimate|consultation|inspection))\b/i
+      ),
   },
   {
     id: "followup_response_promise",
