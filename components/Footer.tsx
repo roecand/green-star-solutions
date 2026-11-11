@@ -39,7 +39,10 @@ export default function Footer() {
       </div>
 
       <div className="container footer__base">
-        <span>© {year} Green Star Solutions</span>
+        <span>
+          © {year} Green Star Solutions ·{" "}
+          <a href="/privacy/">Privacy</a> · <a href="/sms-terms/">SMS Terms</a>
+        </span>
         <span>Built by Green Star. Yes, this site too.</span>
       </div>
     </footer>

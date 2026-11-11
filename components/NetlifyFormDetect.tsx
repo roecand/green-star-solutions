@@ -28,6 +28,7 @@ export default function NetlifyFormDetect() {
       <input name="email" type="email" />
       <input name="phone" />
       <input name="best_time" />
+      <input name="sms_consent" type="checkbox" />
     </form>
   );
 }

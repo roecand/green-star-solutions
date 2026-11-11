@@ -75,6 +75,7 @@ type State = {
   email: string;
   phone: string;
   bestTime: string;
+  smsConsent: boolean;
 };
 
 const initial: State = {
@@ -94,6 +95,7 @@ const initial: State = {
   email: "",
   phone: "",
   bestTime: "",
+  smsConsent: false,
 };
 
 export default function ProjectForm() {
@@ -160,6 +162,7 @@ export default function ProjectForm() {
     fd.append("email", data.email);
     fd.append("phone", data.phone);
     fd.append("best_time", data.bestTime);
+    fd.append("sms_consent", data.smsConsent ? "yes" : "no");
 
     try {
       const res = await fetch("/", { method: "POST", body: fd });
@@ -441,6 +444,23 @@ export default function ProjectForm() {
                     </select>
                   </div>
                 </Field>
+                {/* 10DLC opt-in. Optional and unchecked by default: consent to
+                    texts can't be a condition of booking the call. */}
+                <label className="consent">
+                  <input
+                    type="checkbox"
+                    checked={data.smsConsent}
+                    onChange={(e) => set("smsConsent", e.target.checked)}
+                  />
+                  <span>
+                    I agree to receive text messages from Green Star Solutions
+                    about my inquiry, including scheduling and follow-ups.
+                    Message frequency varies. Msg &amp; data rates may apply.
+                    Reply STOP to opt out, HELP for help. Optional. See our{" "}
+                    <a href="/sms-terms/" target="_blank">SMS Terms</a> and{" "}
+                    <a href="/privacy/" target="_blank">Privacy Policy</a>.
+                  </span>
+                </label>
               </Fieldset>
             )}
 
@@ -484,6 +504,26 @@ export default function ProjectForm() {
       </div>
 
       <style jsx>{`
+        .consent {
+          display: flex;
+          gap: 0.7rem;
+          align-items: flex-start;
+          margin-top: 0.4rem;
+          font-size: var(--t-xs);
+          line-height: 1.5;
+          color: var(--ink-soft);
+          cursor: pointer;
+        }
+        .consent input {
+          width: 1.1rem;
+          height: 1.1rem;
+          margin-top: 0.15rem;
+          flex: none;
+          accent-color: var(--forest);
+        }
+        .consent a {
+          text-decoration: underline;
+        }
         .form__head {
           max-width: 640px;
           margin-bottom: clamp(2.5rem, 5vw, 4rem);
